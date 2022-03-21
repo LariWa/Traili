@@ -1,15 +1,18 @@
+import "firebase/database";
 import firebaseConfig from "/src/firebaseConfig.js";
-firebase.initializeApp(firebaseConfig);  
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
+// import firebase from "firebase/app";
+initializeApp(firebaseConfig);
 
-//  REF is the “root” Firebase path. NN is your TW2_TW3 group number
-//const REF="dinnerModelNN";
-//firebase.database().ref(REF+"/test").set("dummy");//
+function testFirebase() {
+  // firebase // why is this not working?
+  //   .database()
+  //   .ref("test" + "/test")
+  //   .set("dummy");
 
-var adaNameRef = firebase.database().ref('users/ada/name');
-adaNameRef.set({ first: 'Ada', last: 'Lovelace' })
-  .then(function() {
-    console.log('Synchronization succeeded');
-  })
-  .catch(function(error) {
-    console.log('Synchronization failed');
-  });
+  console.log("test firebase");
+  const db = getDatabase();
+  set(ref(db, "test2/"), "test");
+}
+export { testFirebase };
