@@ -1,24 +1,20 @@
 import { project, key } from "./hikeAPIConfig.js";
-function searchHike(searchText) {
+function searchHike(searchParams) {
   return fetch(
-    "http://www.outdooractive.com/api/search/?" +
-      new URLSearchParams({
+    "http://www.outdooractive.com/api/project/api-dev-oa/filter/tour?" +
+      new URLSearchParams(searchParams, {
         key: key,
-        q: searchText,
         project: project,
         lang: "en",
         fallback: false,
       }),
-
     {
       method: "GET", // HTTP method
       headers: {
         Accept: "application/json",
       },
     }
-  )
-    .then(treatHTTPResponseACB)
-    .then((res) => console.log(res));
+  ).then(treatHTTPResponseACB);
 }
 function getHikeDetails(id) {
   fetch(
@@ -39,9 +35,31 @@ function getHikeDetails(id) {
         Accept: "application/json",
       },
     }
+  ).then(treatHTTPResponseACB);
+}
+function setCategories(store) {
+  fetch(
+    "http://www.outdooractive.com/api/project/" +
+      project +
+      "/category/tree/tour/pruned?" +
+      new URLSearchParams({
+        key: key,
+        project: project,
+        lang: "en",
+        fallback: false,
+      }),
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    }
   )
     .then(treatHTTPResponseACB)
-    .then((res) => console.log(res));
+    .then((res) => {
+      console.log(res);
+      store.commit("setCategories", res.category);
+    });
 }
 
 function treatHTTPResponseACB(response) {
@@ -53,4 +71,4 @@ function treatHTTPResponseACB(response) {
     return response.json();
   }
 }
-export { searchHike, getHikeDetails };
+export { searchHike, getHikeDetails, setCategories };

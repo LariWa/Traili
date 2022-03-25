@@ -1,4 +1,6 @@
 import { testFirebase } from "./firebaseModel";
+import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+import { setCategories } from "./hikeSource.js";
 
 const App = {
   data() {
@@ -6,10 +8,16 @@ const App = {
   },
   mounted() {
     testFirebase();
+    setCategories(this.$store);
   },
   unmounted() {},
   render() {
-    return <h1>Trail Planner</h1>;
+    return (
+      <div>
+        <h1>Trail Planner</h1>
+        <SearchFormPresenter></SearchFormPresenter>
+      </div>
+    );
   },
 };
 
