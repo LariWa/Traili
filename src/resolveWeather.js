@@ -3,10 +3,29 @@
 //response: temperater/wind/weather(with icon index)/... in the next 5 days in a step of 3 hours
 //https://openweathermap.org/forecast5
 
-function searchWeather(params) {
+function searchWeather(params,model) {
+    function processWeather(allWeather, theDate) {
+
+        function hasDateCB(hourWeather) {
+            return ((hourWeather.dt_txt).includes(theDate))
+        }
+
+        const sorted = { cityName: "", weatherArray: {} };
+        sorted["cityName"] = allWeather.city.name;
+        sorted["weatherArray"] = allWeather.list.filter(hasDateCB);
+        //console.log(sorted.weatherArray);
+        return sorted;
+
+    }
+
+    function transformResultACB(result) {
+        model.weather = processWeather(result, params.date);
+        return processWeather(result, params.date);
+    }
+
   const baseURL="https://api.openweathermap.org/data/2.5/forecast?";
   const myKey="&appid=7c2818a738ef6f68536c2bd139eaa7b0";
-  return fetch(baseURL+"lat="+params.lat+"&lon="+params.lon+myKey)
+  return fetch(baseURL+"q="+params.q+myKey)
     .then(treatHTTPResponseACB)
     .then(transformResultACB);
 
@@ -16,9 +35,7 @@ function treatHTTPResponseACB(response) {
     throw "Invalid response";
   } else return response.json();
 }
-function transformResultACB(result) {
-  console.log(result);
-  return result.results;
-}
+
+
 
 export {searchWeather};

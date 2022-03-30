@@ -1,11 +1,13 @@
-function WeatherView(props) {
+function WeatherView(props) {//props.weatherArray,props.cityName
+
+    //provide the hourly weather of that date and the city name
 
     //choose what format of time to display
     function displayTime(fullTime,choice) {
         const len = fullTime.length;
         //display date
-        const startIndex = 5;
-        const endIndex = 10;
+        var startIndex = 5;
+        var endIndex = 10;
         if (choice === "hour") {
             //display hour
             startIndex = len - 8;
@@ -24,7 +26,7 @@ function WeatherView(props) {
                 <td class="alignRight">
                     {(hourWeather.main.temp-273.15).toFixed(0)}
                 </td>
-                <td> {ingr.unit} </td>
+                <td> {hourWeather.wind.speed} </td>
             </tr>
         );
     }
