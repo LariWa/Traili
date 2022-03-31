@@ -1,3 +1,5 @@
+<!-- warning: Instance uid=1:147 not found? -->
+
 <template>
   <div>
     <v-text-field
@@ -33,7 +35,6 @@
         <v-expansion-panel-header> Filter </v-expansion-panel-header>
         <v-expansion-panel-content>
           <!-- TODO how to update slider while moving  -->
-          <!-- warning: Instance uid=1:147 not found? -->
           <RangeSlider
             :range="distanceRange"
             :values="distanceValues"
@@ -55,12 +56,13 @@
             unit="m"
             @changed="ascentChanged"
           />
-          <v-checkbox
-            label="easy"
-            color="red"
-            value="0"
-            hide-details
-          ></v-checkbox>
+          <div v-for="difficulty in difficulties" :key="difficulty.name">
+            <v-checkbox
+              :label="difficulty.name"
+              :value="difficulty.value"
+              :color="difficulty.color"
+            ></v-checkbox>
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -84,7 +86,11 @@ export default {
       durationValues: [0, 13],
       ascentRange: [0, 1501],
       ascentValues: [0, 1501],
-      difficulties: ["easy", "moderate", "difficult"],
+      difficulties: [
+        { name: "easy", value: 0, color: "green" },
+        { name: "moderate", value: 1, color: "yellow darken-2" },
+        { name: "difficult", value: 2, color: "red darken-4" },
+      ],
     };
   },
   computed: {
