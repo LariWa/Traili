@@ -8,11 +8,7 @@
     />
     <select @change="onDropDownChangeACB">
       <option value="">Choose Category:</option>
-      <option
-        v-for="item in this.$store.state.categories"
-        :key="item.id"
-        :value="item.id"
-      >
+      <option v-for="item in categories" :key="item.id" :value="item.id">
         {{ item.name }}
       </option>
     </select>
@@ -24,6 +20,11 @@
 export default {
   data() {
     return {};
+  },
+  computed: {
+    categories() {
+      return this.$store.getters.getCategories;
+    },
   },
   methods: {
     onTextChangeACB: function (event) {
