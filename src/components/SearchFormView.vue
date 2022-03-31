@@ -28,6 +28,23 @@
         </v-chip>
       </template>
     </v-combobox>
+    <v-expansion-panels>
+      <v-expansion-panel>
+        <v-expansion-panel-header> Filter </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <p>
+            Distance from {{ distanceValues[0] }} to
+            {{ distanceValues[1] > 100 ? "any" : distanceValues[1] }}
+          </p>
+          <v-range-slider
+            :max="distanceRange[1]"
+            :min="distanceRange[0]"
+            :value="distanceValues"
+            @end="distanceChanged"
+          ></v-range-slider>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
 
     <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
   </div>
@@ -36,7 +53,7 @@
 <script>
 export default {
   data() {
-    return {};
+    return { distanceRange: [0, 101], distanceValues: [0, 101] };
   },
   computed: {
     categories() {
@@ -65,6 +82,10 @@ export default {
       return this.$store.getters.getCategories
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
+    },
+    distanceChanged(value) {
+      console.log(value);
+      this.distanceValues = value;
     },
   },
 };
