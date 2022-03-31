@@ -2,7 +2,7 @@ import { testFirebase } from "./firebaseModel";
 import { setCategories } from "./hikeSource.js";
 //import WeatherView from "../src/components/weatherView.js";
 import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
-import Weather from "./presenters/weatherPresenter.js";
+//import Weather from "./presenters/weatherPresenter.js";
 import RouteModel from "./RouteModel.js";
 
 const App = {
@@ -20,7 +20,6 @@ const App = {
       <div>
         <h1>Trail Planner</h1>
             <SearchFormPresenter model={component.rootModel}></SearchFormPresenter>
-            <Weather model={component.rootModel}>{console.log("model "+component.rootModel)}</Weather>
       </div>
     );
   },
