@@ -12,6 +12,7 @@ export default new Vuex.Store({
     categoriesPromiseState: {},
     categories: [],
     currentTour: {},
+    weather:[],
   },
   getters: {
     getCategories(state) {
@@ -22,7 +23,10 @@ export default new Vuex.Store({
     },
     getCurrentTour(state) {
       return state.currentTour;
-    },
+      },
+    getWeather(state) {
+          return state.weather;
+      },
   },
 
   mutations: {
@@ -33,7 +37,8 @@ export default new Vuex.Store({
     setCurrentTour(state, payload) {
       console.log(payload);
       state.currentTour = payload.tour[0];
-    },
+      },
+
   },
   actions: {
     //asynchronous
