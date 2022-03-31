@@ -1,18 +1,35 @@
 <template>
   <div>
-    <input
-      id="searchText"
-      placeholder="search..."
+    <v-text-field
+      label="search for locations.."
+      hide-details="auto"
       @change="onTextChangeACB"
       @keypress="onKeyPressedACB"
-    />
-    <select @change="onDropDownChangeACB">
-      <option value="">Choose Category:</option>
-      <option v-for="item in categories" :key="item.id" :value="item.id">
-        {{ item.name }}
-      </option>
-    </select>
-    <button id="searchBtn" @click="onSearchACB">Search!</button>
+    ></v-text-field>
+    <v-combobox
+      :value="categories"
+      :items="categories"
+      label="Categories"
+      multiple
+      chips
+      @change="onDropDownChangeACB"
+    >
+      <template v-slot:selection="{ attrs, item, parent, selected }">
+        <v-chip
+          v-bind="attrs"
+          :color="`${item.color} lighten-3`"
+          :input-value="selected"
+          label
+        >
+          <span class="pr-2">
+            {{ item }}
+          </span>
+          <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
+        </v-chip>
+      </template>
+    </v-combobox>
+
+    <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
   </div>
 </template>
 
@@ -23,28 +40,31 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.getters.getCategories;
+      return this.$store.getters.getCategories.map((item) => item.name);
     },
   },
   methods: {
-    onTextChangeACB: function (event) {
-      this.$emit("searchTextChanged", event.target.value);
+    onTextChangeACB: function (text) {
+      this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
+      console.log(event);
       if (event.keyCode === 13) {
         //Enter
-        this.$emit(
-          "searchTextChanged",
-          document.getElementById("searchText").value
-        );
-        document.getElementById("searchBtn").click();
+        this.$emit("searchTextChanged", event.target.value);
+        this.onSearchACB();
       }
     },
     onSearchACB: function () {
       this.$emit("search");
     },
-    onDropDownChangeACB: function (event) {
-      this.$emit("categoryChanged", event.target.value);
+    onDropDownChangeACB: function (value) {
+      this.$emit("categoryChanged", this.categoryNamesToIds(value));
+    },
+    categoryNamesToIds(names) {
+      return this.$store.getters.getCategories
+        .filter((category) => names.includes(category.name))
+        .map((item) => item.id);
     },
   },
 };

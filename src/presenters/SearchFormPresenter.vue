@@ -29,7 +29,6 @@ export default {
       this.searchParams.q = text;
     },
     search: function () {
-      console.log(this.$store.state.categories);
       console.log("search");
       resolvePromise(searchHike(this.searchParams), this.promiseState, null);
     },
