@@ -2,72 +2,87 @@
 
 <template>
   <div>
-    <v-text-field
-      label="search for locations.."
-      hide-details="auto"
-      @change="onTextChangeACB"
-      @keypress="onKeyPressedACB"
-    ></v-text-field>
-    <v-combobox
-      :value="categories"
-      :items="categories"
-      label="Categories"
-      multiple
-      chips
-      @change="onDropDownChangeACB"
-    >
-      <template v-slot:selection="{ attrs, item, parent, selected }">
-        <v-chip
-          v-bind="attrs"
-          :color="`${item.color} lighten-3`"
-          :input-value="selected"
-          label
+    <v-row>
+      <v-col>
+        <v-text-field
+          label="search for locations.."
+          hide-details="auto"
+          @change="onTextChangeACB"
+          @keypress="onKeyPressedACB"
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-combobox
+          :value="selectedCategories"
+          :items="categories"
+          label="Categories"
+          multiple
+          chips
+          @change="onDropDownChangeACB"
         >
-          <span class="pr-2">
-            {{ item }}
-          </span>
-          <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
-        </v-chip>
-      </template>
-    </v-combobox>
-    <v-expansion-panels>
-      <v-expansion-panel>
-        <v-expansion-panel-header> Filter </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <!-- TODO how to update slider while moving  -->
-          <RangeSlider
-            :range="distanceRange"
-            :values="distanceValues"
-            name="Distance"
-            unit="km"
-            @changed="distanceChanged"
-          />
-          <RangeSlider
-            :range="durationRange"
-            :values="durationValues"
-            name="Duration"
-            unit="h"
-            @changed="durationChanged"
-          />
-          <RangeSlider
-            :range="ascentRange"
-            :values="ascentValues"
-            name="Ascent"
-            unit="m"
-            @changed="ascentChanged"
-          />
-          <div v-for="difficulty in difficulties" :key="difficulty.name">
-            <v-checkbox
-              :label="difficulty.name"
-              :value="difficulty.value"
-              :color="difficulty.color"
-            ></v-checkbox>
-          </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-
-    <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
+          <template v-slot:selection="{ attrs, item, parent, selected, index }">
+            <v-chip
+              v-if="index < 3"
+              v-bind="attrs"
+              :color="`${item.color} lighten-3`"
+              :input-value="selected"
+              label
+            >
+              <span class="pr-2">
+                {{ item }}
+              </span>
+              <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
+            </v-chip>
+            <span v-if="index === 3" class="grey--text text-caption">
+              (+{{ selectedCategories.length - 4 }} others)
+            </span>
+          </template>
+        </v-combobox>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-expansion-panels style="max-width: 30vw">
+          <v-expansion-panel>
+            <v-expansion-panel-header> Filter </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <!-- TODO how to update slider while moving  -->
+              <RangeSlider
+                :range="distanceRange"
+                :values="distanceValues"
+                name="Distance"
+                unit="km"
+                @changed="distanceChanged"
+              />
+              <RangeSlider
+                :range="durationRange"
+                :values="durationValues"
+                name="Duration"
+                unit="h"
+                @changed="durationChanged"
+              />
+              <RangeSlider
+                :range="ascentRange"
+                :values="ascentValues"
+                name="Ascent"
+                unit="m"
+                @changed="ascentChanged"
+              />
+              <div v-for="difficulty in difficulties" :key="difficulty.name">
+                <v-checkbox
+                  :label="difficulty.name"
+                  :value="difficulty.value"
+                  :color="difficulty.color"
+                ></v-checkbox>
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-col>
+      <v-col>
+        <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -91,7 +106,14 @@ export default {
         { name: "moderate", value: 1, color: "yellow darken-2" },
         { name: "difficult", value: 2, color: "red darken-4" },
       ],
+      selectedCategories: [],
     };
+  },
+  watch: {
+    categories() {
+      console.log("changed");
+      this.selectedCategories = this.categories;
+    },
   },
   computed: {
     categories() {
@@ -114,6 +136,7 @@ export default {
       this.$emit("search");
     },
     onDropDownChangeACB: function (value) {
+      this.selectedCategories = value;
       this.$emit("categoryChanged", this.categoryNamesToIds(value));
     },
     categoryNamesToIds(names) {
