@@ -32,16 +32,35 @@
       <v-expansion-panel>
         <v-expansion-panel-header> Filter </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <p>
-            Distance from {{ distanceValues[0] }} to
-            {{ distanceValues[1] > 100 ? "any" : distanceValues[1] }}
-          </p>
-          <v-range-slider
-            :max="distanceRange[1]"
-            :min="distanceRange[0]"
-            :value="distanceValues"
-            @end="distanceChanged"
-          ></v-range-slider>
+          <!-- TODO how to update slider while moving  -->
+          <!-- warning: Instance uid=1:147 not found? -->
+          <RangeSlider
+            :range="distanceRange"
+            :values="distanceValues"
+            name="Distance"
+            unit="km"
+            @changed="distanceChanged"
+          />
+          <RangeSlider
+            :range="durationRange"
+            :values="durationValues"
+            name="Duration"
+            unit="h"
+            @changed="durationChanged"
+          />
+          <RangeSlider
+            :range="ascentRange"
+            :values="ascentValues"
+            name="Ascent"
+            unit="m"
+            @changed="ascentChanged"
+          />
+          <v-checkbox
+            label="easy"
+            color="red"
+            value="0"
+            hide-details
+          ></v-checkbox>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -51,9 +70,22 @@
 </template>
 
 <script>
+import RangeSlider from "./rangeSlider.vue";
 export default {
+  components: {
+    RangeSlider,
+  },
   data() {
-    return { distanceRange: [0, 101], distanceValues: [0, 101] };
+    return {
+      //TODO move to presenter?
+      distanceRange: [0, 101],
+      distanceValues: [0, 101],
+      durationRange: [0, 13],
+      durationValues: [0, 13],
+      ascentRange: [0, 1501],
+      ascentValues: [0, 1501],
+      difficulties: ["easy", "moderate", "difficult"],
+    };
   },
   computed: {
     categories() {
@@ -86,6 +118,14 @@ export default {
     distanceChanged(value) {
       console.log(value);
       this.distanceValues = value;
+    },
+    durationChanged(value) {
+      console.log(value);
+      this.durationValues = value;
+    },
+    ascentChanged(value) {
+      console.log(value);
+      this.ascentValues = value;
     },
   },
 };
