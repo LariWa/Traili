@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\components",
+    "\\src\\store",
+    "\\tests"
+  ],
+  "SelectedNode": "\\src\\resolveWeather.js",
+  "PreviewInSolutionExplorer": false
+}
