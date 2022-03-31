@@ -12,7 +12,6 @@ export default new Vuex.Store({
     categoriesPromiseState: {},
     categories: [],
     currentTour: {},
-    weather:[],
   },
   getters: {
     getCategories(state) {

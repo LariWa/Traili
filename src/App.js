@@ -1,6 +1,6 @@
 import { testFirebase } from "./firebaseModel";
 import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
-import weatherView from "./components/weatherView.vue";
+import weather from "./presenters/weatherPresenter.vue";
 const App = {
   data() {
     return {};
@@ -17,7 +17,7 @@ const App = {
       <div>
         <h1>Trail Planner</h1>
         <SearchFormPresenter></SearchFormPresenter>
-        <weatherView></weatherView>
+        <weather></weather>
       </div>
     );
   },
