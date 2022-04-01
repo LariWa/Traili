@@ -1,23 +1,23 @@
 import { testFirebase } from "./firebaseModel";
-//import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
-import { setCategories } from "./hikeSource.js";
-import TrailDetails from "./components/products/TrailDetails.vue";
-
+import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+import weather from "./presenters/weatherPresenter.vue";
 const App = {
   data() {
     return {};
   },
   mounted() {
     testFirebase();
-    setCategories(this.$store);
+    //setCategories(this.$store);
+    this.$store.dispatch("setCategories");
+    this.$store.dispatch("setCurrentTour");
   },
   unmounted() {},
   render() {
     return (
       <div>
         <h1>Trail Planner</h1>
-        {/* <SearchFormPresenter></SearchFormPresenter> */}
-        <TrailDetails></TrailDetails>
+        <SearchFormPresenter></SearchFormPresenter>
+        <weather></weather>
       </div>
     );
   },
