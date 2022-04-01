@@ -1,30 +1,73 @@
 <template>
-    <div class="details">
-        <div class="blocks">
-            <img class="image" v-bind:src="iconOne">
-            <p class="time">Time: {{convertTime(trailInfo.time.min)}} hours</p>
-        </div>
+    <v-container class="details">
+        <v-row wrap>
 
-        <div class="blocks">
-            <img class="image" v-bind:src="iconTwo">
-            <p class="lenght">Length: {{conversion(trailInfo.length)}} km</p>    
-        </div>
+            <v-col cols="6" md="3">
+                <v-card>
+                    <v-img height="50px" width="50px" :src="iconOne"></v-img>
+                    <v-card-text>
+                        <div>Time: {{convertTime(trailInfo.time.min)}} hours</div>
+                    </v-card-text>
+                </v-card>    
+            </v-col>   
 
-        <div class="blocks">
-            <img class="image" v-bind:src="iconThree">
-            <p class="elevation">Elevation: ascent:{{trailInfo.elevation.ascent}} descent:{{trailInfo.elevation.descent}} </p>  
-        </div>
+            <v-col cols="6" md="3">
+                <v-card>
+                    <v-img height="50px" width="50px" :src="iconTwo"></v-img>
+                    <v-card-text>
+                        <div>Length: {{conversion(trailInfo.length)}} km</div>
+                    </v-card-text>
+                </v-card> 
+            </v-col>
 
-        <div class="blocks">
-            <p class="rating">Difficulty: {{trailInfo.rating.difficulty}}</p>
-            <p class="rating">Quality of experience: {{trailInfo.rating.qualityOfExperience}}</p>
-        </div>
+            <v-col cols="6" md="3">
+                <v-card>
+                    <v-img height="50px" width="50px" :src="iconThree"></v-img>
+                    <v-card-text>
+                        <div>Ascent:{{trailInfo.elevation.ascent}}</div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
 
-        <div class="buttons">
-            <button class="button" @click="addToFavACB">Add to Fav</button>
-            <button class="button" @click="backToSearchACB">Close</button>
-        </div>
-    </div>
+            <v-col cols="6" md="3">
+                <v-card>
+                    <v-img height="50px" width="50px" :src="iconThree"></v-img>
+                    <v-card-text>
+                        <div>Descent:{{trailInfo.elevation.descent}}</div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <v-row wrap>
+            <v-col cols="12" md="6">
+                <v-card>
+                    <v-card-text>
+                        <div>Description missing!!!</div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+
+            <v-col cols="12" md="6">
+                <v-card>
+                    <v-card-text>
+                        <div>Difficulty: {{trailInfo.rating.difficulty}}</div>
+                        <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <v-row wrap>
+            <v-btn rounded @click="addToFavACB">
+                Add to Fav
+            </v-btn>
+
+            <v-btn rounded @click="backToSearchACB">
+                Close
+            </v-btn>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
@@ -66,28 +109,13 @@ export default{
 }
 </script>
 
-<style scoped lang="scss">
+<!--<style scoped lang="scss">
     .details {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     }
-    .image {
-        width: 100px;
-        height: 100px;
-    }
-    .blocks{
-        margin: 1%; //space outside of the element
-        padding: 1%; //space iside of the element
-        background-color: white;
-        box-shadow: 0 0 10px lightgray;
-        border-radius: 10px;
-    }
-    .button{
-        margin: 5%;
-        padding: 5%;
-    }
-</style>
+</style>-->
 
 
 <!--<div v-if="trail" class="trail-details">
