@@ -5,6 +5,7 @@
     <v-main>
       <v-container fluid>
         <SearchFormPresenter></SearchFormPresenter>
+        <weather-presenter />
       </v-container>
     </v-main>
   </v-app>
@@ -13,12 +14,14 @@
 <script>
 import { testFirebase } from "./firebaseModel";
 import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+import WeatherPresenter from "./presenters/weatherPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
     SearchFormPresenter,
+    WeatherPresenter,
   },
 
   data: () => ({
