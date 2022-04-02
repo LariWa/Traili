@@ -14,11 +14,14 @@ const App = {
   unmounted() {},
   render() {
     return (
-      <div>
-        <h1>Trail Planner</h1>
+      <v-app>
+        <v-content>
+          <h1>Trail Planner</h1>
+        </v-content>
+
         <SearchFormPresenter></SearchFormPresenter>
         <weather></weather>
-      </div>
+      </v-app>
     );
   },
 };
