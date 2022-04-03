@@ -7,11 +7,15 @@ import {
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
+/*function updateFavourites(favourite){}*/
+
 export default new Vuex.Store({
   state: {
     categoriesPromiseState: {},
     categories: [],
     currentTour: {},
+
+    favourites: [], //array of objects
   },
   getters: {
     getCategories(state) {
@@ -37,7 +41,9 @@ export default new Vuex.Store({
       console.log(payload);
       state.currentTour = payload.tour[0];
       },
-
+    addToFav(state, payload) {
+     state.favourites.push(payload);
+    }
   },
   actions: {
     //asynchronous

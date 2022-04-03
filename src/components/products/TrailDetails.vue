@@ -1,89 +1,110 @@
 <template>
-    <v-container class="details">
-        <v-row wrap>
+    <div>
 
-            <v-col cols="6" md="3">
-                <v-card>
-                    <v-img height="50px" width="50px" :src="iconOne"></v-img>
-                    <v-card-text>
-                        <div>Time: {{convertTime(trailInfo.time.min)}} hours</div>
-                    </v-card-text>
-                </v-card>    
-            </v-col>   
+       <!-- <input
+            placeholder="onAddToMenu..."
+            />-->
 
-            <v-col cols="6" md="3">
-                <v-card>
-                    <v-img height="50px" width="50px" :src="iconTwo"></v-img>
-                    <v-card-text>
-                        <div>Length: {{conversion(trailInfo.length)}} km</div>
-                    </v-card-text>
-                </v-card> 
-            </v-col>
 
-            <v-col cols="6" md="3">
-                <v-card>
-                    <v-img height="50px" width="50px" :src="iconThree"></v-img>
-                    <v-card-text>
-                        <div>Ascent:{{trailInfo.elevation.ascent}}</div>
-                    </v-card-text>
-                </v-card>
-            </v-col>
+        <v-container class="details" v-if="trailInfo">
+            <v-row wrap>
+                <v-col cols="6" md="3">
+                    <v-card>
+                        <v-img height="50px" width="50px" :src="iconOne"></v-img>
+                        <v-card-text v-if="trailInfo.time">
+                            <div>Time: {{ convertTime(trailInfo.time.min) }} hours</div> 
+                           
+                        </v-card-text>
+                    </v-card>    
+                </v-col>   
 
-            <v-col cols="6" md="3">
-                <v-card>
-                    <v-img height="50px" width="50px" :src="iconThree"></v-img>
-                    <v-card-text>
-                        <div>Descent:{{trailInfo.elevation.descent}}</div>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+                <v-col cols="6" md="3">
+                    <v-card>
+                        <v-img height="50px" width="50px" :src="iconTwo"></v-img>
+                        <v-card-text v-if="trailInfo.length">
+                            <div>Length: {{conversion(trailInfo.length)}} km</div>
+                        </v-card-text>
+                    </v-card> 
+                </v-col>
 
-        <v-row wrap>
-            <v-col cols="12" md="6">
-                <v-card>
-                    <v-card-text>
-                        <div>Description missing!!!</div>
-                    </v-card-text>
-                </v-card>
-            </v-col>
+                <v-col cols="6" md="3">
+                    <v-card>
+                        <v-img height="50px" width="50px" :src="iconThree"></v-img>
+                        <v-card-text v-if="trailInfo.elevation">
+                            <div>Ascent:{{trailInfo.elevation.ascent}}</div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
 
-            <v-col cols="12" md="6">
-                <v-card>
-                    <v-card-text>
-                        <div>Difficulty: {{trailInfo.rating.difficulty}}</div>
-                        <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+                <v-col cols="6" md="3">
+                    <v-card>
+                        <v-img height="50px" width="50px" :src="iconThree"></v-img>
+                        <v-card-text v-if="trailInfo.elevation">
+                            <div>Descent:{{trailInfo.elevation.descent}}</div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
 
-        <v-row wrap>
-            <v-btn rounded @click="addToFavACB">
-                Add to Fav
-            </v-btn>
+            <v-row wrap>
+                <v-col cols="12" md="6">
+                    <v-card>
+                        <v-card-text>
+                            <div>Description missing!!!</div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
 
-            <v-btn rounded @click="backToSearchACB">
-                Close
-            </v-btn>
-        </v-row>
-    </v-container>
+                <v-col cols="12" md="6">
+                    <v-card>
+                        <v-card-text v-if="trailInfo.rating">
+                            <div>Difficulty: {{trailInfo.rating.difficulty}}</div>
+                            <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+
+            <v-row wrap>
+                <v-btn rounded id="addToFav" @click="addToFavACB">
+                    Add to Fav
+                </v-btn>
+
+                <v-btn rounded @click="backToSearchACB">
+                    Close
+                </v-btn>
+            </v-row>
+
+            <v-row wrap>
+                <VueWeather></VueWeather>
+            </v-row>
+        </v-container>
+    </div>
 </template>
 
 <script>
-import trailData from "./TourDetailsExample.json";
+//import trailData from "./TourDetailsExample.json";
+import VueWeather from "../../presenters/weatherPresenter.vue";
 
 export default{
     data() {
         return {
-            trailInfo: trailData.tour[0],
+            //trailInfo: trailData.tour[0],
+          //  trailInfo: this.$store.state.currentTour,
             iconOne: 'https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png',
             iconTwo: 'https://cdn0.iconfinder.com/data/icons/10-essential-of-backpacking-plus-more/1000/Map4-512.png',
             iconThree: 'https://www.garminmountainfestival.com/wp-content/uploads/2019/11/elevation-up.png',
             };
-
+    },
+    components: {
+            VueWeather,
     },
     props: ['trail'], 
+    computed: {
+        trailInfo() {            
+            return this.$store.getters.getCurrentTour;
+        },
+    },
     methods: {
         conversion: function(length){
             var formattedNumber= length/100000;
@@ -94,7 +115,7 @@ export default{
             var m = Math.floor(min % 3600 / 60);
 
             return `${this.twoDigits(h)}:${this.twoDigits(m)}`;
-        },
+        }, 
         twoDigits: function(num){
             return num.toString().padStart(2, '0');
         },
@@ -103,7 +124,8 @@ export default{
 
         },
         addToFavACB: function(){
-
+            this.$emit("addToFav", this.trailInfo);
+            //this.$store.commit("addToFavACB", this.trail); //onAddToMenu();
         }
     }
 }
