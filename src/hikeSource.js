@@ -19,7 +19,7 @@ function searchHike(searchParams) {
 }
 
 function getHikeDetails(id) {
-  fetch(
+  return fetch(
     "http://www.outdooractive.com/api/project/" +
       project +
       "/oois/" +
@@ -37,11 +37,13 @@ function getHikeDetails(id) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+    .then(treatHTTPResponseACB)
+    .then(treatHikeResponse);
 }
-
-function setCategories(store) {
-  fetch(
+function getCategories() {
+  console.log("getCategories");
+  return fetch(
     "http://www.outdooractive.com/api/project/" +
       project +
       "/category/tree/tour/pruned?" +
@@ -59,10 +61,7 @@ function setCategories(store) {
     }
   )
     .then(treatHTTPResponseACB)
-    .then((res) => {
-      console.log(res);
-      store.commit("setCategories", res.category);
-    });
+    .then(treatCategoriesResponse);
 }
 
 function treatHTTPResponseACB(response) {
@@ -74,4 +73,11 @@ function treatHTTPResponseACB(response) {
     return response.json();
   }
 }
-export { searchHike, getHikeDetails, setCategories };
+function treatCategoriesResponse(response) {
+  return response.category;
+}
+function treatHikeResponse(response) {
+  if (response.tour.length == 1) return response.tour[0];
+  else return response.tour;
+}
+export { searchHike, getHikeDetails, getCategories };

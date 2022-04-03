@@ -17,7 +17,6 @@ import SearchFormView from "@/components/SearchFormView.vue";
 import SearchResultsView from "@/components/SearchResultsView.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike } from "../hikeSource.js";
-
 export default {
   components: { SearchFormView, SearchResultsView },
   data() {
@@ -26,7 +25,6 @@ export default {
         q: "",
         category: "",
       },
-
       promiseState: {},
     };
   },
