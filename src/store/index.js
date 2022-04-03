@@ -14,6 +14,8 @@ export default new Vuex.Store({
       state.categories = categories;
     },
   },
-  actions: {},
+  actions: {
+    // call mutations here
+  },
   modules: {},
 });

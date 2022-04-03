@@ -14,8 +14,10 @@ function searchHike(searchParams) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+  .then(treatHTTPResponseACB);
 }
+
 function getHikeDetails(id) {
   fetch(
     "http://www.outdooractive.com/api/project/" +
@@ -37,6 +39,7 @@ function getHikeDetails(id) {
     }
   ).then(treatHTTPResponseACB);
 }
+
 function setCategories(store) {
   fetch(
     "http://www.outdooractive.com/api/project/" +
