@@ -1,18 +1,12 @@
 <template>
     <div>
-
-       <!-- <input
-            placeholder="onAddToMenu..."
-            />-->
-
-
         <v-container class="details" v-if="trailInfo">
             <v-row wrap>
                 <v-col cols="6" md="3">
                     <v-card>
                         <v-img height="50px" width="50px" :src="iconOne"></v-img>
                         <v-card-text v-if="trailInfo.time">
-                            <div>Time: {{ convertTime(trailInfo.time.min) }} hours</div> 
+                            <div>Time: {{ convertTime(trailInfo.time.min) }} h</div> 
                            
                         </v-card-text>
                     </v-card>    
@@ -31,7 +25,7 @@
                     <v-card>
                         <v-img height="50px" width="50px" :src="iconThree"></v-img>
                         <v-card-text v-if="trailInfo.elevation">
-                            <div>Ascent:{{trailInfo.elevation.ascent}}</div>
+                            <div>Ascent: {{trailInfo.elevation.ascent}} m</div>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -40,7 +34,7 @@
                     <v-card>
                         <v-img height="50px" width="50px" :src="iconThree"></v-img>
                         <v-card-text v-if="trailInfo.elevation">
-                            <div>Descent:{{trailInfo.elevation.descent}}</div>
+                            <div>Descent: {{trailInfo.elevation.descent}} m</div>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -50,7 +44,7 @@
                 <v-col cols="12" md="6">
                     <v-card>
                         <v-card-text>
-                            <div>Description missing!!!</div>
+                            <div>{{strippedContent(trailInfo.longText)}}</div>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -58,8 +52,8 @@
                 <v-col cols="12" md="6">
                     <v-card>
                         <v-card-text v-if="trailInfo.rating">
-                            <div>Difficulty: {{trailInfo.rating.difficulty}}</div>
-                            <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>
+                            <div>Difficulty: {{dificulty(trailInfo.rating.difficulty)}}</div>
+                            <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>                            
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -90,7 +84,7 @@ export default{
     data() {
         return {
             //trailInfo: trailData.tour[0],
-          //  trailInfo: this.$store.state.currentTour,
+            //trailInfo: this.$store.state.currentTour,
             iconOne: 'https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png',
             iconTwo: 'https://cdn0.iconfinder.com/data/icons/10-essential-of-backpacking-plus-more/1000/Map4-512.png',
             iconThree: 'https://www.garminmountainfestival.com/wp-content/uploads/2019/11/elevation-up.png',
@@ -99,20 +93,24 @@ export default{
     components: {
             VueWeather,
     },
+    
     props: ['trail'], 
     computed: {
         trailInfo() {            
             return this.$store.getters.getCurrentTour;
         },
     },
+
     methods: {
         conversion: function(length){
-            var formattedNumber= length/100000;
-            return formattedNumber.toFixed(2);
+            var formattedNumber= length/1000;
+            return formattedNumber.toFixed(1);
         },
         convertTime: function(min){
-            var h = Math.floor(min / 3600);
-            var m = Math.floor(min % 3600 / 60);
+            var hours = (min / 60);
+            var h = Math.floor(hours);
+            var minutes = (hours - h) * 60;
+            var m = Math.floor(minutes);
 
             return `${this.twoDigits(h)}:${this.twoDigits(m)}`;
         }, 
@@ -126,6 +124,28 @@ export default{
         addToFavACB: function(){
             this.$emit("addToFav", this.trailInfo);
             //this.$store.commit("addToFavACB", this.trail); //onAddToMenu();
+        },
+
+        strippedContent: function(string) {
+            var clearText = string.replace(/<\/?[^>]+(>|$)/g, "");
+            return clearText;
+        },
+        dificulty: function(value){
+            if (value == 1){
+                return "easy";
+            }
+            else if (value == 2){
+                return "intermediate";
+            }
+            else if (value == 3){
+                return "difficult";
+            }
+            else{
+                return "difficulty unknown";
+            }
+        },
+        experience: function(){
+
         }
     }
 }

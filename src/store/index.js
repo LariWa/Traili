@@ -7,7 +7,6 @@ import {
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
-/*function updateFavourites(favourite){}*/
 
 export default new Vuex.Store({
   state: {
@@ -43,6 +42,7 @@ export default new Vuex.Store({
       },
     addToFav(state, payload) {
      state.favourites.push(payload);
+     console.log("this is my obj" + state.favourites);
     }
   },
   actions: {
