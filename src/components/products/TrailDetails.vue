@@ -1,19 +1,18 @@
 <template>
     <div>
-        <v-container class="details" v-if="trailInfo">
+        <v-container v-if="trailInfo">
             <v-row wrap>
                 <v-col cols="6" md="3">
-                    <v-card>
-                        <v-img height="50px" width="50px" :src="iconOne"></v-img>
-                        <v-card-text v-if="trailInfo.time">
+                    <v-card flat>
+                        <v-img class="align-end" height="50px" width="50px" :src="iconOne"></v-img>
+                        <v-card-text class="text-center" v-if="trailInfo.time">
                             <div>Time: {{ convertTime(trailInfo.time.min) }} h</div> 
-                           
                         </v-card-text>
                     </v-card>    
                 </v-col>   
 
                 <v-col cols="6" md="3">
-                    <v-card>
+                    <v-card flat>
                         <v-img height="50px" width="50px" :src="iconTwo"></v-img>
                         <v-card-text v-if="trailInfo.length">
                             <div>Length: {{conversion(trailInfo.length)}} km</div>
@@ -22,7 +21,7 @@
                 </v-col>
 
                 <v-col cols="6" md="3">
-                    <v-card>
+                    <v-card flat>
                         <v-img height="50px" width="50px" :src="iconThree"></v-img>
                         <v-card-text v-if="trailInfo.elevation">
                             <div>Ascent: {{trailInfo.elevation.ascent}} m</div>
@@ -31,7 +30,7 @@
                 </v-col>
 
                 <v-col cols="6" md="3">
-                    <v-card>
+                    <v-card flat>
                         <v-img height="50px" width="50px" :src="iconThree"></v-img>
                         <v-card-text v-if="trailInfo.elevation">
                             <div>Descent: {{trailInfo.elevation.descent}} m</div>
@@ -41,34 +40,36 @@
             </v-row>
 
             <v-row wrap>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="9">
                     <v-card>
-                        <v-card-text>
-                            <div>{{strippedContent(trailInfo.longText)}}</div>
+                        <v-card-text v-if="trailInfo.longText">
+                            <div>{{removeHTML(trailInfo.longText)}}</div>
                         </v-card-text>
                     </v-card>
                 </v-col>
 
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="3">
                     <v-card>
                         <v-card-text v-if="trailInfo.rating">
+                            <div>Highest point: {{trailInfo.elevation.maxAltitude}} m</div>
+                            <div>Lowest point {{trailInfo.elevation.minAltitude}} m</div>
                             <div>Difficulty: {{dificulty(trailInfo.rating.difficulty)}}</div>
-                            <div>Quality of experience: {{trailInfo.rating.qualityOfExperience}}</div>                            
+                            <div>Quality of experience: 
+                                <star-rating :inline="true" :star-size="20" :read-only="true" :show-rating="false" v-bind:max-rating="6" v-bind:rating= trailInfo.rating.qualityOfExperience>
+                                </star-rating>
+                                <!--If you want to pass all the properties of an object as props, you can use v-bind without an argument-->
+                            </div> 
+                            <v-btn rounded small id="addToFav"  @click="addToFavACB">
+                                Add to Fav
+                            </v-btn>
+
+                            <v-btn fab x-small dark @click="backToSearchACB">
+                                x
+                            </v-btn>  
                         </v-card-text>
                     </v-card>
                 </v-col>
             </v-row>
-
-            <v-row wrap>
-                <v-btn rounded id="addToFav" @click="addToFavACB">
-                    Add to Fav
-                </v-btn>
-
-                <v-btn rounded @click="backToSearchACB">
-                    Close
-                </v-btn>
-            </v-row>
-
             <v-row wrap>
                 <VueWeather></VueWeather>
             </v-row>
@@ -79,6 +80,7 @@
 <script>
 //import trailData from "./TourDetailsExample.json";
 import VueWeather from "../../presenters/weatherPresenter.vue";
+import StarRating from 'vue-star-rating'
 
 export default{
     data() {
@@ -92,6 +94,7 @@ export default{
     },
     components: {
             VueWeather,
+            StarRating,
     },
     
     props: ['trail'], 
@@ -123,13 +126,18 @@ export default{
         },
         addToFavACB: function(){
             this.$emit("addToFav", this.trailInfo);
-            //this.$store.commit("addToFavACB", this.trail); //onAddToMenu();
         },
 
-        strippedContent: function(string) {
-            var clearText = string.replace(/<\/?[^>]+(>|$)/g, "");
-            return clearText;
+        /*strippedContent: function(string) {
+            return string.replace(/<\/?[^>]+(>|$)/g, "");
+        },*/
+
+        removeHTML: function(str){ 
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = str;
+            return tmp.textContent || tmp.innerText || "";
         },
+
         dificulty: function(value){
             if (value == 1){
                 return "easy";
@@ -144,9 +152,6 @@ export default{
                 return "difficulty unknown";
             }
         },
-        experience: function(){
-
-        }
     }
 }
 </script>
