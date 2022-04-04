@@ -122,7 +122,7 @@ export default{
         },
 
         backToSearchACB: function(){
-
+            this.$emit("returnToSearch");
         },
         addToFavACB: function(){
             this.$emit("addToFav", this.trailInfo);
