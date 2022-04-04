@@ -7,8 +7,10 @@ import {
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
+
 export default new Vuex.Store({
   state: {
+    favourites: [], //array of objects
     categoriesPromiseState: { data: [] },
     currentTourPromiseState: { data: [] },
   },
@@ -36,6 +38,10 @@ export default new Vuex.Store({
 
   mutations: {
     //synchronous
+    addToFav(state, payload) {
+     state.favourites.push(payload);
+     console.log("this is my obj" + state.favourites);
+    }
   },
   actions: {
     //asynchronous
