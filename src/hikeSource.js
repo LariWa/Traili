@@ -14,8 +14,10 @@ function searchHike(searchParams) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+  .then(treatHTTPResponseACB);
 }
+
 function getHikeDetails(id) {
   return fetch(
     "http://www.outdooractive.com/api/project/" +
@@ -35,7 +37,9 @@ function getHikeDetails(id) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+    .then(treatHTTPResponseACB)
+    .then(treatHikeResponse);
 }
 function getCategories() {
   console.log("getCategories");
@@ -55,7 +59,9 @@ function getCategories() {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+    .then(treatHTTPResponseACB)
+    .then(treatCategoriesResponse);
 }
 
 function treatHTTPResponseACB(response) {
@@ -66,5 +72,12 @@ function treatHTTPResponseACB(response) {
   } else {
     return response.json();
   }
+}
+function treatCategoriesResponse(response) {
+  return response.category;
+}
+function treatHikeResponse(response) {
+  if (response.tour.length == 1) return response.tour[0];
+  else return response.tour;
 }
 export { searchHike, getHikeDetails, getCategories };
