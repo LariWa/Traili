@@ -7,63 +7,57 @@ import {
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
+
 export default new Vuex.Store({
   state: {
-    categoriesPromiseState: {},
-    categories: [],
-    currentTour: {},
+    favourites: [], //array of objects
+    categoriesPromiseState: { data: [] },
+    currentTourPromiseState: { data: [] },
   },
   getters: {
     getCategories(state) {
-      return state.categories;
+      if (state.categoriesPromiseState.data)
+        return state.categoriesPromiseState.data;
+      else return [];
     },
     getCategoriesPromiseState(state) {
       return state.categoriesPromiseState;
     },
+    getCurrentTourPromiseState(state) {
+      return state.currentTourPromiseState;
+    },
     getCurrentTour(state) {
-      return state.currentTour;
-      },
+      if (state.currentTourPromiseState.data)
+        return state.currentTourPromiseState.data;
+      else return undefined;
+    },
     getWeather(state) {
-          return state.weather;
-      },
+      return state.weather;
+    },
   },
 
   mutations: {
     //synchronous
-    setCategories(state, payload) {
-      state.categories = payload.category;
-    },
-    setCurrentTour(state, payload) {
-      console.log(payload);
-      state.currentTour = payload.tour[0];
-      },
-
+    addToFav(state, payload) {
+     state.favourites.push(payload);
+     console.log("this is my obj" + state.favourites);
+    }
   },
   actions: {
     //asynchronous
     async setCategories(state) {
       resolvePromise(
         getCategoriesFetch(),
-        state.getters.getCategoriesPromiseState,
-        null
-      );
-      //TODO how to do that correctly?
-      delay(1000).then(() =>
-        state.commit(
-          "setCategories",
-          state.getters.getCategoriesPromiseState.data
-        )
+        state.getters.getCategoriesPromiseState
       );
     },
     async setCurrentTour(state) {
       //TODO set actual tour (this one is just for testing)
-      getHikeDetails(30987906).then((res) =>
-        state.commit("setCurrentTour", res)
+      resolvePromise(
+        getHikeDetails(30987906),
+        state.getters.getCurrentTourPromiseState
       );
     },
   },
   modules: {},
 });
-function delay(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}

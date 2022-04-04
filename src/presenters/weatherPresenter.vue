@@ -1,21 +1,33 @@
 <template>
-    <div v-if="this.$store.state.currentTour.startingPoint">
-      <vue-weather
-        api-key="7c2818a738ef6f68536c2bd139eaa7b0"
-        units="uk"
-        bar-color="#7ab8cc"
-        text-color="#456177"
-        :latitude="this.$store.state.currentTour.startingPoint.lat.toString()"
-        :longitude="this.$store.state.currentTour.startingPoint.lon.toString()"
-      />
-    </div>
+  <div v-if="currentTourHasStartingPoint">
+    <vue-weather
+      api-key="7c2818a738ef6f68536c2bd139eaa7b0"
+      units="uk"
+      :latitude="lat"
+      :longitude="lon"
+    />
+  </div>
 </template>
 
 <script>
 import VueWeather from "vue-weather-widget";
-export default{
-    components: {
-      VueWeather,
+export default {
+  components: {
+    VueWeather,
+  },
+  computed: {
+    currentTourHasStartingPoint() {
+      return (
+        this.$store.getters.getCurrentTour &&
+        this.$store.getters.getCurrentTour.startingPoint
+      );
     },
-   }
+    lat() {
+      return this.$store.getters.getCurrentTour.startingPoint.lat.toString();
+    },
+    lon() {
+      return this.$store.getters.getCurrentTour.startingPoint.lon.toString();
+    },
+  },
+};
 </script>
