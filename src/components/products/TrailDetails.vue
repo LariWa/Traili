@@ -1,38 +1,38 @@
 <template>
     <div>
         <v-container v-if="trailInfo">
-            <v-row wrap>
+            <v-row class="white" wrap>
                 <v-col cols="6" md="3">
-                    <v-card flat>
-                        <v-img class="align-end" height="50px" width="50px" :src="iconOne"></v-img>
-                        <v-card-text class="text-center" v-if="trailInfo.time">
+                    <v-card class="white" flat>
+                        <v-img style="margin: auto" max-height="60px" max-width="60px" :src="iconOne"></v-img>
+                        <v-card-text class="text-center font-weight-medium" style="color: #2196F3" v-if="trailInfo.time">
                             <div>Time: {{ convertTime(trailInfo.time.min) }} h</div> 
                         </v-card-text>
                     </v-card>    
                 </v-col>   
 
                 <v-col cols="6" md="3">
-                    <v-card flat>
-                        <v-img height="50px" width="50px" :src="iconTwo"></v-img>
-                        <v-card-text v-if="trailInfo.length">
+                    <v-card class="white" flat>
+                        <v-img style="margin: auto" max-height="60px" max-width="60px" :src="iconTwo"></v-img>
+                        <v-card-text class="text-center font-weight-medium" style="color: #2196F3" v-if="trailInfo.length">
                             <div>Length: {{conversion(trailInfo.length)}} km</div>
                         </v-card-text>
                     </v-card> 
                 </v-col>
 
                 <v-col cols="6" md="3">
-                    <v-card flat>
-                        <v-img height="50px" width="50px" :src="iconThree"></v-img>
-                        <v-card-text v-if="trailInfo.elevation">
+                    <v-card class="white" flat>
+                        <v-img style="margin: auto" max-height="60px" max-width="60px" :src="iconThree"></v-img>
+                        <v-card-text class="text-center font-weight-medium" style="color: #2196F3" v-if="trailInfo.elevation">
                             <div>Ascent: {{trailInfo.elevation.ascent}} m</div>
                         </v-card-text>
                     </v-card>
                 </v-col>
 
                 <v-col cols="6" md="3">
-                    <v-card flat>
-                        <v-img height="50px" width="50px" :src="iconThree"></v-img>
-                        <v-card-text v-if="trailInfo.elevation">
+                    <v-card class="white" flat>
+                        <v-img style="margin: auto" max-height="60px" max-width="60px" :src="iconThree"></v-img>
+                        <v-card-text class="text-center font-weight-medium" style="color: #2196F3" v-if="trailInfo.elevation">
                             <div>Descent: {{trailInfo.elevation.descent}} m</div>
                         </v-card-text>
                     </v-card>
@@ -43,6 +43,7 @@
                 <v-col cols="12" md="9">
                     <v-card>
                         <v-card-text v-if="trailInfo.longText">
+                            <h2>The Route Details</h2><br>
                             <div>{{removeHTML(trailInfo.longText)}}</div>
                         </v-card-text>
                     </v-card>
@@ -51,6 +52,7 @@
                 <v-col cols="12" md="3">
                     <v-card>
                         <v-card-text v-if="trailInfo.rating">
+                            <h3>Additional Details</h3><br>
                             <div>Highest point: {{trailInfo.elevation.maxAltitude}} m</div>
                             <div>Lowest point {{trailInfo.elevation.minAltitude}} m</div>
                             <div>Difficulty: {{dificulty(trailInfo.rating.difficulty)}}</div>
@@ -59,6 +61,7 @@
                                 </star-rating>
                                 <!--If you want to pass all the properties of an object as props, you can use v-bind without an argument-->
                             </div> 
+                            <br>
                             <v-btn rounded small id="addToFav"  @click="addToFavACB">
                                 Add to Fav
                             </v-btn>
@@ -71,11 +74,29 @@
                 </v-col>
             </v-row>
             <v-row wrap>
-                <VueWeather></VueWeather>
+                <v-col cols="12" md="6">
+                    <VueWeather></VueWeather>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                    <v-card>
+                        <v-carousel height="300px" v-if="trailInfo.images">
+                            <v-carousel-item
+                            v-for="(item,i) in trailInfo.images.image"
+                            :key="i"
+                            :src="'http://img.oastatic.com/img/' + item.id + '/.jpg'"
+                            reverse-transition="fade-transition"
+                            transition="fade-transition"
+                            ></v-carousel-item>
+                        </v-carousel>
+                    </v-card>
+                </v-col>
             </v-row>
         </v-container>
     </div>
 </template>
+
+<!--:src="item.src"-->
 
 <script>
 //import trailData from "./TourDetailsExample.json";
@@ -88,8 +109,8 @@ export default{
             //trailInfo: trailData.tour[0],
             //trailInfo: this.$store.state.currentTour,
             iconOne: 'https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png',
-            iconTwo: 'https://cdn0.iconfinder.com/data/icons/10-essential-of-backpacking-plus-more/1000/Map4-512.png',
-            iconThree: 'https://www.garminmountainfestival.com/wp-content/uploads/2019/11/elevation-up.png',
+            iconTwo: 'https://static.thenounproject.com/png/2325457-200.png',
+            iconThree: 'https://static.thenounproject.com/png/209086-200.png',
             };
     },
     components: {
