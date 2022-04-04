@@ -7,7 +7,7 @@
   />
 
   <search-results-view
-    :results='this.promiseState'
+    :results='this.promiseState.data'
   />
 </div>
 </template>
@@ -25,7 +25,7 @@ export default {
         q: "",
         category: "",
       },
-      promiseState: {},
+      promiseState: {data:[]},
     };
   },
   methods: {
