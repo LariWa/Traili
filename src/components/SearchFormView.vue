@@ -1,5 +1,3 @@
-<!-- warning: Instance uid=1:147 not found? -->
-
 <template>
   <div>
     <v-row>
@@ -60,8 +58,9 @@
               <div v-for="difficulty in difficulties" :key="difficulty.name">
                 <v-checkbox
                   :label="difficulty.name"
-                  :value="difficulty.value"
                   :color="difficulty.color"
+                  :input-value="difficulty.selected"
+                  @change="checkBoxChangedACB($event, difficulty.name)"
                 ></v-checkbox>
               </div>
             </v-expansion-panel-content>
@@ -83,29 +82,17 @@ export default {
   },
   props: {
     sliders: Array,
+    difficulties: Array,
+    selectedCategories: Array,
+    categories: Array,
   },
-  data() {
-    return {
-      //TODO move to presenter?
-
-      difficulties: [
-        { name: "easy", value: 0, color: "green" },
-        { name: "moderate", value: 1, color: "yellow darken-2" },
-        { name: "difficult", value: 2, color: "red darken-4" },
-      ],
-      selectedCategories: [],
-    };
-  },
-  watch: {
-    categories() {
-      this.selectedCategories = this.categories;
-    },
-  },
-  computed: {
-    categories() {
-      return this.$store.getters.getCategories.map((item) => item.name);
-    },
-  },
+  emits: [
+    "searchTextChanged",
+    "search",
+    "categoriesChanged",
+    "sliderChanged",
+    "checkboxChanged",
+  ],
   methods: {
     onTextChangeACB: function (text) {
       this.$emit("searchTextChanged", text);
@@ -121,17 +108,13 @@ export default {
       this.$emit("search");
     },
     onDropDownChangeACB: function (value) {
-      this.selectedCategories = value;
-      this.$emit("categoryChanged", this.categoryNamesToIds(value));
+      this.$emit("categoriesChanged", value);
     },
-    categoryNamesToIds(names) {
-      return this.$store.getters.getCategories
-        .filter((category) => names.includes(category.name))
-        .map((item) => item.id);
-    },
-
     sliderChangedACB(value, name) {
       this.$emit("sliderChanged", value, name);
+    },
+    checkBoxChangedACB(value, name) {
+      this.$emit("checkboxChanged", value, name);
     },
   },
 };
