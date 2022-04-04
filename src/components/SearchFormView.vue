@@ -46,28 +46,17 @@
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <!-- TODO how to update slider while moving  -->
-              <RangeSlider
-                :range="distanceRange"
-                :values="distanceValues"
-                name="Distance"
-                unit="km"
-                @changed="distanceChanged"
-              />
-              <RangeSlider
-                :range="durationRange"
-                :values="durationValues"
-                name="Duration"
-                unit="h"
-                @changed="durationChanged"
-              />
-              <RangeSlider
-                :range="ascentRange"
-                :values="ascentValues"
-                name="Ascent"
-                unit="m"
-                @changed="ascentChanged"
-              />
+              <!-- TODO how to update slider while moving?  -->
+              <div v-for="slider in this.sliders" :key="slider.name">
+                <RangeSlider
+                  :range="slider.range"
+                  :values="slider.sliderValues"
+                  :name="slider.sliderName"
+                  :unit="slider.unit"
+                  @changed="sliderChangedACB"
+                />
+              </div>
+
               <div v-for="difficulty in difficulties" :key="difficulty.name">
                 <v-checkbox
                   :label="difficulty.name"
@@ -92,15 +81,13 @@ export default {
   components: {
     RangeSlider,
   },
+  props: {
+    sliders: Array,
+  },
   data() {
     return {
       //TODO move to presenter?
-      distanceRange: [0, 101],
-      distanceValues: [0, 101],
-      durationRange: [0, 13],
-      durationValues: [0, 13],
-      ascentRange: [0, 1501],
-      ascentValues: [0, 1501],
+
       difficulties: [
         { name: "easy", value: 0, color: "green" },
         { name: "moderate", value: 1, color: "yellow darken-2" },
@@ -111,7 +98,6 @@ export default {
   },
   watch: {
     categories() {
-      console.log("changed");
       this.selectedCategories = this.categories;
     },
   },
@@ -125,7 +111,6 @@ export default {
       this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
-      console.log(event);
       if (event.keyCode === 13) {
         //Enter
         this.$emit("searchTextChanged", event.target.value);
@@ -144,17 +129,9 @@ export default {
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
     },
-    distanceChanged(value) {
-      console.log(value);
-      this.distanceValues = value;
-    },
-    durationChanged(value) {
-      console.log(value);
-      this.durationValues = value;
-    },
-    ascentChanged(value) {
-      console.log(value);
-      this.ascentValues = value;
+
+    sliderChangedACB(value, name) {
+      this.$emit("sliderChanged", value, name);
     },
   },
 };
