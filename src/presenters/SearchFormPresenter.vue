@@ -71,12 +71,12 @@ export default {
         dif_d: this.difficulties[0].selected,
         dif_m: this.difficulties[1].selected,
         dif_e: this.difficulties[2].selected,
-        asc_s: this.getSliderValue("Ascent", 0),
+        asc_s: this.getSliderValue("Ascent", 0), //in meter
         asc_e: this.getSliderValue("Ascent", 1),
-        tim_s: this.getSliderValue("Duration", 0),
-        tim_e: this.getSliderValue("Duration", 1),
-        len_s: this.getSliderValue("Distance", 0),
-        len_e: this.getSliderValue("Distance", 1),
+        tim_s: this.getSliderValue("Duration", 0, 60), //in minutes
+        tim_e: this.getSliderValue("Duration", 1, 60),
+        len_s: this.getSliderValue("Distance", 0, 1000),
+        len_e: this.getSliderValue("Distance", 1, 1000),
       };
     },
     categoryIds: function () {
@@ -118,12 +118,13 @@ export default {
       var slider = this.sliders.find((element) => element.sliderName == name);
       slider.sliderValues = value;
     },
-    getSliderValue(name, index) {
+    getSliderValue(name, index, convertVal) {
+      if (!convertVal) convertVal = 1;
       var slider = this.sliders.find((element) => element.sliderName == name);
-      if (index == 0) return slider.sliderValues[0];
+      if (index == 0) return slider.sliderValues[0] * convertVal;
       else {
         if (slider.sliderValues[1] == slider.range[1]) return "";
-        else return slider.sliderValues[1];
+        else return slider.sliderValues[1] * convertVal;
       }
     },
     difficultiesChangedACB(value, name) {
