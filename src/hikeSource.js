@@ -1,21 +1,23 @@
 import { project, key } from "./hikeAPIConfig.js";
-function searchHike(searchParams) {
+function searchHike(searchParams, category) {
   return fetch(
     "http://www.outdooractive.com/api/project/api-dev-oa/filter/tour?" +
-      new URLSearchParams(searchParams, {
+      new URLSearchParams({
+        category: category,
         key: key,
         project: project,
         lang: "en",
         fallback: false,
-      }),
+      }) +
+      "&" +
+      new URLSearchParams(searchParams),
     {
       method: "GET", // HTTP method
       headers: {
         Accept: "application/json",
       },
     }
-  )
-  .then(treatHTTPResponseACB);
+  ).then(treatHTTPResponseACB);
 }
 
 function getHikeDetails(id) {
@@ -29,6 +31,8 @@ function getHikeDetails(id) {
         key: key,
         project: project,
         lang: "en",
+        fullyTranslatedLangus: "en",
+
         fallback: false,
       }),
     {

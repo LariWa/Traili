@@ -25,6 +25,7 @@ export default {
   components: { SearchFormView },
   data() {
     return {
+      searchText: "",
       promiseState: { data: [] },
       sliders: [
         {
@@ -66,8 +67,7 @@ export default {
   computed: {
     searchParams: function () {
       return {
-        q: "",
-        category: this.categoryNamesToIds(this.selectedCategories),
+        q: this.searchText,
         dif_d: this.difficulties[0].selected,
         dif_m: this.difficulties[1].selected,
         dif_e: this.difficulties[2].selected,
@@ -79,16 +79,37 @@ export default {
         len_e: this.getSliderValue("Distance", 1),
       };
     },
+    categoryIds: function () {
+      return this.categoryNamesToIds(this.selectedCategories);
+    },
+
     categories() {
       return this.$store.getters.getCategories.map((item) => item.name);
     },
   },
   methods: {
     searchTextChanged: function (text) {
-      this.searchParams.q = text;
+      this.searchText = text;
     },
     search: function () {
-      resolvePromise(searchHike(this.searchParams), this.promiseState, null);
+      resolvePromise(this.searchPromise(), this.promiseState, null);
+    },
+    searchPromise: function () {
+      const component = this;
+      return searchAllCategories();
+      //search for each category
+      function searchAllCategories() {
+        const searchPromiseArray = component.categoryIds.map((category) =>
+          searchHike(component.searchParams, category)
+        );
+        return Promise.all(searchPromiseArray).then((res) => mergeResults(res));
+        function mergeResults(res) {
+          return res
+            .filter((item) => item.data)
+            .map((item) => item.data)
+            .flat(1);
+        }
+      }
     },
     categoriesChanged: function (categories) {
       this.selectedCategories = categories;
