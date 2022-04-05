@@ -25,7 +25,7 @@ export default {
         q: "",
         category: "",
       },
-      promiseState: {data:[]},
+      promiseState: {data:{}},
     };
   },
   methods: {

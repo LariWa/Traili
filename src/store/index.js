@@ -11,6 +11,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     favourites: [], //array of objects
+    currentTourID: "",
     categoriesPromiseState: { data: [] },
     currentTourPromiseState: { data: [] },
   },
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     getWeather(state) {
       return state.weather;
     },
+    getCurrentTourID(state) {
+      return state.currentTourID;
+    }
   },
 
   mutations: {
@@ -41,7 +45,10 @@ export default new Vuex.Store({
     addToFav(state, payload) {
      state.favourites.push(payload);
      console.log("this is my obj" + state.favourites);
-    }
+   },
+    setCurrentTourID(state, id) {
+      state.currentTourID = id;
+    },
   },
   actions: {
     //asynchronous
@@ -52,9 +59,8 @@ export default new Vuex.Store({
       );
     },
     async setCurrentTour(state) {
-      //TODO set actual tour (this one is just for testing)
       resolvePromise(
-        getHikeDetails(30987906),
+        getHikeDetails(state.currentTourID),
         state.getters.getCurrentTourPromiseState
       );
     },

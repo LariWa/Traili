@@ -125,7 +125,7 @@ export default {
       this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
-      console.log(event);
+      //console.log(event);
       if (event.keyCode === 13) {
         //Enter
         this.$emit("searchTextChanged", event.target.value);

@@ -65,7 +65,7 @@ function getCategories() {
 }
 
 function treatHTTPResponseACB(response) {
-  console.log(response);
+  //console.log(response);
   /*TODO throw if the HTTP response is not 200, otherwise return response.json()*/
   if (response.status != 200) {
     throw "Invalid response";
