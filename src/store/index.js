@@ -51,12 +51,12 @@ export default new Vuex.Store({
         state.getters.getCategoriesPromiseState
       );
     },
-    async setCurrentTour(state) {
-      //TODO set actual tour (this one is just for testing)
+    async setCurrentTour(state,id) {
+      //TODO set actual tour (this one is just for testing)30987906
       resolvePromise(
-        getHikeDetails(30987906),
+        getHikeDetails(id),
         state.getters.getCurrentTourPromiseState
-      );
+        );
     },
   },
   modules: {},

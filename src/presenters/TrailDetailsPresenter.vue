@@ -3,11 +3,10 @@
                   @addToFav="onAddToFav"
                   @returnToSearch="onReturn"
                   />
-    
 </template>
 
 <script>
-import TrailDetails from "@/components/products/TrailDetail.vue";
+    import TrailDetails from "../components/products/TrailDetails.vue";
 
 export default {
     components: { TrailDetails },
@@ -22,6 +21,8 @@ export default {
         },
         onReturn: function () {
             this.$router.push('/SearchFormView');
+            console.log("router:");
+            console.log(this.$router);
         },
     }
 };

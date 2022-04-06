@@ -7,18 +7,19 @@
   />
 
   <search-results-view
+    @clickTour="onClickTour"
     :results='this.promiseState.data'
   />
 </div>
 </template>
 
 <script>
-import SearchFormView from "@/components/SearchFormView.vue";
-import SearchResultsView from "@/components/SearchResultsView.vue";
+import SearchFormView from '@/components/SearchFormView.vue'
+import SearchResultsView from "../components/SearchResultsView.vue"
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike } from "../hikeSource.js";
 export default {
-  components: { SearchFormView, SearchResultsView },
+  components: {SearchFormView, SearchResultsView },
   data() {
     return {
       searchParams: {
@@ -41,7 +42,12 @@ export default {
     categoryChanged: function (category) {
       console.log("category: " + category);
       this.searchParams.category = category;
-    },
+      },
+    onClickTour: function (id) {
+        this.$store.dispatch("setCurrentTour", id);
+        console.log("search presenter id " + id);
+        this.$router.push('/TrialDetails');
+      }
   },
 };
 </script>

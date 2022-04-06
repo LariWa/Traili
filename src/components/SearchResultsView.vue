@@ -3,18 +3,16 @@
   <div v-if="results.data">
     <h1>Results</h1>
     <div v-for="(result, idx) in results.data" :key="idx">
-      <v-card elevation="2">
-        <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-      height="200px"
-    ></v-img>
-    <v-card-title>
-      {{result}}
-    </v-card-title>
-    <v-card-subtitle>
-      Tour Description
-    </v-card-subtitle>
-      </v-card>
+        <v-card elevation="2">
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                   height="200px"></v-img>
+            <v-card-title @click="setCurrentACB">
+                {{result}}
+            </v-card-title>
+            <v-card-subtitle>
+                Tour Description
+            </v-card-subtitle>
+        </v-card>
     </div>
   </div>
 </div>
@@ -41,7 +39,12 @@ export default {
   methods: {
     getDetails: function () {
         resolvePromise(getHikeDetails(this.results.data), this.promiseState, null);
-    },
+      },
+      setCurrentACB: function (id) {
+        const newID = (id.target.firstChild.data).replace(/[^0-9]/ig, "");
+        this.$emit("clickTour", newID);
+
+      },
   }
 }
 
