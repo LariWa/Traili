@@ -43,7 +43,7 @@ export default new Vuex.Store({
     //synchronous
     addToFav(state, payload) {
       state.favourites.push(payload);
-      console.log("this is my obj" + state.favourites);
+      // console.log("this is my obj" + state.favourites);
     },
     setCurrentTourID(state, id) {
       state.currentTourID = id;
@@ -58,11 +58,10 @@ export default new Vuex.Store({
       );
     },
     async setCurrentTour(state) {
-      console.log("resolve current tour");
-      console.log(state.getters.getCurrentTourPromiseState);
-      resolvePromise(
-        getHikeDetails(state.getters.getCurrentTourID),
-        state.getters.getCurrentTourPromiseState
+      if (state.getters.getCurrentTourID)
+        resolvePromise(
+          getHikeDetails(state.getters.getCurrentTourID),
+          state.getters.getCurrentTourPromiseState
         );
     },
   },

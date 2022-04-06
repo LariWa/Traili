@@ -33,7 +33,7 @@ export default {
     testFirebase();
     //setCategories(this.$store);
     this.$store.dispatch("setCategories");
-    this.$store.dispatch("setCurrentTour");
+    // this.$store.dispatch("setCurrentTour");
     this.$router.push("/SearchFormView");
   },
 };

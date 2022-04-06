@@ -11,7 +11,6 @@ function testFirebase() {
   //   .ref("test" + "/test")
   //   .set("dummy");
 
-  console.log("test firebase");
   const db = getDatabase();
   set(ref(db, "test2/"), "test");
 }

@@ -26,7 +26,6 @@ export default {
       this.$emit("changed", value, this.name);
     },
     getValueText() {
-      console.log(this.values);
       if (this.values.toString() == this.range.toString()) return "any";
       else {
         var text = " from " + this.values[0] + this.unit + " to ";
