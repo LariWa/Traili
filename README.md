@@ -21,7 +21,7 @@ Traili is an app to help hikers find the perfect trail and plan their tours in a
 - views
      - SearchFormView.vue: view for the search bar and filter options
 - components
-   -rangeSlider.vue: a range slider, which is used in SearchFormView
+   - rangeSlider.vue: a range slider, which is used in SearchFormView
 - main.js: ?
 - resolvePromise.js: resolves promises to avoid race condition
 - hikeSource.js: API calls for searching, details and categories
