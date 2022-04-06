@@ -87,10 +87,8 @@ export default {
     },
   },
   methods: {
-    setCurrentTour: function (id) {
-      this.$store.commit("setCurrentTourID", id);
-      this.$store.dispatch("setCurrentTour");
-      this.$router.push("/TrialDetails");
+      setCurrentTour: function (id) {
+      this.$emit("setCurrent", id);
     },
   },
 };

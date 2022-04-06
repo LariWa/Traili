@@ -12,7 +12,9 @@
       @checkboxChanged="difficultiesChangedACB"
     />
 
-    <search-results-view :results="searchResults" />
+    <search-results-view 
+      :results="searchResults" 
+      @setCurrent="setCurrentACB"/>
   </div>
 </template>
 
@@ -142,7 +144,12 @@ export default {
       return this.$store.getters.getCategories
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
-    },
+      },
+      setCurrentACB(id) {
+          this.$store.commit("setCurrentTourID", id);
+          this.$store.dispatch("setCurrentTour");
+          this.$router.push("/TrialDetails");
+      }
   },
 };
 </script>
