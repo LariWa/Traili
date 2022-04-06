@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import SearchFormView from '@/components/SearchFormView.vue'
-import SearchResultsView from "../components/SearchResultsView.vue"
+import SearchFormView from "../views/SearchFormView.vue";
+import SearchResultsView from "../views/SearchResultsView.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike } from "../hikeSource.js";
 export default {
-  components: {SearchFormView, SearchResultsView },
+  components: { SearchFormView, SearchResultsView },
   data() {
     return {
       searchText: "",

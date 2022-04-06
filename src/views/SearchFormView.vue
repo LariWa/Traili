@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import RangeSlider from "./rangeSlider.vue";
+import RangeSlider from "../components/rangeSlider.vue";
 export default {
   components: {
     RangeSlider,
