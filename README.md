@@ -28,7 +28,10 @@ Traili is an app to help hikers find the perfect trail and plan their tours in a
    - index.js: create the router object and configure the routes
 - store/
     - index.js: vueX store for the data model
+- assets/
+    - some logo pictures
 - main.js: mount app and use store, vuetify and router
+- app.vue: mount the default webpage
 - resolvePromise.js: resolves promises to avoid race condition
 - hikeSource.js: API calls for searching, details and categories
 
