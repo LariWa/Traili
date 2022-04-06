@@ -1,15 +1,19 @@
 <template>
   <div>
-  <search-form-view
-    @searchTextChanged="searchTextChanged"
-    @search="search"
-    @categoryChanged="categoryChanged"
-  />
+    <search-form-view
+      @searchTextChanged="searchTextChanged"
+      @search="search"
+      :categories="categories"
+      :selectedCategories="selectedCategories"
+      @categoriesChanged="categoriesChanged"
+      @sliderChanged="sliderChangedACB"
+      :sliders="sliders"
+      :difficulties="difficulties"
+      @checkboxChanged="difficultiesChangedACB"
+    />
 
-  <search-results-view
-    :results='this.promiseState.data'
-  />
-</div>
+    <search-results-view :results="searchResults" />
+  </div>
 </template>
 
 <script>
@@ -21,26 +25,123 @@ export default {
   components: { SearchFormView, SearchResultsView },
   data() {
     return {
-      searchParams: {
-        q: "",
-        category: "",
-      },
-      promiseState: {data:[]},
+      searchText: "",
+      promiseState: { data: [] },
+      sliders: [
+        {
+          sliderValues: [0, 13],
+          range: [0, 13],
+          sliderName: "Duration",
+          unit: "h",
+        },
+        {
+          sliderValues: [0, 101],
+          range: [0, 101],
+          sliderName: "Distance",
+          unit: "km",
+        },
+        {
+          sliderValues: [0, 1501],
+          range: [0, 1501],
+          sliderName: "Ascent",
+          unit: "m",
+        },
+      ],
+      difficulties: [
+        { name: "easy", color: "green", selected: true },
+        {
+          name: "moderate",
+          color: "yellow darken-2",
+          selected: true,
+        },
+        { name: "difficult", color: "red darken-4", selected: true },
+      ],
+      selectedCategories: [],
     };
+  },
+  watch: {
+    categories() {
+      this.selectedCategories = this.categories; //select all categories at start
+    },
+  },
+  computed: {
+    searchResults: function () {
+      if (this.promiseState && this.promiseState.data)
+        return this.promiseState.data;
+      else return [];
+    },
+    searchParams: function () {
+      return {
+        q: this.searchText,
+        dif_d: this.difficulties[0].selected,
+        dif_m: this.difficulties[1].selected,
+        dif_e: this.difficulties[2].selected,
+        asc_s: this.getSliderValue("Ascent", 0), //in meter
+        asc_e: this.getSliderValue("Ascent", 1),
+        tim_s: this.getSliderValue("Duration", 0, 60), //in minutes
+        tim_e: this.getSliderValue("Duration", 1, 60),
+        len_s: this.getSliderValue("Distance", 0, 1000),
+        len_e: this.getSliderValue("Distance", 1, 1000),
+      };
+    },
+    categoryIds: function () {
+      return this.categoryNamesToIds(this.selectedCategories);
+    },
+
+    categories() {
+      return this.$store.getters.getCategories.map((item) => item.name);
+    },
   },
   methods: {
     searchTextChanged: function (text) {
-      console.log(text);
-      this.searchParams.q = text;
+      this.searchText = text;
     },
     search: function () {
-      console.log(this.$store.state.categories);
-      console.log("search");
-      resolvePromise(searchHike(this.searchParams), this.promiseState, null);
+      resolvePromise(this.searchPromise(), this.promiseState, null);
     },
-    categoryChanged: function (category) {
-      console.log("category: " + category);
-      this.searchParams.category = category;
+    searchPromise: function () {
+      const component = this;
+      return searchAllCategories();
+      //search for each category
+      function searchAllCategories() {
+        const searchPromiseArray = component.categoryIds.map((category) =>
+          searchHike(component.searchParams, category)
+        );
+        return Promise.all(searchPromiseArray).then((res) => mergeResults(res));
+        function mergeResults(res) {
+          return res
+            .filter((item) => item.data)
+            .map((item) => item.data)
+            .flat(1);
+        }
+      }
+    },
+    categoriesChanged: function (categories) {
+      this.selectedCategories = categories;
+    },
+    sliderChangedACB: function (value, name) {
+      var slider = this.sliders.find((element) => element.sliderName == name);
+      slider.sliderValues = value;
+    },
+    getSliderValue(name, index, convertVal) {
+      if (!convertVal) convertVal = 1;
+      var slider = this.sliders.find((element) => element.sliderName == name);
+      if (index == 0) return slider.sliderValues[0] * convertVal;
+      else {
+        if (slider.sliderValues[1] == slider.range[1]) return "";
+        else return slider.sliderValues[1] * convertVal;
+      }
+    },
+    difficultiesChangedACB(value, name) {
+      var difficulty = this.difficulties.find(
+        (element) => element.name == name
+      );
+      difficulty.selected = value;
+    },
+    categoryNamesToIds(names) {
+      return this.$store.getters.getCategories
+        .filter((category) => names.includes(category.name))
+        .map((item) => item.id);
     },
   },
 };
