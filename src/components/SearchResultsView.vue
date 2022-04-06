@@ -90,6 +90,7 @@ export default {
     setCurrentTour: function (id) {
       this.$store.commit("setCurrentTourID", id);
       this.$store.dispatch("setCurrentTour");
+      this.$router.push("/TrialDetails");
       console.log("new: " + this.$store.getters.getCurrentTourID);
     },
   },
