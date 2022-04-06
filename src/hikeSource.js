@@ -46,7 +46,6 @@ function getHikeDetails(id) {
     .then(treatHikeResponse);
 }
 function getCategories() {
-  console.log("getCategories");
   return fetch(
     "http://www.outdooractive.com/api/project/" +
       project +
@@ -69,7 +68,6 @@ function getCategories() {
 }
 
 function treatHTTPResponseACB(response) {
-  //console.log(response);
   /*TODO throw if the HTTP response is not 200, otherwise return response.json()*/
   if (response.status != 200) {
     throw "Invalid response";

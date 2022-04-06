@@ -17,8 +17,6 @@ export default {
     },
     onReturn: function () {
       this.$router.push("/SearchFormView");
-      console.log("router:");
-      console.log(this.$router);
     },
   },
 };

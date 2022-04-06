@@ -8,7 +8,7 @@
       :max="range[1]"
       :min="range[0]"
       :value="values"
-      @change="changed"
+      @input="changed"
     ></v-range-slider>
   </div>
 </template>
@@ -23,11 +23,9 @@ export default {
 
   methods: {
     changed(value) {
-      console.log(value);
       this.$emit("changed", value, this.name);
     },
     getValueText() {
-      console.log(this.values);
       if (this.values.toString() == this.range.toString()) return "any";
       else {
         var text = " from " + this.values[0] + this.unit + " to ";
