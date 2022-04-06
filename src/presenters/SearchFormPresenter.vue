@@ -12,17 +12,17 @@
       @checkboxChanged="difficultiesChangedACB"
     />
 
-    <!-- <search-results-view :results="this.promiseState.data" /> -->
+    <search-results-view :results="searchResults" />
   </div>
 </template>
 
 <script>
 import SearchFormView from "@/components/SearchFormView.vue";
-// import SearchResultsView from "@/components/SearchResultsView.vue";
+import SearchResultsView from "@/components/SearchResultsView.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike } from "../hikeSource.js";
 export default {
-  components: { SearchFormView },
+  components: { SearchFormView, SearchResultsView },
   data() {
     return {
       searchText: "",
@@ -65,6 +65,11 @@ export default {
     },
   },
   computed: {
+    searchResults: function () {
+      if (this.promiseState && this.promiseState.data)
+        return this.promiseState.data;
+      else return [];
+    },
     searchParams: function () {
       return {
         q: this.searchText,
