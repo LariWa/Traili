@@ -13,13 +13,15 @@ Traili is an app to help hikers find the perfect trail and plan their tours in a
 - connect to database
 - authentification
 - favourite tour view -> add and delete favourite tours
-- ...?
+- responsive layout
+- styling and focus on user experience
 ## File structure
 - presenters/
     - SearchPresenter.vue: displays the seach form and the results, provides general search data and search results fetched from API
     - weatherPresenter.vue: send the API config data to the weather widget (regarded as view)
 - views/
      - SearchFormView.vue: view for the search bar and filter options
+     - SearchResultsView.vue: view for displaying the search results
 - components/
    - rangeSlider.vue: a range slider, which is used in SearchFormView
 - router/
