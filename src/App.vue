@@ -15,15 +15,11 @@
 
 <script>
 import { testFirebase } from "./firebaseModel";
-//import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
-//import TrailDetailsPresenter from "./presenters/TrailDetailsPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
-    /*SearchFormPresenter,*/
-    /*TrailDetailsPresenter,*/
   },
 
   data: () => ({
@@ -31,9 +27,7 @@ export default {
   }),
   mounted() {
     testFirebase();
-    //setCategories(this.$store);
     this.$store.dispatch("setCategories");
-    // this.$store.dispatch("setCurrentTour");
     this.$router.push("/SearchFormView");
   },
 };
