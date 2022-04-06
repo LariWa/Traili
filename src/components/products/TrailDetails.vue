@@ -6,10 +6,10 @@
                     <v-card flat>
                         <v-img class="align-end" height="50px" width="50px" :src="iconOne"></v-img>
                         <v-card-text class="text-center" v-if="trailInfo.time">
-                            <div>Time: {{ convertTime(trailInfo.time.min) }} h</div> 
+                            <div>Time: {{ convertTime(trailInfo.time.min) }} h</div>
                         </v-card-text>
-                    </v-card>    
-                </v-col>   
+                    </v-card>
+                </v-col>
 
                 <v-col cols="6" md="3">
                     <v-card flat>
@@ -17,7 +17,7 @@
                         <v-card-text v-if="trailInfo.length">
                             <div>Length: {{conversion(trailInfo.length)}} km</div>
                         </v-card-text>
-                    </v-card> 
+                    </v-card>
                 </v-col>
 
                 <v-col cols="6" md="3">
@@ -54,18 +54,19 @@
                             <div>Highest point: {{trailInfo.elevation.maxAltitude}} m</div>
                             <div>Lowest point {{trailInfo.elevation.minAltitude}} m</div>
                             <div>Difficulty: {{dificulty(trailInfo.rating.difficulty)}}</div>
-                            <div>Quality of experience: 
-                                <star-rating :inline="true" :star-size="20" :read-only="true" :show-rating="false" v-bind:max-rating="6" v-bind:rating= trailInfo.rating.qualityOfExperience>
+                            <div>
+                                Quality of experience:
+                                <star-rating :inline="true" :star-size="20" :read-only="true" :show-rating="false" v-bind:max-rating="6" v-bind:rating=trailInfo.rating.qualityOfExperience>
                                 </star-rating>
                                 <!--If you want to pass all the properties of an object as props, you can use v-bind without an argument-->
-                            </div> 
-                            <v-btn rounded small id="addToFav"  @click="addToFavACB">
+                            </div>
+                            <v-btn rounded small id="addToFav" @click="addToFavACB">
                                 Add to Fav
                             </v-btn>
 
                             <v-btn fab x-small dark @click="backToSearchACB">
                                 x
-                            </v-btn>  
+                            </v-btn>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -74,6 +75,7 @@
                 <VueWeather></VueWeather>
             </v-row>
         </v-container>
+        
     </div>
 </template>
 
@@ -122,7 +124,7 @@ export default{
         },
 
         backToSearchACB: function(){
-
+            this.$emit("returnToSearch");
         },
         addToFavACB: function(){
             this.$emit("addToFav", this.trailInfo);

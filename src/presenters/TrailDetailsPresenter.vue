@@ -1,10 +1,12 @@
 <template>
-    <TrailDetails @addToFav="onAddToFav"/>
-    
+    <TrailDetails 
+                  @addToFav="onAddToFav"
+                  @returnToSearch="onReturn"
+                  />
 </template>
 
 <script>
-import TrailDetails from "@/components/products/TrailDetails.vue";
+    import TrailDetails from "../components/products/TrailDetails.vue";
 
 export default {
     components: { TrailDetails },
@@ -16,7 +18,12 @@ export default {
         onAddToFav: function (trail) {
                 //console.log("onAddToFav " + trail);
                 this.$store.commit('addToFav', trail);
-        }
+        },
+        onReturn: function () {
+            this.$router.push('/SearchFormView');
+            console.log("router:");
+            console.log(this.$router);
+        },
     }
 };
 </script>

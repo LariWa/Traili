@@ -62,7 +62,7 @@ export default new Vuex.Store({
       resolvePromise(
         getHikeDetails(state.currentTourID),
         state.getters.getCurrentTourPromiseState
-      );
+        );
     },
   },
   modules: {},
