@@ -63,6 +63,7 @@
 <script>
 import { resolvePromise } from "../resolvePromise.js";
 import { getHikeDetails } from "../hikeSource.js";
+// import { set } from "vue/types/umd";
 export default {
   name: "SearchResultsView",
   props: {
@@ -88,6 +89,7 @@ export default {
   methods: {
     setCurrentTour: function (id) {
       this.$store.commit("setCurrentTourID", id);
+      this.$store.dispatch("setCurrentTour");
       console.log("new: " + this.$store.getters.getCurrentTourID);
     },
   },

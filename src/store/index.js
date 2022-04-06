@@ -7,7 +7,6 @@ import {
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
-
 export default new Vuex.Store({
   state: {
     favourites: [], //array of objects
@@ -37,15 +36,15 @@ export default new Vuex.Store({
     },
     getCurrentTourID(state) {
       return state.currentTourID;
-    }
+    },
   },
 
   mutations: {
     //synchronous
     addToFav(state, payload) {
-     state.favourites.push(payload);
-     console.log("this is my obj" + state.favourites);
-   },
+      state.favourites.push(payload);
+      console.log("this is my obj" + state.favourites);
+    },
     setCurrentTourID(state, id) {
       state.currentTourID = id;
     },
@@ -59,8 +58,10 @@ export default new Vuex.Store({
       );
     },
     async setCurrentTour(state) {
+      console.log("resolve current tour");
+      console.log(state.getters.getCurrentTourPromiseState);
       resolvePromise(
-        getHikeDetails(state.currentTourID),
+        getHikeDetails(state.getters.getCurrentTourID),
         state.getters.getCurrentTourPromiseState
       );
     },
