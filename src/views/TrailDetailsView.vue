@@ -33,7 +33,7 @@
               style="color: #2196f3"
               v-if="trailInfo.length"
             >
-              <div>Length: {{ conversion(trailInfo.length) }} km</div>
+              <div>Length: {{ convertDistance(trailInfo.length) }} km</div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -94,7 +94,7 @@
               <div>Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
               <div>Lowest point {{ trailInfo.elevation.minAltitude }} m</div>
               <div>
-                Difficulty: {{ dificulty(trailInfo.rating.difficulty) }}
+                Difficulty: {{ getDifficulty(trailInfo.rating.difficulty) }}
               </div>
               <div>
                 Quality of experience:
@@ -148,6 +148,7 @@
 //import trailData from "./TourDetailsExample.json";
 import VueWeather from "../presenters/weatherPresenter.vue";
 import StarRating from "vue-star-rating";
+import { convertDistance, convertTime, getDifficulty } from "../utilities";
 
 export default {
   data() {
@@ -172,22 +173,10 @@ export default {
   },
 
   methods: {
-    conversion: function (length) {
-      var formattedNumber = length / 1000;
-      return formattedNumber.toFixed(1);
-    },
-    convertTime: function (min) {
-      var hours = min / 60;
-      var h = Math.floor(hours);
-      var minutes = (hours - h) * 60;
-      var m = Math.floor(minutes);
-
-      return `${this.twoDigits(h)}:${this.twoDigits(m)}`;
-    },
-    twoDigits: function (num) {
-      return num.toString().padStart(2, "0");
-    },
-
+    convertDistance,
+    convertTime,
+    getDifficulty,
+    
     backToSearchACB: function () {
       this.$emit("returnToSearch");
     },
@@ -204,18 +193,6 @@ export default {
       tmp.innerHTML = str;
       return tmp.textContent || tmp.innerText || "";
     },
-
-    dificulty: function (value) {
-      if (value == 1) {
-        return "easy";
-      } else if (value == 2) {
-        return "intermediate";
-      } else if (value == 3) {
-        return "difficult";
-      } else {
-        return "difficulty unknown";
-      }
-    },
   },
 };
 </script>
@@ -229,15 +206,15 @@ export default {
 </style>-->
 
 <!--<div v-if="trail" class="trail-details">
-        
-        <h3 class="sth">{{trail.name}}</h3> 
+
+        <h3 class="sth">{{trail.name}}</h3>
 
         <p class="desciption">Description: {{trail.desciption}}</p>
 
         <button class="view-product-button" @click="Semit('view-product', product)">View</button>
-    
+
     </div>
-    
+
     computed: {
         description() {
         return this.product.description.substring(0, 150)
@@ -248,6 +225,6 @@ export default {
     <div v-for="(element, index) in trailInfo.wayType.elements" :key="index">
         {{ element.title }}
         </div>
-    
+
     {{trailInfo.wayType.elements[0].title}}
     -->
