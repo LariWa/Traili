@@ -6,11 +6,10 @@ Deployed page: https://lariwa.github.io/Traili/
 ### What we have done so far
 - vue set up
 - connection to API
+- routing
 - SearchForm -> search and filter tours
 - SearchResults -> present overview of seach results
 - Detail View -> Show Details of Tour
-- Navigation?
--  ...?
 ### What we plan in the future
 - connect to database
 - authentification
