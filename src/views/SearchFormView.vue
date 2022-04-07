@@ -40,7 +40,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-expansion-panels style="max-width: 30vw">
+        <v-expansion-panels style="max-width: 30vw" :value="openPanels">
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -86,6 +86,11 @@ export default {
     selectedCategories: Array,
     categories: Array,
   },
+  data() {
+    return {
+      openPanels: [],
+    };
+  },
   emits: [
     "searchTextChanged",
     "search",
@@ -105,6 +110,7 @@ export default {
       }
     },
     onSearchACB: function () {
+      this.openPanels = [];
       this.$emit("search");
     },
     onDropDownChangeACB: function (value) {

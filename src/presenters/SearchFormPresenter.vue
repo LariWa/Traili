@@ -15,7 +15,8 @@
     <search-results-view
       :results="searchResults"
       :details="promiseStateDetails.data"
-      @setCurrent="setCurrentACB"/>
+      @setCurrent="setCurrentACB"
+    />
   </div>
 </template>
 
@@ -86,9 +87,9 @@ export default {
     searchParams: function () {
       return {
         q: this.searchText,
-        dif_d: this.difficulties[0].selected,
+        dif_e: this.difficulties[0].selected,
         dif_m: this.difficulties[1].selected,
-        dif_e: this.difficulties[2].selected,
+        dif_d: this.difficulties[2].selected,
         asc_s: this.getSliderValue("Ascent", 0), //in meter
         asc_e: this.getSliderValue("Ascent", 1),
         tim_s: this.getSliderValue("Duration", 0, 60), //in minutes
@@ -154,12 +155,12 @@ export default {
       return this.$store.getters.getCategories
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
-      },
-      setCurrentACB(id) {
-          this.$store.commit("setCurrentTourID", id);
-          this.$store.dispatch("setCurrentTour");
-          this.$router.push("/TrialDetails");
-      }
+    },
+    setCurrentACB(id) {
+      this.$store.commit("setCurrentTourID", id);
+      this.$store.dispatch("setCurrentTour");
+      this.$router.push("/TrialDetails");
+    },
   },
 };
 </script>
