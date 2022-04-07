@@ -5,8 +5,8 @@
     <br />
     <div v-if="results">
       <h1 v-if="Object.keys(results).length > 0">Results</h1>
-      <p v-if="this.promiseState.data == null">loading...</p>
-      <div v-for="(result, idx) in this.promiseState.data" :key="idx">
+      <p v-if="details == null">loading...</p>
+      <div v-for="(result, idx) in details" :key="idx">
         <v-card elevation="2" @click="setCurrentTour(result.id)">
           <v-img
             :src="
@@ -61,30 +61,11 @@
 </template>
 
 <script>
-import { resolvePromise } from "../resolvePromise.js";
-import { getHikeDetails } from "../hikeSource.js";
-// import { set } from "vue/types/umd";
 export default {
   name: "SearchResultsView",
   props: {
     results: Array,
-  },
-  data() {
-    return {
-      tours: [],
-      promiseState: { data: [] },
-    };
-  },
-  watch: {
-    results() {
-      if (this.results) {
-        resolvePromise(
-          getHikeDetails(this.results.map((item) => item.id)),
-          this.promiseState,
-          null
-        );
-      }
-    },
+    details: Array,
   },
   methods: {
       setCurrentTour: function (id) {

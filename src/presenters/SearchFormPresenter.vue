@@ -12,8 +12,9 @@
       @checkboxChanged="difficultiesChangedACB"
     />
 
-    <search-results-view 
-      :results="searchResults" 
+    <search-results-view
+      :results="searchResults"
+      :details="promiseStateDetails.data"
       @setCurrent="setCurrentACB"/>
   </div>
 </template>
@@ -22,13 +23,14 @@
 import SearchFormView from "../views/SearchFormView.vue";
 import SearchResultsView from "../views/SearchResultsView.vue";
 import { resolvePromise } from "../resolvePromise.js";
-import { searchHike } from "../hikeSource.js";
+import { searchHike, getHikeDetails } from "../hikeSource.js";
 export default {
   components: { SearchFormView, SearchResultsView },
   data() {
     return {
       searchText: "",
       promiseState: { data: [] },
+      promiseStateDetails: { data: [] },
       sliders: [
         {
           sliderValues: [0, 13],
@@ -65,6 +67,15 @@ export default {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
     },
+    searchResults() {
+      if (this.searchResults) {
+        resolvePromise(
+          getHikeDetails(this.searchResults.map((item) => item.id)),
+          this.promiseStateDetails,
+          null
+        );
+      }
+    },
   },
   computed: {
     searchResults: function () {
@@ -89,7 +100,6 @@ export default {
     categoryIds: function () {
       return this.categoryNamesToIds(this.selectedCategories);
     },
-
     categories() {
       return this.$store.getters.getCategories.map((item) => item.name);
     },
