@@ -28,7 +28,7 @@ export default new Vuex.Store({
     },
     getCurrentTour(state) {
       if (state.currentTourPromiseState.data)
-        return state.currentTourPromiseState.data;
+        return state.currentTourPromiseState.data[0];
       else return undefined;
     },
     getWeather(state) {

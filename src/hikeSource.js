@@ -79,7 +79,7 @@ function treatCategoriesResponse(response) {
   return response.category;
 }
 function treatHikeResponse(response) {
-  if (response.tour.length == 1) return response.tour[0];
-  else return response.tour;
+  // if (response.tour.length == 1) return response.tour[0];
+  return response.tour;
 }
 export { searchHike, getHikeDetails, getCategories };
