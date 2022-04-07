@@ -1,6 +1,8 @@
 # Traili
 Traili is an app to help hikers find the perfect trail and plan their tours in advance. They will have the opportunity to search for trails  and save their favourite ones. Additionally they will be provided with a weather forecast for the route they intend to hike.
 
+Deployed page: https://lariwa.github.io/Traili/
+
 ### What we have done so far
 - vue set up
 - connection to API
