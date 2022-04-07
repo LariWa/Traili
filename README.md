@@ -37,6 +37,7 @@ Deployed page: https://lariwa.github.io/Traili/
 - app.vue: mount the default webpage
 - resolvePromise.js: resolves promises to avoid race condition
 - hikeSource.js: API calls for searching, details and categories
+- utilities.js: methods used accross different views
 
 ## Project setup
 ```
