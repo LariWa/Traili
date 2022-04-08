@@ -1,12 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
     "\\src",
     "\\src\\components",
+    "\\src\\presenters",
+    "\\src\\router",
     "\\src\\store",
+    "\\src\\views",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\resolveWeather.js",
+  "SelectedNode": "\\src\\resolvePromise.js",
   "PreviewInSolutionExplorer": false
 }

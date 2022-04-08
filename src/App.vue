@@ -4,7 +4,7 @@
 
     <v-main>
       <v-container fluid>
-        <!--<SearchFormPresenter></SearchFormPresenter>-->
+        <loginPresenter></loginPresenter>
         <keep-alive>
           <router-view />
         </keep-alive>
@@ -14,12 +14,14 @@
 </template>
 
 <script>
-import { testFirebase } from "./firebaseModel";
+    import { testFirebase } from "./firebaseModel";
+    import loginPresenter from "./presenters/loginPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
+      loginPresenter
   },
 
   data: () => ({
