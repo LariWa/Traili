@@ -70,11 +70,9 @@ export default {
     },
     searchResults() {
       if (this.searchResults) {
-        resolvePromise(
-          getHikeDetails(this.searchResults.map((item) => item.id)),
-          this.promiseStateDetails,
-          null
-        );
+        var ids = this.searchResults.map((item) => item.id);
+        if (ids && ids.length > 0)
+          resolvePromise(getHikeDetails(ids), this.promiseStateDetails, null);
       }
     },
   },
