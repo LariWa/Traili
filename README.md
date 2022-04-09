@@ -3,7 +3,9 @@ Traili is an app to help hikers find the perfect trail and plan their tours in a
 
 Deployed page: https://lariwa.github.io/Traili/
 
-We don't have a API-key yet, which works on the deployed page, refer to the video for our progress. Or run the project locally.
+__Update 9/04/22: We got the API-key and the deployed page is working now!__
+
+7/04/22 status: We don't have a API-key yet, which works on the deployed page, refer to the video for our progress. Or run the project locally.
 
 https://user-images.githubusercontent.com/40071882/162197998-8f61144d-888d-4e64-ae54-12aa6667377c.mp4
 
