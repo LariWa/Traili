@@ -28,7 +28,7 @@ export default new Vuex.Store({
     },
     getCurrentTour(state) {
       if (state.currentTourPromiseState.data)
-        return state.currentTourPromiseState.data;
+        return state.currentTourPromiseState.data[0];
       else return undefined;
     },
     getWeather(state) {
@@ -37,12 +37,15 @@ export default new Vuex.Store({
     getCurrentTourID(state) {
       return state.currentTourID;
     },
+    getFavourites(state) {
+      return state.favourites;
+    },
   },
 
   mutations: {
     //synchronous
     addToFav(state, payload) {
-      state.favourites.push(payload);
+      if (!state.favourites.includes(payload)) state.favourites.push(payload);
       // console.log("this is my obj" + state.favourites);
     },
     setCurrentTourID(state, id) {

@@ -1,6 +1,9 @@
 <template>
   <div>
+    <v-btn class="ml-2 mb-10" small @click="backACB"> Go Back </v-btn>
+
     <v-container v-if="trailInfo">
+      <h1 class="mb-5">{{ trailInfo.title }}</h1>
       <v-row class="white" wrap>
         <v-col cols="6" md="3">
           <v-card class="white" flat>
@@ -33,7 +36,7 @@
               style="color: #2196f3"
               v-if="trailInfo.length"
             >
-              <div>Length: {{ conversion(trailInfo.length) }} km</div>
+              <div>Length: {{ convertDistance(trailInfo.length) }} km</div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -94,7 +97,7 @@
               <div>Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
               <div>Lowest point {{ trailInfo.elevation.minAltitude }} m</div>
               <div>
-                Difficulty: {{ dificulty(trailInfo.rating.difficulty) }}
+                Difficulty: {{ getDifficulty(trailInfo.rating.difficulty) }}
               </div>
               <div>
                 Quality of experience:
@@ -113,8 +116,6 @@
               <v-btn rounded small id="addToFav" @click="addToFavACB">
                 Add to Fav
               </v-btn>
-
-              <v-btn fab x-small dark @click="backToSearchACB"> x </v-btn>
             </v-card-text>
           </v-card>
         </v-col>
@@ -148,6 +149,7 @@
 //import trailData from "./TourDetailsExample.json";
 import VueWeather from "../presenters/weatherPresenter.vue";
 import StarRating from "vue-star-rating";
+import { convertDistance, convertTime, getDifficulty } from "../utilities";
 
 export default {
   data() {
@@ -172,49 +174,25 @@ export default {
   },
 
   methods: {
-    conversion: function (length) {
-      var formattedNumber = length / 1000;
-      return formattedNumber.toFixed(1);
-    },
-    convertTime: function (min) {
-      var hours = min / 60;
-      var h = Math.floor(hours);
-      var minutes = (hours - h) * 60;
-      var m = Math.floor(minutes);
+    convertDistance,
+    convertTime,
+    getDifficulty,
 
-      return `${this.twoDigits(h)}:${this.twoDigits(m)}`;
-    },
-    twoDigits: function (num) {
-      return num.toString().padStart(2, "0");
-    },
-
-    backToSearchACB: function () {
-      this.$emit("returnToSearch");
+    backACB: function () {
+      this.$emit("goBack");
     },
     addToFavACB: function () {
       this.$emit("addToFav", this.trailInfo);
     },
 
     /*strippedContent: function(string) {
-            return string.replace(/<\/?[^>]+(>|$)/g, "");
-        },*/
+                return string.replace(/<\/?[^>]+(>|$)/g, "");
+            },*/
 
     removeHTML: function (str) {
       var tmp = document.createElement("DIV");
       tmp.innerHTML = str;
       return tmp.textContent || tmp.innerText || "";
-    },
-
-    dificulty: function (value) {
-      if (value == 1) {
-        return "easy";
-      } else if (value == 2) {
-        return "intermediate";
-      } else if (value == 3) {
-        return "difficult";
-      } else {
-        return "difficulty unknown";
-      }
     },
   },
 };
@@ -229,15 +207,15 @@ export default {
 </style>-->
 
 <!--<div v-if="trail" class="trail-details">
-        
-        <h3 class="sth">{{trail.name}}</h3> 
+
+        <h3 class="sth">{{trail.name}}</h3>
 
         <p class="desciption">Description: {{trail.desciption}}</p>
 
         <button class="view-product-button" @click="Semit('view-product', product)">View</button>
-    
+
     </div>
-    
+
     computed: {
         description() {
         return this.product.description.substring(0, 150)
@@ -248,6 +226,6 @@ export default {
     <div v-for="(element, index) in trailInfo.wayType.elements" :key="index">
         {{ element.title }}
         </div>
-    
+
     {{trailInfo.wayType.elements[0].title}}
     -->
