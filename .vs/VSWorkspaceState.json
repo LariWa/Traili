@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\authen",
     "\\src\\components",
     "\\src\\presenters",
     "\\src\\router",
@@ -9,6 +10,6 @@
     "\\src\\views",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\resolvePromise.js",
+  "SelectedNode": "\\src\\views\\TrailDetailsView.vue",
   "PreviewInSolutionExplorer": false
 }
