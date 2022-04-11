@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> <h1>Trail Planner</h1> </v-app-bar>
+    <NavBar />
 
     <v-main>
       <v-container fluid>
@@ -14,23 +14,29 @@
 </template>
 
 <script>
-    import { testFirebase } from "./firebaseModel";
-    import loginPresenter from "./presenters/loginPresenter.vue";
+import { testFirebase } from "./firebaseModel";
+import NavBar from "./components/NavBar.vue";
+//import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+//import TrailDetailsPresenter from "./presenters/TrailDetailsPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
-      loginPresenter
+    NavBar,
+    /*SearchFormPresenter,*/
+    /*TrailDetailsPresenter,*/
   },
 
   data: () => ({
     //
   }),
+
   mounted() {
     testFirebase();
     this.$store.dispatch("setCategories");
-    this.$router.push("/SearchFormView");
+    // this.$store.dispatch("setCurrentTour");
+    this.$router.push("/Search");
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <TrailDetails @addToFav="onAddToFav" @returnToSearch="onReturn" />
+  <TrailDetails @addToFav="onAddToFav" @goBack="onReturn" />
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
       this.$store.commit("addToFav", trail);
     },
     onReturn: function () {
-      this.$router.push("/SearchFormView");
+      this.$router.go(-1);
     },
   },
 };
