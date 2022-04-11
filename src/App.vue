@@ -4,7 +4,6 @@
 
     <v-main>
       <v-container fluid>
-        <loginPresenter></loginPresenter>
         <keep-alive>
           <router-view />
         </keep-alive>
@@ -15,15 +14,14 @@
 
 <script>
 import { testFirebase } from "./firebaseModel";
-import NavBar from "./components/NavBar.vue";
-//import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+import NavBar from "./presenters/navBarPresenter.vue";
 //import TrailDetailsPresenter from "./presenters/TrailDetailsPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
-    NavBar,
+      NavBar,
     /*SearchFormPresenter,*/
     /*TrailDetailsPresenter,*/
   },

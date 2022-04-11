@@ -1,26 +1,62 @@
 <template>
-    <v-flex xs12 md7 offset-md1>
-        <div class="login">
-            <h3>LOG IN</h3>
-            <v-form>
-                <v-text-field type="text " placeholder="Email" @change="onEmailChangeACB"></v-text-field>
-                <v-text-field type="password" placeholder="Password" @change="onPswChangeACB"></v-text-field>
-            </v-form>
-            <v-btn @click="onLoginACB">Login</v-btn>
-            <br />
-            <v-btn @click="onCreateACB">Create account</v-btn>
-        </div>
-    </v-flex>
+
+        <v-flex xs12 md7 offset-md1>
+            <div class="login">
+                <v-row>
+                    <v-col>
+                        <h3>LOG IN</h3>
+                    </v-col>
+                    <v-col>
+                        <v-snackbar v-model="snackbar"
+                                    :timeout="timeout">
+                            {{this.textStatus}}
+
+                            <template v-slot:action="{ attrs }">
+                                <v-btn color="blue"
+                                       text
+                                       v-bind="attrs"
+                                       @click="snackbar = false">
+                                    Close
+                                </v-btn>
+                            </template>
+                        </v-snackbar>
+                    </v-col>
+                    <v-col>
+                        <v-btn icon @click="onQuitACB">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </v-col>
+                 </v-row>
+                 <v-form>
+                            <v-text-field type="text " placeholder="Email" @change="onEmailChangeACB"></v-text-field>
+                            <v-text-field type="password" placeholder="Password" @change="onPswChangeACB"></v-text-field>
+                 </v-form>
+                 <v-btn @click="onLoginACB">Login</v-btn>
+                 <br />
+                 <v-btn @click="onCreateACB">Create</v-btn>
+</div>
+        </v-flex>
+
 </template>
 
 <script>
 
     export default {
+        props: {
+            textStatus: String,
+        },
+        data() {
+            return {
+                snackbar: false,
+                timeout: 2000
+            };
+        },
         emits: [
             "emailTextChanged",
             "pswTextChanged",
             "onCreate",
             "onLogin",
+            "onQuit"
         ],
 
         methods: {
@@ -32,10 +68,14 @@
             },
             onCreateACB: function () {
                 this.$emit("onCreate");
+                this.snackbar = false;
             },
             onLoginACB: function () {
                 this.$emit("onLogin");
             },
+            onQuitACB: function () {
+                this.$emit("onQuit");
+            }
         },
     }
 </script>

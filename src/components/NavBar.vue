@@ -7,7 +7,7 @@
     </v-btn>
     <v-btn icon @click="goToFavourites"> <v-icon>mdi-heart</v-icon> </v-btn>
 
-    <v-btn icon>
+    <v-btn icon @click="goToLogin">
       <v-icon>mdi-account-circle </v-icon>
     </v-btn>
   </v-app-bar>
@@ -17,11 +17,18 @@ export default {
   name: "NavBar",
   methods: {
     goToFavourites: function () {
-      this.$router.push("/Favourites");
+      this.$emit("toFav");
+      //this.$router.push("/Favourites");
     },
     goToSearch: function () {
-      this.$router.push("/Search");
+      this.$emit("toSearch");
+      //this.$router.push("/Search");
     },
+      goToLogin: function () {
+          this.$emit("toLogin");
+          
+       //this.$router.push("/Search");
+      },
   },
 };
 </script>
