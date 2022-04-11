@@ -16,7 +16,7 @@ export default {
       this.$store.commit("addToFav", trail);
     },
     onReturn: function () {
-      this.$router.push("/SearchFormView");
+      this.$router.push("/Search");
     },
   },
 };

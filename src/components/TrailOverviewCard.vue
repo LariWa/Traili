@@ -73,7 +73,6 @@ export default {
     getDifficulty,
 
     setCurrentTour: function (id) {
-      console.log("card");
       this.$emit("setCurrent", id);
     },
   },

@@ -12,7 +12,8 @@
       @checkboxChanged="difficultiesChangedACB"
     />
 
-    <search-results-view
+    <TrailsOverview
+      :headline="'Results'"
       :results="searchResults"
       :details="promiseStateDetails.data"
       @setCurrent="setCurrentACB"
@@ -22,11 +23,13 @@
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
-import SearchResultsView from "../views/SearchResultsView.vue";
+import TrailsOverview from "../views/TrailsOverview.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
+import { setCurrentTour } from "@/utilities";
+
 export default {
-  components: { SearchFormView, SearchResultsView },
+  components: { SearchFormView, TrailsOverview },
   data() {
     return {
       searchText: "",
@@ -155,9 +158,7 @@ export default {
         .map((item) => item.id);
     },
     setCurrentACB(id) {
-      this.$store.commit("setCurrentTourID", id);
-      this.$store.dispatch("setCurrentTour");
-      this.$router.push("/TrialDetails");
+      setCurrentTour(id, this);
     },
   },
 };

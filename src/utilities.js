@@ -31,5 +31,16 @@ function getDifficulty(value) {
     return "difficulty unknown";
   }
 }
+function setCurrentTour(id, component) {
+  component.$store.commit("setCurrentTourID", id);
+  component.$store.dispatch("setCurrentTour");
+  component.$router.push("/TrialDetails");
+}
 
-export {convertDistance, convertTime, twoDigits, getDifficulty}
+export {
+  convertDistance,
+  convertTime,
+  twoDigits,
+  getDifficulty,
+  setCurrentTour,
+};
