@@ -83,6 +83,9 @@
               <br />
               <div>{{ removeHTML(trailInfo.longText) }}</div>
             </v-card-text>
+            <v-card-text v-else>
+              <div>No description</div>
+            </v-card-text>
           </v-card>
         </v-col>
 
@@ -110,9 +113,34 @@
                 <!--If you want to pass all the properties of an object as props, you can use v-bind without an argument-->
               </div>
               <br />
-              <v-btn rounded small id="addToFav" @click="addToFavACB">
-                Add to Fav
+
+              <v-btn v-if="addedToFav" class="mx-2" fab dark small color="pink" @click="removeFromFavACB(); snackbar = true">
+                <v-icon dark>mdi-heart</v-icon>
               </v-btn>
+              <v-btn v-else class="mx-2" fab dark small color="grey" @click="addToFavACB(); snackbar = true">
+                <v-icon dark>mdi-heart</v-icon>
+              </v-btn>
+
+              <v-snackbar
+                v-model="snackbar"
+                :timeout="timeout"
+              >
+                {{ text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
+
+              <!--if added color="pink" if taken out grey-->
+              <!--if taken out display pop-up trail taken out-->
 
               <v-btn fab x-small dark @click="backToSearchACB"> x </v-btn>
             </v-card-text>
@@ -133,16 +161,35 @@
                 :src="'http://img.oastatic.com/img/' + item.id + '/.jpg'"
                 reverse-transition="fade-transition"
                 transition="fade-transition"
-              ></v-carousel-item>
+              >
+              
+               <!-- <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>-->
+             
+
+              </v-carousel-item>
             </v-carousel>
           </v-card>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <v-card>
+            <div v-for="(season, index) in trailInfo.season" :key="index">{{ index }}</div>
+          </v-card>
+        </v-col>
+      </v-row>
+
     </v-container>
   </div>
 </template>
-
-<!--:src="item.src"-->
 
 <script>
 //import trailData from "./TourDetailsExample.json";
@@ -157,6 +204,9 @@ export default {
       iconOne: "https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png",
       iconTwo: "https://static.thenounproject.com/png/2325457-200.png",
       iconThree: "https://static.thenounproject.com/png/209086-200.png",
+      snackbar: false,
+      text: '',
+      timeout: 1000,
     };
   },
   components: {
@@ -164,11 +214,31 @@ export default {
     StarRating,
   },
 
-  props: ["trail"],
+  //props: ["trail"],
+  props: {
+    trail: Array,
+  },
+  
   computed: {
     trailInfo() {
       return this.$store.getters.getCurrentTour;
     },
+    addedToFav() {
+      var found = this.$store.state.favourites.find(element => element.id === this.trailInfo.id);
+      /*state: {
+          favourites: [], //array of objects
+          currentTourID: "",
+          categoriesPromiseState: { data: [] },
+          currentTourPromiseState: { data: [] },
+        }, 
+        in index.js*/
+      
+      if (this.$store.state.favourites.indexOf(found) != -1) {
+        return true;
+      }
+
+      return false;
+    }
   },
 
   methods: {
@@ -192,7 +262,13 @@ export default {
       this.$emit("returnToSearch");
     },
     addToFavACB: function () {
+      this.text = 'Trail added to favourites';
       this.$emit("addToFav", this.trailInfo);
+    },
+
+    removeFromFavACB: function() {
+      this.text = 'Trail removed from favourites';
+      this.$emit("removeFromFav", this.trailInfo);
     },
 
     /*strippedContent: function(string) {
@@ -209,7 +285,7 @@ export default {
       if (value == 1) {
         return "easy";
       } else if (value == 2) {
-        return "intermediate";
+        return "moderate";
       } else if (value == 3) {
         return "difficult";
       } else {
@@ -220,31 +296,8 @@ export default {
 };
 </script>
 
-<!--<style scoped lang="scss">
-    .details {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    }
-</style>-->
 
-<!--<div v-if="trail" class="trail-details">
-        
-        <h3 class="sth">{{trail.name}}</h3> 
-
-        <p class="desciption">Description: {{trail.desciption}}</p>
-
-        <button class="view-product-button" @click="Semit('view-product', product)">View</button>
-    
-    </div>
-    
-    computed: {
-        description() {
-        return this.product.description.substring(0, 150)
-        }
-    }
-
-
+<!--
     <div v-for="(element, index) in trailInfo.wayType.elements" :key="index">
         {{ element.title }}
         </div>

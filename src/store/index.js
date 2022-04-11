@@ -43,8 +43,18 @@ export default new Vuex.Store({
     //synchronous
     addToFav(state, payload) {
       state.favourites.push(payload);
-      // console.log("this is my obj" + state.favourites);
+
+      //state.favourites.forEach(fav => console.log("add trail " + fav.id))
+    }, 
+
+    removeFromFav(state, payload){
+      var found = state.favourites.find(element => element.id === payload.id);
+      
+      state.favourites.splice(state.favourites.indexOf(found), 1);
+
+     // state.favourites.forEach(fav => console.log("remove trail "+ fav.id))
     },
+
     setCurrentTourID(state, id) {
       state.currentTourID = id;
     },
