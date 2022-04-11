@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-btn class="ml-2 mb-10" small @click="backToSearchACB">
-      Go Back to Search
-    </v-btn>
+    <v-btn class="ml-2 mb-10" small @click="backACB"> Go Back </v-btn>
 
     <v-container v-if="trailInfo">
       <h1 class="mb-5">{{ trailInfo.title }}</h1>
@@ -180,8 +178,8 @@ export default {
     convertTime,
     getDifficulty,
 
-    backToSearchACB: function () {
-      this.$emit("returnToSearch");
+    backACB: function () {
+      this.$emit("goBack");
     },
     addToFavACB: function () {
       this.$emit("addToFav", this.trailInfo);

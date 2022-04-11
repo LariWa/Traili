@@ -1,18 +1,13 @@
 <template>
   <div>
-    <br />
-    <v-divider></v-divider>
-    <br />
-    <div>
-      <h1>{{ headline }}</h1>
-      <p v-if="results.length == 0">no data availaible</p>
-      <p v-else-if="details == null">loading...</p>
-      <div v-for="(detail, idx) in details" :key="idx">
-        <TrailOverviewCard
-          :details="detail"
-          @setCurrent="setCurrentTour"
-        ></TrailOverviewCard>
-      </div>
+    <h1>{{ headline }}</h1>
+    <p v-if="results.length == 0">no data availaible</p>
+    <p v-else-if="details == null">loading...</p>
+    <div v-for="(detail, idx) in details" :key="idx">
+      <TrailOverviewCard
+        :details="detail"
+        @setCurrent="setCurrentTour"
+      ></TrailOverviewCard>
     </div>
   </div>
 </template>

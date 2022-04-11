@@ -11,7 +11,9 @@
       :difficulties="difficulties"
       @checkboxChanged="difficultiesChangedACB"
     />
-
+    <br />
+    <v-divider></v-divider>
+    <br />
     <TrailsOverview
       :headline="'Results'"
       :results="searchResults"
