@@ -11,24 +11,32 @@
       :difficulties="difficulties"
       @checkboxChanged="difficultiesChangedACB"
     />
-
-    <search-results-view 
-      :results="searchResults" 
-      @setCurrent="setCurrentACB"/>
+    <br />
+    <v-divider></v-divider>
+    <br />
+    <TrailsOverview
+      :headline="'Results'"
+      :results="searchResults"
+      :details="promiseStateDetails.data"
+      @setCurrent="setCurrentACB"
+    />
   </div>
 </template>
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
-import SearchResultsView from "../views/SearchResultsView.vue";
+import TrailsOverview from "../views/TrailsOverview.vue";
 import { resolvePromise } from "../resolvePromise.js";
-import { searchHike } from "../hikeSource.js";
+import { searchHike, getHikeDetails } from "../hikeSource.js";
+import { setCurrentTour } from "@/utilities";
+
 export default {
-  components: { SearchFormView, SearchResultsView },
+  components: { SearchFormView, TrailsOverview },
   data() {
     return {
       searchText: "",
       promiseState: { data: [] },
+      promiseStateDetails: { data: [] },
       sliders: [
         {
           sliderValues: [0, 13],
@@ -65,6 +73,13 @@ export default {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
     },
+    searchResults() {
+      if (this.searchResults) {
+        var ids = this.searchResults.map((item) => item.id);
+        if (ids && ids.length > 0)
+          resolvePromise(getHikeDetails(ids), this.promiseStateDetails, null);
+      }
+    },
   },
   computed: {
     searchResults: function () {
@@ -75,9 +90,9 @@ export default {
     searchParams: function () {
       return {
         q: this.searchText,
-        dif_d: this.difficulties[0].selected,
+        dif_e: this.difficulties[0].selected,
         dif_m: this.difficulties[1].selected,
-        dif_e: this.difficulties[2].selected,
+        dif_d: this.difficulties[2].selected,
         asc_s: this.getSliderValue("Ascent", 0), //in meter
         asc_e: this.getSliderValue("Ascent", 1),
         tim_s: this.getSliderValue("Duration", 0, 60), //in minutes
@@ -89,7 +104,6 @@ export default {
     categoryIds: function () {
       return this.categoryNamesToIds(this.selectedCategories);
     },
-
     categories() {
       return this.$store.getters.getCategories.map((item) => item.name);
     },
@@ -144,12 +158,10 @@ export default {
       return this.$store.getters.getCategories
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
-      },
-      setCurrentACB(id) {
-          this.$store.commit("setCurrentTourID", id);
-          this.$store.dispatch("setCurrentTour");
-          this.$router.push("/TrialDetails");
-      }
+    },
+    setCurrentACB(id) {
+      setCurrentTour(id, this);
+    },
   },
 };
 </script>

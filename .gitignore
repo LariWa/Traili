@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+.vs/
 
 
 # local env files
@@ -23,3 +24,4 @@ pnpm-debug.log*
 *.sw?
 #Config files
 **/*Config.js*
+src/hikeAPIConfig.js

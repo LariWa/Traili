@@ -1,12 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
     "\\src",
+    "\\src\\authen",
     "\\src\\components",
+    "\\src\\presenters",
+    "\\src\\router",
     "\\src\\store",
+    "\\src\\views",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\resolveWeather.js",
+  "SelectedNode": "\\src\\views\\TrailDetailsView.vue",
   "PreviewInSolutionExplorer": false
 }

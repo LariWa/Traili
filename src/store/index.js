@@ -13,6 +13,7 @@ export default new Vuex.Store({
     currentTourID: "",
     categoriesPromiseState: { data: [] },
     currentTourPromiseState: { data: [] },
+    loggedIn: false,
   },
   getters: {
     getCategories(state) {
@@ -28,7 +29,7 @@ export default new Vuex.Store({
     },
     getCurrentTour(state) {
       if (state.currentTourPromiseState.data)
-        return state.currentTourPromiseState.data;
+        return state.currentTourPromiseState.data[0];
       else return undefined;
     },
     getWeather(state) {
@@ -37,11 +38,18 @@ export default new Vuex.Store({
     getCurrentTourID(state) {
       return state.currentTourID;
     },
+    getFavourites(state) {
+      return state.favourites;
+    },
+    getLoggedIn(state) {
+      return state.loggedIn;
+    },
   },
 
   mutations: {
     //synchronous
     addToFav(state, payload) {
+      if (!state.favourites.includes(payload)) state.favourites.push(payload);
       state.favourites.push(payload);
       state.favourites.forEach(fav => console.log("add trail " + fav.id))
     }, 
@@ -54,6 +62,9 @@ export default new Vuex.Store({
 
     setCurrentTourID(state, id) {
       state.currentTourID = id;
+    },
+    setLoggedIn(state, isLoggedIn) {
+      state.loggedIn = isLoggedIn;
     },
   },
   actions: {

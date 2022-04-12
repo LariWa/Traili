@@ -1,10 +1,9 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> <h1>Trail Planner</h1> </v-app-bar>
+    <NavBar />
 
     <v-main>
       <v-container fluid>
-        <!--<SearchFormPresenter></SearchFormPresenter>-->
         <keep-alive>
           <router-view />
         </keep-alive>
@@ -15,13 +14,14 @@
 
 <script>
 import { testFirebase } from "./firebaseModel";
-//import SearchFormPresenter from "./presenters/SearchFormPresenter.vue";
+import NavBar from "./presenters/navBarPresenter.vue";
 //import TrailDetailsPresenter from "./presenters/TrailDetailsPresenter.vue";
 
 export default {
   name: "App",
 
   components: {
+      NavBar,
     /*SearchFormPresenter,*/
     /*TrailDetailsPresenter,*/
   },
@@ -29,12 +29,12 @@ export default {
   data: () => ({
     //
   }),
+
   mounted() {
     testFirebase();
-    //setCategories(this.$store);
     this.$store.dispatch("setCategories");
     // this.$store.dispatch("setCurrentTour");
-    this.$router.push("/SearchFormView");
+    this.$router.push("/Search");
   },
 };
 </script>
