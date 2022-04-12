@@ -13,6 +13,7 @@ export default new Vuex.Store({
     currentTourID: "",
     categoriesPromiseState: { data: [] },
     currentTourPromiseState: { data: [] },
+    loggedIn: false,
   },
   getters: {
     getCategories(state) {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     getFavourites(state) {
       return state.favourites;
     },
+    getLoggedIn(state) {
+      return state.loggedIn;
+    },
   },
 
   mutations: {
@@ -50,6 +54,9 @@ export default new Vuex.Store({
     },
     setCurrentTourID(state, id) {
       state.currentTourID = id;
+    },
+    setLoggedIn(state, isLoggedIn) {
+      state.loggedIn = isLoggedIn;
     },
   },
   actions: {
