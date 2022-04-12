@@ -12,28 +12,12 @@
         <v-icon>mdi-account-circle </v-icon>
       </v-btn>
     </v-app-bar>
-    <v-snackbar :value="showLogInMessage">
-      Please log in to see your favourite trails!
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="red"
-          text
-          v-bind="attrs"
-          @click="this.$emit('closeLogInMessage')"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
 </template>
 <script>
 export default {
-  props: {
-    showLogInMessage: Boolean,
-  },
-  name: "NavBar",
-  emits: ["toLogin", "toSearch", "toFav", "closeLogInMessage"],
+  name: "NavbarView",
+  emits: ["toLogin", "toSearch", "toFav"],
   methods: {
     goToFavourites: function () {
       this.$emit("toFav");

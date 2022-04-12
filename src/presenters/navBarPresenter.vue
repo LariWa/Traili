@@ -1,22 +1,26 @@
 <template>
   <div>
-    <NavBar
-      @toFav="route2FavACB"
+    <NavbarView
+      @toFav="goToFavACB"
       @toSearch="route2SearchACB"
       @toLogin="route2LoginACB"
-      @closeLogInMessage="closeLogInMessage"
-      :showLogInMessage="showLogInMessage"
+    />
+    <SnackBar
+      @setSnackbarValue="setShowLogInMessage"
+      :showSnackbar="showLogInMessage"
+      :text="'Please log in to see your favourite trails'"
     />
   </div>
 </template>
 
 <script>
 //import loginPresenter from "../presenters/loginPresenter.vue";
-import NavBar from "../components/NavBar.vue";
-
+import NavbarView from "../views/NavbarView.vue";
+import SnackBar from "../components/Snackbar.vue";
 export default {
   components: {
-    NavBar,
+    NavbarView,
+    SnackBar,
     //loginPresenter
   },
 
@@ -34,7 +38,7 @@ export default {
     },
   },
   methods: {
-    route2FavACB: function () {
+    goToFavACB: function () {
       if (this.$store.getters.getLoggedIn) this.$router.push("/Favourites");
       else {
         this.showingLogInMessage = true;
@@ -47,8 +51,8 @@ export default {
     route2LoginACB: function () {
       this.$router.push("/Login");
     },
-    closeLogInMessage: function () {
-      this.showingLogInMessage = false;
+    setShowLogInMessage: function (value) {
+      this.showingLogInMessage = value;
     },
   },
 };
