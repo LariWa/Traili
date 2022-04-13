@@ -1,18 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {
-  getCategories as getCategoriesFetch,
-  getHikeDetails,
-} from "../hikeSource.js";
+import { getCategories as getCategoriesFetch } from "../hikeSource.js";
 import { resolvePromise } from "../resolvePromise.js";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     favourites: [], //array of objects
-    currentTourID: "",
     categoriesPromiseState: { data: [] },
-    currentTourPromiseState: { data: [] },
+    currentTour: {},
     loggedIn: false,
   },
   getters: {
@@ -24,20 +20,14 @@ export default new Vuex.Store({
     getCategoriesPromiseState(state) {
       return state.categoriesPromiseState;
     },
-    getCurrentTourPromiseState(state) {
-      return state.currentTourPromiseState;
-    },
+
     getCurrentTour(state) {
-      if (state.currentTourPromiseState.data)
-        return state.currentTourPromiseState.data[0];
-      else return undefined;
+      return state.currentTour;
     },
     getWeather(state) {
       return state.weather;
     },
-    getCurrentTourID(state) {
-      return state.currentTourID;
-    },
+
     getFavourites(state) {
       return state.favourites;
     },
@@ -48,20 +38,21 @@ export default new Vuex.Store({
 
   mutations: {
     //synchronous
+    //TODO call mutations from actions
     addToFav(state, payload) {
       if (!state.favourites.includes(payload)) state.favourites.push(payload);
       state.favourites.push(payload);
-      state.favourites.forEach(fav => console.log("add trail " + fav.id))
-    }, 
-
-    removeFromFav(state, payload){
-      var found = state.favourites.find(element => element.id === payload.id);     
-      state.favourites.splice(state.favourites.indexOf(found), 1);
-      state.favourites.forEach(fav => console.log("remove trail "+ fav.id))
+      state.favourites.forEach((fav) => console.log("add trail " + fav.id));
     },
 
-    setCurrentTourID(state, id) {
-      state.currentTourID = id;
+    removeFromFav(state, payload) {
+      var found = state.favourites.find((element) => element.id === payload.id);
+      state.favourites.splice(state.favourites.indexOf(found), 1);
+      state.favourites.forEach((fav) => console.log("remove trail " + fav.id));
+    },
+
+    setCurrentTour(state, tour) {
+      state.currentTour = tour;
     },
     setLoggedIn(state, isLoggedIn) {
       state.loggedIn = isLoggedIn;
@@ -75,12 +66,8 @@ export default new Vuex.Store({
         state.getters.getCategoriesPromiseState
       );
     },
-    async setCurrentTour(state) {
-      if (state.getters.getCurrentTourID)
-        resolvePromise(
-          getHikeDetails(state.getters.getCurrentTourID),
-          state.getters.getCurrentTourPromiseState
-        );
+    async setCurrentTour(context, currentTour) {
+      context.commit("setCurrentTour", currentTour);
     },
   },
   modules: {},

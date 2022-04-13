@@ -159,8 +159,8 @@ export default {
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
     },
-    setCurrentACB(id) {
-      setCurrentTour(id, this);
+    setCurrentACB(tour) {
+      setCurrentTour(tour, this);
     },
   },
 };

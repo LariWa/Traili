@@ -24,8 +24,8 @@ export default {
     details: Array,
   },
   methods: {
-    setCurrentTour: function (id) {
-      this.$emit("setCurrent", id);
+    setCurrentTour: function (details) {
+      this.$emit("setCurrent", details);
     },
   },
 };
