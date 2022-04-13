@@ -10,6 +10,9 @@
       :sliders="sliders"
       :difficulties="difficulties"
       @checkboxChanged="difficultiesChangedACB"
+      @clearFilters="clearFiltersACB"
+      @setAllCategories="setAllCategoriesACB"
+      :allCategSet="allCategSet"
     />
     <br />
     <v-divider></v-divider>
@@ -67,6 +70,7 @@ export default {
         { name: "difficult", color: "red darken-4", selected: true },
       ],
       selectedCategories: [],
+      allCategSet: true,
     };
   },
   watch: {
@@ -161,6 +165,17 @@ export default {
     },
     setCurrentACB(tour) {
       setCurrentTour(tour, this);
+    },
+    clearFiltersACB() {
+      //reset sliders
+      this.sliders.forEach((slider) => (slider.sliderValues = slider.range));
+      //reset checkboxes
+      this.difficulties.forEach((difficulty) => (difficulty.selected = true));
+    },
+    setAllCategoriesACB(select) {
+      if (select) {
+        this.selectedCategories = this.categories;
+      } else this.selectedCategories = [];
     },
   },
 };

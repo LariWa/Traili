@@ -31,11 +31,14 @@
               </span>
               <v-icon small @click="parent.selectItem(item)"> $delete </v-icon>
             </v-chip>
-            <span v-if="index === 3" class="grey--text text-caption">
+            <span v-if="index === 3" class="grey--text">
               (+{{ selectedCategories.length - 4 }} others)
             </span>
-          </template>
-        </v-combobox>
+          </template> </v-combobox
+        ><v-checkbox
+          :input-value="allCategSet"
+          @change="allCategChangedACB"
+        ></v-checkbox>
       </v-col>
     </v-row>
     <v-row>
@@ -44,7 +47,9 @@
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <!-- TODO how to update slider while moving?  -->
+              <v-btn icon @click="clearFiltersACB">
+                <v-icon>mdi-replay</v-icon>
+              </v-btn>
               <div v-for="slider in this.sliders" :key="slider.name">
                 <RangeSlider
                   :range="slider.range"
@@ -54,7 +59,7 @@
                   @changed="sliderChangedACB"
                 />
               </div>
-
+              <p>Trail Difficulty</p>
               <div v-for="difficulty in difficulties" :key="difficulty.name">
                 <v-checkbox
                   :label="difficulty.name"
@@ -85,6 +90,7 @@ export default {
     difficulties: Array,
     selectedCategories: Array,
     categories: Array,
+    allCategSet: Boolean,
   },
   data() {
     return {
@@ -97,6 +103,7 @@ export default {
     "categoriesChanged",
     "sliderChanged",
     "checkboxChanged",
+    "clearFilters",
   ],
   methods: {
     onTextChangeACB: function (text) {
@@ -121,6 +128,12 @@ export default {
     },
     checkBoxChangedACB(value, name) {
       this.$emit("checkboxChanged", value, name);
+    },
+    clearFiltersACB() {
+      this.$emit("clearFilters");
+    },
+    allCategChangedACB(value) {
+      this.$emit("setAllCategories", value);
     },
   },
 };

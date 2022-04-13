@@ -1,6 +1,7 @@
 <template>
   <div>
-    <span class="font-weight-bold">{{ name }} </span>
+    <span>{{ name }} </span>
+    <span class="text-caption">in {{ unit }}</span>
     <span class="float-right">
       {{ getValueText() }}
     </span>
@@ -27,7 +28,11 @@ export default {
     },
     getValueText() {
       if (this.values.toString() == this.range.toString()) return "any";
-      else {
+      else if (this.values[0] == this.values[1]) {
+        if (this.values[0] == this.range[1])
+          return this.range[1] - 1 + "+" + this.unit;
+        else return this.values[0] + this.unit;
+      } else {
         var text = " from " + this.values[0] + this.unit + " to ";
         if (this.values[1] > this.range[1] - 1) text += this.range[1] - 1 + "+";
         else text += this.values[1];
