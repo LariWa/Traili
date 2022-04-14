@@ -27,3 +27,4 @@ pnpm-debug.log*
 src/hikeAPIConfig.js
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
+.vs/slnx.sqlite
