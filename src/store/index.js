@@ -23,13 +23,9 @@ export default new Vuex.Store({
     getCategoriesPromiseState(state) {
       return state.categoriesPromiseState;
     },
-    getCurrentTourPromiseState(state) {
-      return state.currentTourPromiseState;
-    },
+
     getCurrentTour(state) {
-      if (state.currentTourPromiseState.data)
-        return state.currentTourPromiseState.data[0];
-      else return undefined;
+      return state.currentTour;
     },
     getWeather(state) {
       return state.weather;
@@ -53,7 +49,6 @@ export default new Vuex.Store({
     //synchronous
     addToFav(state, payload) {
       if (!state.favourites.includes(payload)) state.favourites.push(payload);
-      state.favourites.push(payload);
       state.favourites.forEach((fav) => console.log("add trail " + fav.id));
       updateFirebaseFromModel(state.favourites);
     },
