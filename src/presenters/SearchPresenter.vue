@@ -13,6 +13,10 @@
       @clearFilters="clearFiltersACB"
       @setAllCategories="setAllCategoriesACB"
       :allCategSet="allCategSet"
+      @changeSortingOrder="changeSortingOrderACB"
+      :sortingIcon="sortingIcon"
+      :sortCateg="sortCateg"
+      @changeSortBy="changeSortByACB"
     />
     <br />
     <v-divider></v-divider>
@@ -71,6 +75,10 @@ export default {
       ],
       selectedCategories: [],
       allCategSet: true,
+      sortingIcon: "mdi-sort-ascending",
+      sortAsc: true,
+      sortCateg: ["title", "distance"],
+      sortByCateg: "",
     };
   },
   watch: {
@@ -103,6 +111,7 @@ export default {
         tim_e: this.getSliderValue("Duration", 1, 60),
         len_s: this.getSliderValue("Distance", 0, 1000),
         len_e: this.getSliderValue("Distance", 1, 1000),
+        sortedBy: this.getSortedByValue(),
       };
     },
     categoryIds: function () {
@@ -176,6 +185,20 @@ export default {
       if (select) {
         this.selectedCategories = this.categories;
       } else this.selectedCategories = [];
+    },
+    changeSortingOrderACB() {
+      this.sortAsc = !this.sortAsc;
+      this.sortingIcon = this.sortAsc
+        ? "mdi-sort-ascending"
+        : "mdi-sort-descending";
+    },
+    changeSortByACB(value) {
+      this.sortByCateg = value;
+    },
+    getSortedByValue() {
+      if (this.sortByCateg == "") return "";
+      if (this.sortAsc) return this.sortByCateg + " asc";
+      else return this.sortByCateg + " desc";
     },
   },
 };

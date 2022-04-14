@@ -73,6 +73,15 @@
         </v-expansion-panels>
       </v-col>
       <v-col>
+        <v-select :items="sortCateg" label="Sort by" @change="changeSortByACB">
+        </v-select>
+      </v-col>
+      <v-col>
+        <v-btn icon @click="changeSortingOrderACB">
+          <v-icon>{{ sortingIcon }}</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col>
         <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
       </v-col>
     </v-row>
@@ -91,6 +100,8 @@ export default {
     selectedCategories: Array,
     categories: Array,
     allCategSet: Boolean,
+    sortingIcon: String,
+    sortCateg: Array,
   },
   data() {
     return {
@@ -104,6 +115,8 @@ export default {
     "sliderChanged",
     "checkboxChanged",
     "clearFilters",
+    "changeSortingOrder",
+    "changeSortBy",
   ],
   methods: {
     onTextChangeACB: function (text) {
@@ -134,6 +147,12 @@ export default {
     },
     allCategChangedACB(value) {
       this.$emit("setAllCategories", value);
+    },
+    changeSortingOrderACB() {
+      this.$emit("changeSortingOrder");
+    },
+    changeSortByACB(value) {
+      this.$emit("changeSortBy", value);
     },
   },
 };
