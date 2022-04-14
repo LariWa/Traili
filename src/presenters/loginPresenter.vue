@@ -21,6 +21,7 @@ import {
         from "firebase/auth";
 import { updateModelFromFirebase } from "../firebaseModel";
 
+
 export default {
   components: { loginView },
   data() {
@@ -72,6 +73,7 @@ export default {
                         console.log(user.uid);
                         this.$store.commit("setUID", user.uid);
                         updateModelFromFirebase();
+                        this.$store.commit("setLoggedIn", true);
                         this.$router.go(-1);
                     })
                     .catch((error) => {
@@ -88,6 +90,7 @@ export default {
             signOut(auth).then(() => {
                 this.$store.commit("setUID", "");
                 this.$store.commit("setFav", []);
+                this.$store.commit("setLoggedIn", false);
                 this.textStatus = "sign out!";
                 console.log("sign out");
                 this.$router.go(-1);
