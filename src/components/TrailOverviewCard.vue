@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="2" @click="setCurrentTour(details.id)">
+  <v-card elevation="2" @click="setCurrentTour(details)">
     <v-img
       :src="
         details.primaryImage
@@ -72,8 +72,8 @@ export default {
     convertTime,
     getDifficulty,
 
-    setCurrentTour: function (id) {
-      this.$emit("setCurrent", id);
+    setCurrentTour: function (details) {
+      this.$emit("setCurrent", details);
     },
   },
 };

@@ -1,6 +1,5 @@
 import { project, key } from "./hikeAPIConfig.js";
 function searchHike(searchParams, category) {
-  console.log("search");
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
@@ -49,8 +48,6 @@ function getHikeDetails(id) {
 }
 
 function getCategories() {
-  console.log("categories");
-
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
