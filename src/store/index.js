@@ -56,19 +56,16 @@ export default new Vuex.Store({
     //synchronous
     addToFav(state, payload) {
       if (!state.favourites.includes(payload)) state.favourites.push(payload);
-      state.favourites.push(payload);
-      state.favourites.forEach(fav => console.log("add trail " + fav.id))
+          state.favourites.push(payload);
+          state.favourites.forEach(fav => console.log("add trail " + fav.id))
+          updateFirebaseFromModel(state.favourites);
     }, 
 
     removeFromFav(state, payload){
       var found = state.favourites.find(element => element.id === payload.id);     
       state.favourites.splice(state.favourites.indexOf(found), 1);
       state.favourites.forEach(fav => console.log("remove trail "+ fav.id))
-          if (!state.favourites.includes(payload)) {
-              state.favourites.push(payload);
-              updateFirebaseFromModel(state.favourites);
-          }
-      // console.log("this is my obj" + state.favourites);
+      updateFirebaseFromModel(state.favourites);
     },
 
     setCurrentTourID(state, id) {
