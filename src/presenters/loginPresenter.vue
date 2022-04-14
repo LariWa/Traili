@@ -5,6 +5,7 @@
                           @onCreate="createACB"
                           @onLogin="loginACB" 
                           @onQuit="quitACB"
+                          @onLogOut="logOutACB"
                           :textStatus="textStatus"/>
     </div>
 </template>
@@ -14,9 +15,11 @@ import loginView from "../views/loginView.vue";
 import {
         getAuth,
         createUserWithEmailAndPassword,
-        signInWithEmailAndPassword
+        signInWithEmailAndPassword,
+        signOut
     }
         from "firebase/auth";
+import { updateModelFromFirebase } from "../firebaseModel";
 
 export default {
   components: { loginView},
@@ -67,16 +70,34 @@ export default {
                         const user = userCredential.user;
                         this.textStatus = "User logged in";
                         console.log("user signed in:");
-                        console.log(user);
+                        console.log(user.uid);
+                        this.$store.commit("setUID", user.uid);
+                        updateModelFromFirebase();
                         this.$router.go(-1);
                     })
                     .catch((error) => {
-                        //const errorCode = error.code;
+                        const errorCode = error.code;
                         const errorMessage = error.message;
                         this.textStatus = errorMessage;
-                        console.error("login error: " + errorMessage);
+                        console.error("login error: " + errorCode + errorMessage);
                     });
             },
+
+
+       logOutACB() {
+            const auth = getAuth();
+            signOut(auth).then(() => {
+                this.$store.commit("setUID", "");
+                this.$store.commit("setFav", []);
+                this.textStatus = "sign out!";
+                console.log("sign out");
+                this.$router.go(-1);
+            }).catch((error) => {
+                const errorMessage = error.message;
+                this.textStatus = errorMessage;
+                console.error("log out error: " + errorMessage);
+            });
         },
+   },
 }
 </script>
