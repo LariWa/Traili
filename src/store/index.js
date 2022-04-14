@@ -5,6 +5,8 @@ import {
   getHikeDetails,
 } from "../hikeSource.js";
 import { resolvePromise } from "../resolvePromise.js";
+import { updateFirebaseFromModel } from "../firebaseModel";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,6 +16,7 @@ export default new Vuex.Store({
     categoriesPromiseState: { data: [] },
     currentTourPromiseState: { data: [] },
     loggedIn: false,
+    UID:"",//user account id from firebase
   },
   getters: {
     getCategories(state) {
@@ -34,7 +37,10 @@ export default new Vuex.Store({
     },
     getWeather(state) {
       return state.weather;
-    },
+      },
+    getUID(state) {
+          return state.UID;
+      },
     getCurrentTourID(state) {
       return state.currentTourID;
     },
@@ -58,6 +64,11 @@ export default new Vuex.Store({
       var found = state.favourites.find(element => element.id === payload.id);     
       state.favourites.splice(state.favourites.indexOf(found), 1);
       state.favourites.forEach(fav => console.log("remove trail "+ fav.id))
+          if (!state.favourites.includes(payload)) {
+              state.favourites.push(payload);
+              updateFirebaseFromModel(state.favourites);
+          }
+      // console.log("this is my obj" + state.favourites);
     },
 
     setCurrentTourID(state, id) {
@@ -66,9 +77,18 @@ export default new Vuex.Store({
     setLoggedIn(state, isLoggedIn) {
       state.loggedIn = isLoggedIn;
     },
+      },
+    setUID(state, id) {
+          state.UID = id;
+      },
+    setFav(state, fav) {
+        state.favourites = fav;
+      },
+
   },
   actions: {
     //asynchronous
+
     async setCategories(state) {
       resolvePromise(
         getCategoriesFetch(),
