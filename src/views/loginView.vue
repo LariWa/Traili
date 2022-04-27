@@ -26,15 +26,17 @@
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-col>
-                 </v-row>
-                 <v-form>
-                            <v-text-field type="text " placeholder="Email" @change="onEmailChangeACB"></v-text-field>
-                            <v-text-field type="password" placeholder="Password" @change="onPswChangeACB"></v-text-field>
-                 </v-form>
-                 <v-btn @click="onLoginACB">Login</v-btn>
-                 <br />
-                 <v-btn @click="onCreateACB">Create</v-btn>
-</div>
+                </v-row>
+                <v-form>
+                    <v-text-field type="text " placeholder="Email" @change="onEmailChangeACB"></v-text-field>
+                    <v-text-field type="password" placeholder="Password" @change="onPswChangeACB"></v-text-field>
+                </v-form>
+                <v-btn @click="onLoginACB">Login</v-btn>
+                <br />
+                <v-btn @click="onCreateACB">Create</v-btn>
+                <br />
+                <v-btn @click="onLogOutACB">Sign out</v-btn>
+            </div>
         </v-flex>
 
 </template>
@@ -56,7 +58,8 @@
             "pswTextChanged",
             "onCreate",
             "onLogin",
-            "onQuit"
+            "onQuit",
+            "onLogOut",
         ],
 
         methods: {
@@ -72,6 +75,9 @@
             },
             onLoginACB: function () {
                 this.$emit("onLogin");
+            },
+            onLogOutACB: function () {
+                this.$emit("onLogOut");
             },
             onQuitACB: function () {
                 this.$emit("onQuit");
