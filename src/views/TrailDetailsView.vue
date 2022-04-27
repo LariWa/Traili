@@ -163,7 +163,6 @@
                   </v-btn>
                 </template>
               </v-snackbar>
-              <v-btn fab x-small dark @click="backToSearchACB"> x </v-btn>
             </v-card-text>
           </v-card>
         </v-col>

@@ -50,7 +50,6 @@ export default new Vuex.Store({
     //synchronous
     addToFav(state, payload) {
       if (!state.favourites.includes(payload)) state.favourites.push(payload);
-      state.favourites.push(payload);
       state.favourites.forEach(fav => console.log("add trail " + fav.id))
     }, 
 
