@@ -21,14 +21,18 @@
     <br />
     <v-divider></v-divider>
     <br />
-    <TrailsOverview
-      :headline="'Results'"
-      :results="searchResults"
-      :details="promiseStateDetails.data"
-      :searchText="searchText"
-      :state="promiseState"
-      @setCurrent="setCurrentACB"
-    />
+
+    <promiseNoData
+      :promiseState="promiseStateDetails"
+      :noDataString="'Sorry! No trails were found matching your search criteria.'"
+    >
+      <TrailsOverview
+        :headline="'Results'"
+        :results="searchResults"
+        :details="promiseStateDetails.data"
+        @setCurrent="setCurrentACB"
+      />
+    </promiseNoData>
   </div>
 </template>
 
@@ -38,9 +42,9 @@ import TrailsOverview from "../views/TrailsOverview.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
-
+import promiseNoData from "../views/promiseNoData.vue";
 export default {
-  components: { SearchFormView, TrailsOverview },
+  components: { SearchFormView, TrailsOverview, promiseNoData },
   data() {
     return {
       searchText: "",
@@ -91,7 +95,7 @@ export default {
       if (this.searchResults) {
         var ids = this.searchResults.map((item) => item.id);
         if (ids && ids.length > 0)
-        /*for (let id in ids) {
+          /*for (let id in ids) {
           this.details.push(resolvePromise(getHikeDetails(id), this.promiseStateDetails, null));
         }
         
