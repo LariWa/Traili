@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title @click="goToSearch">Trail Planner</v-toolbar-title
+    <v-app-bar class="nav-bar" app color="primary" dark>
+      <v-toolbar-title class="nav-bar-title" @click="goToSearch"><img src="../assets/logo.svg">Traili</v-toolbar-title
       ><v-spacer></v-spacer>
       <v-btn icon @click="goToSearch">
         <v-icon>mdi-magnify</v-icon>
