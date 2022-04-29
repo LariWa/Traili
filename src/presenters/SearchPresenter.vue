@@ -25,6 +25,8 @@
       :headline="'Results'"
       :results="searchResults"
       :details="promiseStateDetails.data"
+      :searchText="searchText"
+      :state="promiseState"
       @setCurrent="setCurrentACB"
     />
   </div>
