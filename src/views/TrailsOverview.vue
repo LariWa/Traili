@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ headline }}</h1>
-    <p v-if="results.length == 0 && searchText == ''">Are you looking for you next adventure?</p>
+    <p v-if="results.length == 0 && searchText == ''">Are you looking for your next adventure?</p>
     <p v-else-if="results.length == 0 && searchText !='' && state.data == null">loading...</p>
     <p v-else-if="results.length == 0">no data availaible</p>
     <p v-else-if="details == null">loading...</p>
