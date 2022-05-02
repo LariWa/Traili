@@ -1,6 +1,7 @@
 <template>
   <div>
     <search-form-view
+      :searchText="searchText"
       @searchTextChanged="searchTextChanged"
       @search="search"
       :categories="categories"
@@ -17,6 +18,7 @@
       :sortingIcon="sortingIcon"
       :sortCateg="sortCateg"
       @changeSortBy="changeSortByACB"
+      @placeChanged="placeChangedACB"
     />
     <br />
     <v-divider></v-divider>
@@ -85,6 +87,7 @@ export default {
       sortAsc: true,
       sortCateg: ["title", "distance"],
       sortByCateg: "",
+      place: {},
     };
   },
   watch: {
@@ -94,15 +97,20 @@ export default {
     searchResults() {
       if (this.searchResults) {
         var ids = this.searchResults.map((item) => item.id);
-        if (ids && ids.length > 0)
+        if (ids && ids.length > 0) {
           /*for (let id in ids) {
           this.details.push(resolvePromise(getHikeDetails(id), this.promiseStateDetails, null));
         }
-        
+
         Promise.all(this.details).then(result => {
           console.log({result});
         });*/
-          resolvePromise(getHikeDetails(ids), this.promiseStateDetails, null);
+          resolvePromise(
+            getHikeDetails(ids), //avoid too many ids for api needs to be fixed
+            this.promiseStateDetails,
+            null
+          );
+        }
       }
     },
   },
@@ -125,6 +133,9 @@ export default {
         len_s: this.getSliderValue("Distance", 0, 1000),
         len_e: this.getSliderValue("Distance", 1, 1000),
         sortedBy: this.getSortedByValue(),
+        radius: 5000,
+        location: this.getLocation(),
+        limit: 1000,
       };
     },
     categoryIds: function () {
@@ -151,10 +162,7 @@ export default {
         );
         return Promise.all(searchPromiseArray).then((res) => mergeResults(res));
         function mergeResults(res) {
-          return res
-            .filter((item) => item.data)
-            .map((item) => item.data)
-            .flat(1);
+          return res.filter((item) => item).flat(1);
         }
       }
     },
@@ -210,8 +218,27 @@ export default {
     },
     getSortedByValue() {
       if (this.sortByCateg == "") return "";
-      if (this.sortAsc) return this.sortByCateg + " asc";
-      else return this.sortByCateg + " desc";
+      var sortBy = this.sortByCateg;
+      if (
+        this.searchText == this.place.formatted_address &&
+        this.sortByCateg == "title"
+      )
+        //api uses name instead of title for nearBy call
+        sortBy = "name";
+      if (this.sortAsc) return sortBy + " asc";
+      else return sortBy + " desc";
+    },
+    placeChangedACB(place) {
+      this.place = place;
+    },
+    getLocation() {
+      if (this.searchText == this.place.formatted_address)
+        return (
+          this.place.geometry.location.lng() +
+          "," +
+          this.place.geometry.location.lat()
+        );
+      return "";
     },
   },
 };

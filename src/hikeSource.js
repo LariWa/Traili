@@ -1,5 +1,34 @@
 import { project, key } from "./hikeAPIConfig.js";
 function searchHike(searchParams, category) {
+  if (searchParams.location) return searchNearBy(searchParams, category);
+  else return searchByKeyword(searchParams, category);
+}
+function searchNearBy(searchParams, category) {
+  console.log(searchParams.sortedBy);
+  return fetch(
+    "https://www.outdooractive.com/api/project/" +
+      project +
+      "/nearby/tour?" +
+      new URLSearchParams({
+        category: category,
+        key: key,
+        lang: "en",
+        fallback: false,
+      }) +
+      "&" +
+      new URLSearchParams(searchParams),
+    {
+      method: "GET", // HTTP method
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  )
+    .then(treatHTTPResponseACB)
+    .then(threatNearByResponse);
+}
+function searchByKeyword(searchParams, category) {
+  console.log("key" + searchParams.q);
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
@@ -18,7 +47,9 @@ function searchHike(searchParams, category) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+    .then(treatHTTPResponseACB)
+    .then(threatKeywordResponse);
 }
 
 function getHikeDetails(id) {
@@ -76,11 +107,16 @@ function treatHTTPResponseACB(response) {
     return response.json();
   }
 }
+function threatNearByResponse(response) {
+  return response.result;
+}
+function threatKeywordResponse(response) {
+  return response.data;
+}
 function treatCategoriesResponse(response) {
   return response.category;
 }
 function treatHikeResponse(response) {
-  // if (response.tour.length == 1) return response.tour[0];
   return response.tour;
 }
 export { searchHike, getHikeDetails, getCategories };

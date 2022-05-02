@@ -2,12 +2,45 @@
   <div>
     <v-row>
       <v-col>
-        <v-text-field
-          label="search for locations.."
-          hide-details="auto"
-          @change="onTextChangeACB"
-          @keypress="onKeyPressedACB"
-        ></v-text-field>
+        <gmap-autocomplete
+          class="introInput"
+          @place_changed="getAddressData"
+          :options="{
+            fields: ['geometry', 'formatted_address'],
+            componentRestrictions: { country: 'swe' },
+          }"
+        >
+          <template v-slot:input="slotProps">
+            <v-text-field
+              label="search for location..."
+              ref="input"
+              :value="searchText"
+              v-on:listeners="slotProps.listeners"
+              v-on:attrs="slotProps.attrs"
+              @change="onTextChangeACB"
+              @keypress="onKeyPressedACB"
+            >
+            </v-text-field>
+          </template>
+        </gmap-autocomplete>
+        <!-- <VueGooglePlaces
+          :api-key="'AIzaSyBVE6Fe5uNpAJ_urLXLV52rH1SosNdmK2I'"
+          types="(cities)"
+          country="swe"
+          @placechanged="getAddressData"
+          :version="'3.38'"
+          :options="{
+            fields: ['geometry', 'formatted_address'],
+            country: 'swe',
+          }"
+        >
+          <v-text-field
+            label="search for location..."
+            :value="searchText"
+            @change="onTextChangeACB"
+            @keypress="onKeyPressedACB"
+          ></v-text-field
+        ></VueGooglePlaces> -->
       </v-col>
       <v-col>
         <v-combobox
@@ -90,11 +123,13 @@
 
 <script>
 import RangeSlider from "../components/rangeSlider.vue";
+
 export default {
   components: {
     RangeSlider,
   },
   props: {
+    searchText: String,
     sliders: Array,
     difficulties: Array,
     selectedCategories: Array,
@@ -117,6 +152,7 @@ export default {
     "clearFilters",
     "changeSortingOrder",
     "changeSortBy",
+    "placeChanged",
   ],
   methods: {
     onTextChangeACB: function (text) {
@@ -154,6 +190,28 @@ export default {
     changeSortByACB(value) {
       this.$emit("changeSortBy", value);
     },
+    getAddressData(place) {
+      this.$emit("placeChanged", place);
+      this.$emit("searchTextChanged", place.formatted_address);
+    },
   },
 };
 </script>
+<style>
+/* Hide google placeholder */
+input::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+input::-moz-placeholder {
+  opacity: 0;
+}
+
+input::-ms-input-placeholder {
+  opacity: 0;
+}
+
+input::-moz-placeholder {
+  opacity: 0;
+}
+</style>
