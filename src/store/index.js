@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { getCategories as getCategoriesFetch } from "../hikeSource.js";
-import { updateFirebaseFromModel } from "../firebaseModel";
 
 Vue.use(Vuex);
 
@@ -88,18 +87,15 @@ export default new Vuex.Store({
       commit("setLoggedIn", false);
     },
 
-    addToFav(state, payload) {
-      if (!state.getters.getFavourites.includes(payload)) {
-        console.log("add");
-        state.commit("addToFav", payload);
+    addToFav(state, id) {
+      if (!state.getters.getFavourites.includes(parseInt(id))) {
+        state.commit("addToFav", parseInt(id));
       }
-      updateFirebaseFromModel(state.favourites); //TODO remove
+      // updateFirebaseFromModel(state.favourites); //TODO remove
     },
-    removeFromFav(state, payload) {
-      var found = state.getters.getFavourites.find(
-        (element) => element.id === payload.id
-      );
-      state.commit("removeFromFav", found);
+    removeFromFav(state, id) {
+      if (state.getters.getFavourites.includes(parseInt(id)))
+        state.commit("removeFromFav", parseInt(id));
       //updateFirebaseFromModel(state.favourites); //TODO remove
     },
   },
