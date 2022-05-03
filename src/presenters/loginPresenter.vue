@@ -19,8 +19,8 @@ import {
         signOut
     }
         from "firebase/auth";
-import { updateModelFromFirebase } from "../firebaseModel";
-
+//import { updateModelFromFirebase } from "../firebaseModel";
+import { mapActions } from "vuex";
 
 export default {
   components: { loginView },
@@ -33,6 +33,7 @@ export default {
   },
   
    methods: {
+       ...mapActions(["setUID", "setLoggedIn","clearData"]),
        emailChangedACB: function (text) {
                 this.emailText = text;
             },
@@ -71,9 +72,9 @@ export default {
                         this.textStatus = "User logged in";
                         console.log("user signed in:");
                         console.log(user.uid);
-                        this.$store.commit("setUID", user.uid);
-                        updateModelFromFirebase();
-                        this.$store.commit("setLoggedIn", true);
+                        this.setUID(user.uid);
+                        //updateModelFromFirebase();
+                        this.setLoggedIn(true);
                         this.$router.go(-1);
                     })
                     .catch((error) => {
@@ -88,9 +89,7 @@ export default {
        logOutACB() {
             const auth = getAuth();
             signOut(auth).then(() => {
-                this.$store.commit("setUID", "");
-                this.$store.commit("setFav", []);
-                this.$store.commit("setLoggedIn", false);
+                this.clearData();//update firebase where there is a mutuation, so firebase data is deleted as well???
                 this.textStatus = "sign out!";
                 console.log("sign out");
                 this.$router.go(-1);

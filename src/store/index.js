@@ -80,6 +80,14 @@ export default new Vuex.Store({
     setLoggedIn({ commit }, isLoggedIn) {
       commit("setLoggedIn", isLoggedIn);
     },
+
+    //clear user data after sign out
+    clearData({ commit }) {
+      commit("setUID", "");
+      commit("setFav", []);
+      commit("setLoggedIn", false);
+    },
+
     addToFav(state, payload) {
       if (!state.getters.getFavourites.includes(payload)) {
         console.log("add");
@@ -92,7 +100,7 @@ export default new Vuex.Store({
         (element) => element.id === payload.id
       );
       state.commit("removeFromFav", found);
-      updateFirebaseFromModel(state.favourites); //TODO remove
+      //updateFirebaseFromModel(state.favourites); //TODO remove
     },
   },
   modules: {},
