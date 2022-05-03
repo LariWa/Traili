@@ -28,12 +28,11 @@
     <br />
 
     <promiseNoData
-      :promiseState="promiseStateDetails"
+      :promiseState="promiseState"
       :noDataString="'Sorry! No trails were found matching your search criteria.'"
     >
       <TrailsOverview
         :headline="'Results'"
-        :results="searchResults"
         :details="detailsResultsSorted"
         @setCurrent="setCurrentACB"
       />
@@ -54,7 +53,6 @@ export default {
     return {
       searchText: "",
       promiseState: { data: [] },
-      promiseStateDetails: { data: [] },
       rangeSliders: [
         {
           sliderValues: [0, 13],
@@ -105,19 +103,7 @@ export default {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
     },
-    searchResults() {
-      if (this.searchResults) {
-        var ids = this.searchResults.map((item) => item.id);
-        if (ids && ids.length > 0) {
-          var steps = 500; //avoid breaking the API
-          var promises = [];
-          for (let i = 0; i < ids.length; i += steps) {
-            promises.push(getHikeDetails(ids.slice(i, i + steps)));
-          }
-          resolvePromise(Promise.all(promises), this.promiseStateDetails);
-        }
-      }
-    },
+
     detailsResults() {
       this.detailsResultsSorted = [...this.detailsResults];
       if (
@@ -130,18 +116,13 @@ export default {
     },
   },
   computed: {
-    searchResults: function () {
-      if (this.promiseState && this.promiseState.data)
-        return this.promiseState.data;
-      else return [];
-    },
     detailsResults: function () {
       if (
-        this.promiseStateDetails &&
-        this.promiseStateDetails.data &&
-        this.promiseStateDetails.data.length > 0
+        this.promiseState &&
+        this.promiseState.data &&
+        this.promiseState.data.length > 0
       )
-        return this.promiseStateDetails.data[0];
+        return this.promiseState.data[0];
       else return [];
     },
     searchParams: function () {
@@ -172,7 +153,11 @@ export default {
       this.searchText = text;
     },
     search: function () {
-      resolvePromise(this.searchPromise(), this.promiseState, null);
+      resolvePromise(
+        this.searchPromise().then(this.getDetails),
+        this.promiseState,
+        null
+      );
     },
     searchPromise: function () {
       const component = this;
@@ -229,6 +214,8 @@ export default {
       );
       //reset checkboxes
       this.difficulties.forEach((difficulty) => (difficulty.selected = true));
+      //reset search radius
+      this.radiusSlider.value = 50;
     },
     setAllCategoriesACB(select) {
       if (select) {
@@ -267,6 +254,17 @@ export default {
     },
     changeRadiusValueACB(value) {
       this.radiusSlider.value = value;
+    },
+    getDetails(searchResults) {
+      var ids = searchResults.map((item) => item.id);
+      if (ids && ids.length > 0) {
+        var steps = 500; //avoid breaking the API
+        var promises = [];
+        for (let i = 0; i < ids.length; i += steps) {
+          promises.push(getHikeDetails(ids.slice(i, i + steps)));
+        }
+        return Promise.all(promises);
+      }
     },
   },
 };

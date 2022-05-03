@@ -32,7 +32,6 @@ export default {
   },
   props: {
     headline: String,
-    results: Array,
     details: Array,
   },
   updated() {
