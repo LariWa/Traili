@@ -10,16 +10,15 @@
             componentRestrictions: { country: 'swe' },
           }"
         >
-          <template v-slot:input="slotProps">
+          <template v-slot:default="slotProps">
             <v-text-field
               label="search for location..."
               ref="input"
               :value="searchText"
               v-on:listeners="slotProps.listeners"
               v-on:attrs="slotProps.attrs"
-              @change="onTextChangeACB"
-              @keypress="onKeyPressedACB"
             >
+              @change="onTextChangeACB" @keypress="onKeyPressedACB" >
             </v-text-field>
           </template>
         </gmap-autocomplete>
