@@ -1,1 +1,31 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<svg id="Group_3" data-name="Group 3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="43.827" height="49.194" viewBox="0 0 43.827 49.194">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path_3" data-name="Path 3" d="M1953.462,253.381l16.9-17.391,11.675,12.194-1.533,3.765-24.515,4.066Z" transform="translate(-1953.462 -235.99)" fill="#fff"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path id="Path_4" data-name="Path 4" d="M1953.087,245.351l1.577,4.612,10.869-2.073,4.512-4.5-9.005-5.792-12.377,3.778Z" transform="translate(-1948.662 -237.597)" fill="red"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <path id="Path_5" data-name="Path 5" d="M1952.411,256.316l5.838-7.757,3.265,5.683-5.28,5.517,11.948,14.623,21.907-15.244.316-30.219-22.746-3.731-18.385,4.846-2.7,19.026Z" transform="translate(-1946.579 -225.189)" fill="red" opacity="0.187"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_1" data-name="Mask Group 1" transform="translate(9.435 14.806)" clip-path="url(#clip-path)">
+    <g id="Path_1" data-name="Path 1" transform="translate(-1.992 2.755)" fill="none">
+      <path d="M18.658,0,30.308,11.562l-5.784,18.32L-.231,19.519Z" stroke="none"/>
+      <path d="M 18.6834659576416 2.561618804931641 L 2.895606994628906 18.87622833251953 L 23.40156936645508 27.46066284179688 L 28.26159477233887 12.06679534912109 L 18.6834659576416 2.561618804931641 M 18.65755844116211 -5.7220458984375e-06 L 30.30848693847656 11.56218528747559 L 24.5246467590332 29.8821849822998 L -0.2309627532958984 19.51871490478516 L 18.65755844116211 -5.7220458984375e-06 Z" stroke="none" fill="#fff"/>
+    </g>
+  </g>
+  <g id="Mask_Group_2" data-name="Mask Group 2" transform="translate(1.305 17.008)" clip-path="url(#clip-path-2)">
+    <g id="Path_2" data-name="Path 2" transform="translate(-1.231 3.294)" fill="none">
+      <path d="M13.958,0l7.817,7.676,6.142,6.031H0L5.583,8.224Z" stroke="none"/>
+      <path d="M 13.95805072784424 2.522834777832031 L 4.401861190795898 11.9074764251709 L 23.51424026489258 11.9074764251709 L 13.95805072784424 2.522834777832031 M 13.95805072784424 -3.814697265625e-06 L 27.91610145568848 13.70747566223145 L 0 13.70747566223145 L 13.95805072784424 -3.814697265625e-06 Z" stroke="none" fill="#fff"/>
+    </g>
+  </g>
+  <g id="Mask_Group_3" data-name="Mask Group 3" transform="translate(0 0)" clip-path="url(#clip-path-3)">
+    <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(6.061 6.595)" fill="none" stroke="#fff" stroke-width="1.8">
+      <circle cx="16.449" cy="16.449" r="16.449" stroke="none"/>
+      <circle cx="16.449" cy="16.449" r="15.549" fill="none"/>
+    </g>
+  </g>
+</svg>

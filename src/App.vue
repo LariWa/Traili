@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <NavBar />
 
     <v-main>
@@ -38,3 +38,6 @@ export default {
   },
 };
 </script>
+<style>
+@import './assets/styles/main.min.css'
+</style>

@@ -25,6 +25,8 @@
       :headline="'Results'"
       :results="searchResults"
       :details="promiseStateDetails.data"
+      :searchText="searchText"
+      :state="promiseState"
       @setCurrent="setCurrentACB"
     />
   </div>
@@ -89,6 +91,13 @@ export default {
       if (this.searchResults) {
         var ids = this.searchResults.map((item) => item.id);
         if (ids && ids.length > 0)
+        /*for (let id in ids) {
+          this.details.push(resolvePromise(getHikeDetails(id), this.promiseStateDetails, null));
+        }
+        
+        Promise.all(this.details).then(result => {
+          console.log({result});
+        });*/
           resolvePromise(getHikeDetails(ids), this.promiseStateDetails, null);
       }
     },
