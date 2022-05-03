@@ -8,7 +8,7 @@
       :selectedCategories="selectedCategories"
       @categoriesChanged="categoriesChanged"
       @sliderChanged="sliderChangedACB"
-      :sliders="sliders"
+      :rangeSliders="rangeSliders"
       :difficulties="difficulties"
       @checkboxChanged="difficultiesChangedACB"
       @clearFilters="clearFiltersACB"
@@ -17,8 +17,11 @@
       @changeSortingOrder="changeSortingOrderACB"
       :sortingIcon="sortingIcon"
       :sortCateg="sortCateg"
+      :sortByCateg="sortByCateg"
       @changeSortBy="changeSortByACB"
       @placeChanged="placeChangedACB"
+      :radiusSlider="radiusSlider"
+      @radiusValueChanged="changeRadiusValueACB"
     />
     <br />
     <v-divider></v-divider>
@@ -52,7 +55,7 @@ export default {
       searchText: "",
       promiseState: { data: [] },
       promiseStateDetails: { data: [] },
-      sliders: [
+      rangeSliders: [
         {
           sliderValues: [0, 13],
           range: [0, 13],
@@ -85,10 +88,17 @@ export default {
       allCategSet: true,
       sortingIcon: "mdi-sort-ascending",
       sortAsc: true,
-      sortCateg: ["title", "length", "ranking"],
-      sortByCateg: "",
+      sortCateg: ["most relevant", "title", "length", "ranking"],
+      sortByCateg: "most relevant",
       place: {},
       detailsResultsSorted: [],
+      radiusSlider: {
+        name: "Search radius",
+        unit: "km",
+        min: 5,
+        max: 100,
+        value: 50,
+      },
     };
   },
   watch: {
@@ -109,8 +119,12 @@ export default {
       }
     },
     detailsResults() {
-      if (this.detailsResults.length > 0) {
-        this.detailsResultsSorted = [...this.detailsResults].sort(this.compare);
+      this.detailsResultsSorted = [...this.detailsResults];
+      if (
+        this.detailsResults.length > 0 &&
+        this.sortByCateg != "most relevant"
+      ) {
+        this.detailsResultsSorted.sort(this.compare);
         if (!this.sortAsc) this.detailsResultsSorted.reverse();
       }
     },
@@ -142,7 +156,7 @@ export default {
         tim_e: this.getSliderValue("Duration", 1, 60),
         len_s: this.getSliderValue("Distance", 0, 1000),
         len_e: this.getSliderValue("Distance", 1, 1000),
-        radius: 5000,
+        radius: this.radiusSlider.value * 1000,
         location: this.getLocation(),
       };
     },
@@ -178,12 +192,16 @@ export default {
       this.selectedCategories = categories;
     },
     sliderChangedACB: function (value, name) {
-      var slider = this.sliders.find((element) => element.sliderName == name);
+      var slider = this.rangeSliders.find(
+        (element) => element.sliderName == name
+      );
       slider.sliderValues = value;
     },
     getSliderValue(name, index, convertVal) {
       if (!convertVal) convertVal = 1;
-      var slider = this.sliders.find((element) => element.sliderName == name);
+      var slider = this.rangeSliders.find(
+        (element) => element.sliderName == name
+      );
       if (index == 0) return slider.sliderValues[0] * convertVal;
       else {
         if (slider.sliderValues[1] == slider.range[1]) return "";
@@ -205,8 +223,10 @@ export default {
       setCurrentTour(tour, this);
     },
     clearFiltersACB() {
-      //reset sliders
-      this.sliders.forEach((slider) => (slider.sliderValues = slider.range));
+      //reset rangeSliders
+      this.rangeSliders.forEach(
+        (slider) => (slider.sliderValues = slider.range)
+      );
       //reset checkboxes
       this.difficulties.forEach((difficulty) => (difficulty.selected = true));
     },
@@ -237,7 +257,6 @@ export default {
       return "";
     },
     compare(a, b) {
-      console.log(this.sortByCateg);
       if (a[this.sortByCateg] < b[this.sortByCateg]) {
         return -1;
       }
@@ -245,6 +264,9 @@ export default {
         return 1;
       }
       return 0;
+    },
+    changeRadiusValueACB(value) {
+      this.radiusSlider.value = value;
     },
   },
 };
