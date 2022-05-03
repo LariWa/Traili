@@ -4,7 +4,6 @@ function searchHike(searchParams, category) {
   else return searchByKeyword(searchParams, category);
 }
 function searchNearBy(searchParams, category) {
-  console.log(searchParams.sortedBy);
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
@@ -26,9 +25,11 @@ function searchNearBy(searchParams, category) {
   )
     .then(treatHTTPResponseACB)
     .then(threatNearByResponse);
+  function threatNearByResponse(response) {
+    return response.result;
+  }
 }
 function searchByKeyword(searchParams, category) {
-  console.log("key" + searchParams.q);
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
@@ -63,8 +64,6 @@ function getHikeDetails(id) {
         key: key,
         project: project,
         lang: "en",
-        fullyTranslatedLangus: "en",
-
         fallback: false,
       }),
     {
@@ -86,7 +85,6 @@ function getCategories() {
       new URLSearchParams({
         key: key,
         lang: "en",
-        fallback: false,
       }),
     {
       method: "GET",
@@ -100,16 +98,13 @@ function getCategories() {
 }
 
 function treatHTTPResponseACB(response) {
-  /*TODO throw if the HTTP response is not 200, otherwise return response.json()*/
   if (response.status != 200) {
     throw "Invalid response";
   } else {
     return response.json();
   }
 }
-function threatNearByResponse(response) {
-  return response.result;
-}
+
 function threatKeywordResponse(response) {
   return response.data;
 }

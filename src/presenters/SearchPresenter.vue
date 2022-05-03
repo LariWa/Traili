@@ -31,7 +31,7 @@
       <TrailsOverview
         :headline="'Results'"
         :results="searchResults"
-        :details="promiseStateDetails.data"
+        :details="detailsResultsSorted"
         @setCurrent="setCurrentACB"
       />
     </promiseNoData>
@@ -85,9 +85,10 @@ export default {
       allCategSet: true,
       sortingIcon: "mdi-sort-ascending",
       sortAsc: true,
-      sortCateg: ["title", "distance"],
+      sortCateg: ["title", "length", "ranking"],
       sortByCateg: "",
       place: {},
+      detailsResultsSorted: [],
     };
   },
   watch: {
@@ -98,19 +99,19 @@ export default {
       if (this.searchResults) {
         var ids = this.searchResults.map((item) => item.id);
         if (ids && ids.length > 0) {
-          /*for (let id in ids) {
-          this.details.push(resolvePromise(getHikeDetails(id), this.promiseStateDetails, null));
+          var steps = 500; //avoid breaking the API
+          var promises = [];
+          for (let i = 0; i < ids.length; i += steps) {
+            promises.push(getHikeDetails(ids.slice(i, i + steps)));
+          }
+          resolvePromise(Promise.all(promises), this.promiseStateDetails);
         }
-
-        Promise.all(this.details).then(result => {
-          console.log({result});
-        });*/
-          resolvePromise(
-            getHikeDetails(ids), //avoid too many ids for api needs to be fixed
-            this.promiseStateDetails,
-            null
-          );
-        }
+      }
+    },
+    detailsResults() {
+      if (this.detailsResults.length > 0) {
+        this.detailsResultsSorted = [...this.detailsResults].sort(this.compare);
+        if (!this.sortAsc) this.detailsResultsSorted.reverse();
       }
     },
   },
@@ -118,6 +119,15 @@ export default {
     searchResults: function () {
       if (this.promiseState && this.promiseState.data)
         return this.promiseState.data;
+      else return [];
+    },
+    detailsResults: function () {
+      if (
+        this.promiseStateDetails &&
+        this.promiseStateDetails.data &&
+        this.promiseStateDetails.data.length > 0
+      )
+        return this.promiseStateDetails.data[0];
       else return [];
     },
     searchParams: function () {
@@ -132,10 +142,8 @@ export default {
         tim_e: this.getSliderValue("Duration", 1, 60),
         len_s: this.getSliderValue("Distance", 0, 1000),
         len_e: this.getSliderValue("Distance", 1, 1000),
-        sortedBy: this.getSortedByValue(),
         radius: 5000,
         location: this.getLocation(),
-        limit: 1000,
       };
     },
     categoryIds: function () {
@@ -216,18 +224,6 @@ export default {
     changeSortByACB(value) {
       this.sortByCateg = value;
     },
-    getSortedByValue() {
-      if (this.sortByCateg == "") return "";
-      var sortBy = this.sortByCateg;
-      if (
-        this.searchText == this.place.formatted_address &&
-        this.sortByCateg == "title"
-      )
-        //api uses name instead of title for nearBy call
-        sortBy = "name";
-      if (this.sortAsc) return sortBy + " asc";
-      else return sortBy + " desc";
-    },
     placeChangedACB(place) {
       this.place = place;
     },
@@ -239,6 +235,16 @@ export default {
           this.place.geometry.location.lat()
         );
       return "";
+    },
+    compare(a, b) {
+      console.log(this.sortByCateg);
+      if (a[this.sortByCateg] < b[this.sortByCateg]) {
+        return -1;
+      }
+      if (a[this.sortByCateg] > b[this.sortByCateg]) {
+        return 1;
+      }
+      return 0;
     },
   },
 };
