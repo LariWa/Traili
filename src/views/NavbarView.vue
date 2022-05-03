@@ -27,7 +27,7 @@ export default {
     },
     goToLogin: function () {
       this.$emit("toLogin");
-    },
+    },      
   },
 };
 </script>

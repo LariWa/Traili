@@ -54,6 +54,8 @@
       >
         {{ getDifficulty(details.rating.difficulty) }}
       </v-chip>
+      <v-icon v-if="addedToFav" class="mx-3 mb-3" color="pink">mdi-heart</v-icon>
+      <v-icon v-else class="mx-3 mb-3" color="grey">mdi-heart</v-icon>
     </v-card-text>
     <v-card-actions class="mb-8">
       <v-btn text color="blue darken-2"> Show More </v-btn>
@@ -67,6 +69,19 @@ export default {
   props: {
     details: Object,
   },
+
+  computed: {
+    addedToFav() {
+      var found = this.$store.state.favourites.find(element => element.id === this.details.id);
+      /* it goes to indej.js in store to favourites -> find an element and compare id with the current id*/
+      
+      if (this.$store.state.favourites.indexOf(found) != -1) {
+        return true;
+      }
+      return false;
+    }
+  },
+
   methods: {
     convertDistance,
     convertTime,
@@ -74,7 +89,7 @@ export default {
 
     setCurrentTour: function (details) {
       this.$emit("setCurrent", details);
-    },
+    },    
   },
 };
 </script>

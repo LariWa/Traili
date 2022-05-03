@@ -121,12 +121,27 @@
             <v-card-text v-if="trailInfo.rating">
               <h3>Additional Details</h3>
               <br />
-              <div>Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
-              <div>Lowest point {{ trailInfo.elevation.minAltitude }} m</div>
-              <div>
-                Difficulty: {{ getDifficulty(trailInfo.rating.difficulty) }}
+              <div class="mb-3">Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
+              <div class="mt-3 mb-3">Lowest point: {{ trailInfo.elevation.minAltitude }} m</div>
+              <div class="mt-3 mb-3">
+                Difficulty:
+                <v-chip
+                  :color="
+                    trailInfo.rating.difficulty == 1
+                      ? 'green'
+                      : trailInfo.rating.difficulty == 2
+                      ? 'yellow darken-2'
+                      : trailInfo.rating.difficulty == 3
+                      ? 'red'
+                      : 'grey darken-1'
+                  "
+                  dark
+                  small
+                >
+                  {{ getDifficulty(trailInfo.rating.difficulty) }}
+                </v-chip>
               </div>
-              <div>
+              <div class="mt-3">
                 Quality of experience:
                 <star-rating
                   :inline="true"
@@ -146,6 +161,8 @@
               <v-btn v-else class="mx-2" fab dark small color="grey" @click="addToFavACB(); snackbar = true">
                 <v-icon dark>mdi-heart</v-icon>
               </v-btn>
+
+
               <v-snackbar
                 v-model="snackbar"
                 :timeout="timeout"
@@ -163,6 +180,8 @@
                   </v-btn>
                 </template>
               </v-snackbar>
+
+              
             </v-card-text>
           </v-card>
         </v-col>
@@ -196,8 +215,9 @@
         <v-col cols="12" md="6">
           <p>Best time of year: </p>
           <v-card class="d-flex justify-space-around mb-6">
-            <div v-for="(season, index) in trailInfo.season" :key="index">{{ index }}
+            <div v-for="(season, index) in trailInfo.season" :key="index">
               <div v-if="season === true" class="green--text">{{ index }}</div>
+              <div v-else class="grey--text">{{ index }}</div>
             </div>
           </v-card>
         </v-col>
@@ -270,17 +290,6 @@ export default {
       tmp.innerHTML = str;
       return tmp.textContent || tmp.innerText || "";
     },
-    dificulty: function (value) {
-      if (value == 1) {
-        return "easy";
-      } else if (value == 2) {
-        return "moderate";
-      } else if (value == 3) {
-        return "difficult";
-      } else {
-        return "difficulty unknown";
-      }
-    },
   },
 };
 </script>
@@ -297,4 +306,15 @@ export default {
 if (this.$store.state.favourites.indexOf(found) != -1)
 
 state.favourites.splice(state.favourites.indexOf(found), 1); => remove one element
-    -->
+    /*dificulty: function (value) {
+      if (value == 1) {
+        return "easy";
+      } else if (value == 2) {
+        return "moderate";
+      } else if (value == 3) {
+        return "difficult";
+      } else {
+        return "difficulty unknown";
+      }
+    },*/-->
+    
