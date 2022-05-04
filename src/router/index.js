@@ -17,6 +17,7 @@ Vue.use(VueRouter);
 //configure router
 export default new VueRouter({
   mode: "history",
+  base: "/Traili/",
   routes: [
     { path: "/Explore", name: "explore", component: explore },
     { path: "/Search", name: "search", component: search },
