@@ -42,15 +42,15 @@ export default {
       console.log(state);
       console.log("mutation: ");
       console.log(mutation);
-      if (mutation.type === "setUID") updateModelFromFirebase(state);
+      if (mutation.type === "setUID") updateModelFromFirebase(state, store);
       if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
-        updateFirebaseFromModel(state);
+        updateFirebaseFromModel(state, store);
     });
     this.$store.dispatch("setCategories");
     this.$router.push("/Explore").catch(() => {});
   },
 
-  destroyed() {
+  beforeDestroyed() {
     unsubscribe();
   },
 };

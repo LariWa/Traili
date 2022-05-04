@@ -2,7 +2,7 @@ import "firebase/database";
 import firebaseConfig from "/src/firebaseConfig.js";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import store from "./store/index.js";
+//import store from "./store/index.js";
 //import firebase from "firebase/app";
 initializeApp(firebaseConfig);
 
@@ -25,7 +25,8 @@ function updateFirebaseFromModel(state) {
   } else console.log("cannot update model, please sign in!");
 }
 
-function updateModelFromFirebase(state) {
+function updateModelFromFirebase(state, store) {
+  console.log(store.state.UID);
   const REF = state.UID;
   if (REF && REF != "") {
     const db = getDatabase();
