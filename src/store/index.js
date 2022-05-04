@@ -102,6 +102,9 @@ export default new Vuex.Store({
         state.commit("removeFromFav", parseInt(id));
       //updateFirebaseFromModel(state.favourites); //TODO remove
     },
+    setUserEmail({commit}, email){
+      commit("setUserEmail", email);
+    },
   },
   modules: {},
 });

@@ -55,10 +55,6 @@
             return {
                 snackbar: false,
                 timeout: 2000,
-                emailRules: [
-                    v => !!v || 'E-mail is required',
-                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-                ],
             };
         },
         emits: [
@@ -74,7 +70,6 @@
 
         methods: {
             onEmailChangeACB: function (text) {
-                this.ValidateEmail();
                 this.$emit("emailTextChanged", text);
             },
             onPswChangeACB: function (text) {
@@ -93,16 +88,6 @@
             onQuitACB: function () {
                 this.$emit("onQuit");
             },
-
-            ValidateEmail: function (text) {
-                var mailformat = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/; //not working
-
-                if (mailformat.test("emailTextChanged", text)){
-                    return (true)
-                }
-                    alert("You have entered an invalid email address!")
-                    return (false)
-            }
         },
     }
 </script>
@@ -134,3 +119,19 @@
             cursor: pointer;
         }
 </style>
+
+<!--ValidateEmail: function (text) {
+                var mailformat = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/; //not working
+
+                if (mailformat.test("emailTextChanged", text)){
+                    return (true)
+                }
+                    alert("You have entered an invalid email address!")
+                    return (false)
+            }
+            
+            
+            /*emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                ],*/-->

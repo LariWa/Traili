@@ -33,7 +33,7 @@ export default {
   },
   
    methods: {
-       ...mapActions(["setUID", "setLoggedIn","clearData"]),
+       ...mapActions(["setUID", "setLoggedIn","clearData", "setUserEmail"]),
        emailChangedACB: function (text) {
                 this.emailText = text;
             },
@@ -72,12 +72,8 @@ export default {
                         this.textStatus = "User logged in";
                         console.log("user signed in:");
                         console.log(user.uid);
-                        this.$store.commit("setUID", user.uid);
-                        updateModelFromFirebase();
-                        this.$store.commit("setLoggedIn", true);
-                        this.$store.commit("setUserEmail", this.emailText);
+                        this.setUserEmail(this.emailText);
                         this.setUID(user.uid);
-                        //updateModelFromFirebase();
                         this.setLoggedIn(true);
                         this.$router.go(-1);
                         
