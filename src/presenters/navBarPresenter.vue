@@ -5,6 +5,7 @@
       @toSearch="route2SearchACB"
       @toLogin="route2LoginACB"
       @onLogOut="logOutACB"
+      @toExplore="route2ExploreACB"
     />
     <SnackBar
       @setSnackbarValue="setShowLogInMessage"
@@ -44,17 +45,21 @@ export default {
   },
   methods: {
     goToFavACB: function () {
-      if (this.$store.getters.getLoggedIn) this.$router.push("/Favourites");
+      if (this.$store.getters.getLoggedIn)
+        this.$router.push("/Favourites").catch(() => {});
       else {
         this.showingLogInMessage = true;
-        this.$router.push("/Login");
+        this.$router.push("/Login").catch(() => {});
       }
     },
     route2SearchACB: function () {
-      this.$router.push("/Search");
+      this.$router.push("/Search").catch(() => {});
     },
     route2LoginACB: function () {
-      this.$router.push("/Login");
+      this.$router.push("/Login").catch(() => {});
+    },
+    route2ExploreACB: function () {
+      this.$router.push("/Explore").catch(() => {});
     },
     logOutACB() {
         const auth = getAuth();

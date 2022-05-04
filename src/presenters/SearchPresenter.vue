@@ -1,13 +1,14 @@
 <template>
   <div>
     <search-form-view
+      :searchText="searchText"
       @searchTextChanged="searchTextChanged"
       @search="search"
       :categories="categories"
       :selectedCategories="selectedCategories"
       @categoriesChanged="categoriesChanged"
       @sliderChanged="sliderChangedACB"
-      :sliders="sliders"
+      :rangeSliders="rangeSliders"
       :difficulties="difficulties"
       @checkboxChanged="difficultiesChangedACB"
       @clearFilters="clearFiltersACB"
@@ -16,35 +17,55 @@
       @changeSortingOrder="changeSortingOrderACB"
       :sortingIcon="sortingIcon"
       :sortCateg="sortCateg"
+      :sortByCateg="sortByCateg"
       @changeSortBy="changeSortByACB"
+      @placeChanged="placeChangedACB"
+      :radiusSlider="radiusSlider"
+      @radiusValueChanged="changeRadiusValueACB"
     />
     <br />
     <v-divider></v-divider>
     <br />
-    <TrailsOverview
-      :headline="'Results'"
-      :results="searchResults"
-      :details="promiseStateDetails.data"
-      @setCurrent="setCurrentACB"
-    />
+    <p class="no-data" v-if="searchText == ''">
+      There are so many unexplored adventures waiting for you! The first step is
+      to search for a place.
+    </p>
+    <promiseNoData
+      v-if="searchText != ''"
+      :promiseState="promiseState"
+      :noDataString="'Sorry! No trails were found matching your search criteria.'"
+    >
+      <TrailsOverview
+        :headline="'Results'"
+        :teaser="
+          'We found ' +
+          detailsResultsSorted.length +
+          ' tours that might interest you!'
+        "
+        :details="detailsResultsSorted"
+        :pagination="true"
+        @setCurrent="setCurrentACB"
+      />
+    </promiseNoData>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
 import TrailsOverview from "../views/TrailsOverview.vue";
+import Footer from "../components/Footer.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
-
+import promiseNoData from "../views/promiseNoData.vue";
 export default {
-  components: { SearchFormView, TrailsOverview },
+  components: { SearchFormView, TrailsOverview, Footer, promiseNoData },
   data() {
     return {
       searchText: "",
       promiseState: { data: [] },
-      promiseStateDetails: { data: [] },
-      sliders: [
+      rangeSliders: [
         {
           sliderValues: [0, 13],
           range: [0, 13],
@@ -77,26 +98,43 @@ export default {
       allCategSet: true,
       sortingIcon: "mdi-sort-ascending",
       sortAsc: true,
-      sortCateg: ["title", "distance"],
-      sortByCateg: "",
+      sortCateg: ["most relevant", "title", "length", "ranking"],
+      sortByCateg: "most relevant",
+      place: {},
+      detailsResultsSorted: [],
+      radiusSlider: {
+        name: "Search radius",
+        unit: "km",
+        min: 5,
+        max: 100,
+        value: 50,
+      },
     };
   },
   watch: {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
     },
-    searchResults() {
-      if (this.searchResults) {
-        var ids = this.searchResults.map((item) => item.id);
-        if (ids && ids.length > 0)
-          resolvePromise(getHikeDetails(ids), this.promiseStateDetails, null);
+
+    detailsResults() {
+      this.detailsResultsSorted = [...this.detailsResults];
+      if (
+        this.detailsResults.length > 0 &&
+        this.sortByCateg != "most relevant"
+      ) {
+        this.detailsResultsSorted.sort(this.compare);
+        if (!this.sortAsc) this.detailsResultsSorted.reverse();
       }
     },
   },
   computed: {
-    searchResults: function () {
-      if (this.promiseState && this.promiseState.data)
-        return this.promiseState.data;
+    detailsResults: function () {
+      if (
+        this.promiseState &&
+        this.promiseState.data &&
+        this.promiseState.data.length > 0
+      )
+        return this.promiseState.data[0];
       else return [];
     },
     searchParams: function () {
@@ -111,7 +149,8 @@ export default {
         tim_e: this.getSliderValue("Duration", 1, 60),
         len_s: this.getSliderValue("Distance", 0, 1000),
         len_e: this.getSliderValue("Distance", 1, 1000),
-        sortedBy: this.getSortedByValue(),
+        radius: this.radiusSlider.value * 1000,
+        location: this.getLocation(),
       };
     },
     categoryIds: function () {
@@ -126,7 +165,11 @@ export default {
       this.searchText = text;
     },
     search: function () {
-      resolvePromise(this.searchPromise(), this.promiseState, null);
+      resolvePromise(
+        this.searchPromise().then(this.getDetails),
+        this.promiseState,
+        null
+      );
     },
     searchPromise: function () {
       const component = this;
@@ -138,10 +181,7 @@ export default {
         );
         return Promise.all(searchPromiseArray).then((res) => mergeResults(res));
         function mergeResults(res) {
-          return res
-            .filter((item) => item.data)
-            .map((item) => item.data)
-            .flat(1);
+          return res.filter((item) => item).flat(1);
         }
       }
     },
@@ -149,12 +189,16 @@ export default {
       this.selectedCategories = categories;
     },
     sliderChangedACB: function (value, name) {
-      var slider = this.sliders.find((element) => element.sliderName == name);
+      var slider = this.rangeSliders.find(
+        (element) => element.sliderName == name
+      );
       slider.sliderValues = value;
     },
     getSliderValue(name, index, convertVal) {
       if (!convertVal) convertVal = 1;
-      var slider = this.sliders.find((element) => element.sliderName == name);
+      var slider = this.rangeSliders.find(
+        (element) => element.sliderName == name
+      );
       if (index == 0) return slider.sliderValues[0] * convertVal;
       else {
         if (slider.sliderValues[1] == slider.range[1]) return "";
@@ -176,10 +220,14 @@ export default {
       setCurrentTour(tour, this);
     },
     clearFiltersACB() {
-      //reset sliders
-      this.sliders.forEach((slider) => (slider.sliderValues = slider.range));
+      //reset rangeSliders
+      this.rangeSliders.forEach(
+        (slider) => (slider.sliderValues = slider.range)
+      );
       //reset checkboxes
       this.difficulties.forEach((difficulty) => (difficulty.selected = true));
+      //reset search radius
+      this.radiusSlider.value = 50;
     },
     setAllCategoriesACB(select) {
       if (select) {
@@ -195,10 +243,40 @@ export default {
     changeSortByACB(value) {
       this.sortByCateg = value;
     },
-    getSortedByValue() {
-      if (this.sortByCateg == "") return "";
-      if (this.sortAsc) return this.sortByCateg + " asc";
-      else return this.sortByCateg + " desc";
+    placeChangedACB(place) {
+      this.place = place;
+    },
+    getLocation() {
+      if (this.searchText == this.place.formatted_address)
+        return (
+          this.place.geometry.location.lng() +
+          "," +
+          this.place.geometry.location.lat()
+        );
+      return "";
+    },
+    compare(a, b) {
+      if (a[this.sortByCateg] < b[this.sortByCateg]) {
+        return -1;
+      }
+      if (a[this.sortByCateg] > b[this.sortByCateg]) {
+        return 1;
+      }
+      return 0;
+    },
+    changeRadiusValueACB(value) {
+      this.radiusSlider.value = value;
+    },
+    getDetails(searchResults) {
+      var ids = searchResults.map((item) => item.id);
+      if (ids && ids.length > 0) {
+        var steps = 500; //avoid breaking the API
+        var promises = [];
+        for (let i = 0; i < ids.length; i += steps) {
+          promises.push(getHikeDetails(ids.slice(i, i + steps)));
+        }
+        return Promise.all(promises);
+      }
     },
   },
 };

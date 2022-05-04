@@ -2,7 +2,7 @@ import "firebase/database";
 import firebaseConfig from "/src/firebaseConfig.js";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import store from './store/index.js'
+import store from "./store/index.js";
 //import firebase from "firebase/app";
 initializeApp(firebaseConfig);
 
@@ -16,44 +16,35 @@ function testFirebase() {
   set(ref(db, "test2/"), "test");
 }
 
-
-
-function updateFirebaseFromModel(favourites) {
-    const REF = store.getters.getUID;
-    if (REF != "") {
-        const db = getDatabase();
-        set(ref(db, REF + "/favourites"), favourites);
-    }
-    else
-        console.log("cannot update model, please sign in!");
+function updateFirebaseFromModel(state) {
+  const REF = state.UID;
+  console.log("REF when updating firebase: " + REF);
+  if (REF && REF != "") {
+    const db = getDatabase();
+    set(ref(db, REF + "/favourites"), state.favourites);
+  } else console.log("cannot update model, please sign in!");
 }
 
-function updateModelFromFirebase() {
-    //console.log("updating")
-    const REF = store.getters.getUID;
-    //console.log("REF " + REF);
-    if (REF != "") {
-        const db = getDatabase();
-        onValue(ref(db, REF + "/favourites"), function favouritesChangedInFirebaseACB(firebaseData) {
-            var fav = firebaseData.val()
-            console.log("from firebase: ");
-            console.log(fav);
-            if (fav === null) {//never add to fav in this account
-                set(ref(db, REF + "/favourites"), []);
-            }
-            else
-                store.commit("setFav", firebaseData.val());
-
-        });
-    }
-    else
-        console.log("cannot update firebase, please sign in!");
-
+function updateModelFromFirebase(state) {
+  const REF = state.UID;
+  if (REF && REF != "") {
+    const db = getDatabase();
+    onValue(
+      ref(db, REF + "/favourites"),
+      function favouritesChangedInFirebaseACB(firebaseData) {
+        var fav = firebaseData.val();
+        if (fav === null) {
+          //never add to fav in this account
+          set(ref(db, REF + "/favourites"), []);
+        } else if (fav !== state.favourites) {
+          //avoid loop
+          store.dispatch("setFav", fav);
+          console.log("from firebase: ");
+          console.log(fav);
+        }
+      }
+    );
+  } else console.log("cannot update firebase, please sign in!");
 }
 
-
-export {
-    updateFirebaseFromModel,
-    updateModelFromFirebase,
-    testFirebase,
-};
+export { updateFirebaseFromModel, updateModelFromFirebase, testFirebase };

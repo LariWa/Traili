@@ -1,12 +1,15 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title @click="goToSearch">Trail Planner</v-toolbar-title
+    <v-app-bar class="nav-bar" app color="primary" dark>
+      <v-toolbar-title class="nav-bar-title" @click="goToExplore"
+        ><img src="../assets/logo.svg" />Traili</v-toolbar-title
       ><v-spacer></v-spacer>
       <v-btn icon @click="goToSearch">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-      <v-btn icon @click="goToFavourites"> <v-icon>mdi-heart</v-icon> </v-btn>
+      <v-btn icon @click="goToFavourites">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
 
       <v-btn icon @click="getLoggedIn">
         <v-icon>mdi-account-circle </v-icon>
@@ -73,6 +76,9 @@ export default {
       this.$emit("onLogOut");
       this.showDropdown = false;
     },   
+    goToExplore: function () {
+      this.$emit("toExplore");
+    },
   },
 };
 </script>

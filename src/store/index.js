@@ -1,15 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { getCategories as getCategoriesFetch } from "../hikeSource.js";
-import { resolvePromise } from "../resolvePromise.js";
-import { updateFirebaseFromModel } from "../firebaseModel";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     favourites: [], //array of objects
-    categoriesPromiseState: { data: [] },
+    categories: [],
     currentTour: {},
     loggedIn: false,
     UID: "", //user account id from firebase
@@ -17,14 +15,8 @@ export default new Vuex.Store({
   },
   getters: {
     getCategories(state) {
-      if (state.categoriesPromiseState.data)
-        return state.categoriesPromiseState.data;
-      else return [];
+      return state.categories;
     },
-    getCategoriesPromiseState(state) {
-      return state.categoriesPromiseState;
-    },
-
     getCurrentTour(state) {
       return state.currentTour;
     },
@@ -46,21 +38,13 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    //TODO call mutations from actions
     //synchronous
     addToFav(state, payload) {
-      if (!state.favourites.includes(payload)) state.favourites.push(payload);
-      state.favourites.forEach((fav) => console.log("add trail " + fav.id));
-      updateFirebaseFromModel(state.favourites);
+      state.favourites.push(payload);
     },
-
-    removeFromFav(state, payload) {
-      var found = state.favourites.find((element) => element.id === payload.id);
-      state.favourites.splice(state.favourites.indexOf(found), 1);
-      state.favourites.forEach((fav) => console.log("remove trail " + fav.id));
-      updateFirebaseFromModel(state.favourites);
+    removeFromFav(state, fav) {
+      state.favourites.splice(state.favourites.indexOf(fav), 1);
     },
-
     setCurrentTour(state, tour) {
       state.currentTour = tour;
     },
@@ -75,19 +59,48 @@ export default new Vuex.Store({
     },
     setUserEmail(state, email){
       state.userEmail = email;
-    }
+    },
+    setCategories(state, categories) {
+      state.categories = categories;
+    },
   },
   actions: {
     //asynchronous
-
-    async setCategories(state) {
-      resolvePromise(
-        getCategoriesFetch(),
-        state.getters.getCategoriesPromiseState
+    async setCategories({ commit }) {
+      getCategoriesFetch().then((categories) =>
+        commit("setCategories", categories)
       );
     },
-    async setCurrentTour(context, currentTour) {
-      context.commit("setCurrentTour", currentTour);
+    setCurrentTour({ commit }, currentTour) {
+      commit("setCurrentTour", currentTour);
+    },
+    setFav({ commit }, fav) {
+      commit("setFav", fav);
+    },
+    setUID({ commit }, id) {
+      commit("setUID", id);
+    },
+    setLoggedIn({ commit }, isLoggedIn) {
+      commit("setLoggedIn", isLoggedIn);
+    },
+
+    //clear user data after sign out
+    clearData({ commit }) {
+      commit("setUID", "");
+      commit("setFav", []);
+      commit("setLoggedIn", false);
+    },
+
+    addToFav(state, id) {
+      if (!state.getters.getFavourites.includes(parseInt(id))) {
+        state.commit("addToFav", parseInt(id));
+      }
+      // updateFirebaseFromModel(state.favourites); //TODO remove
+    },
+    removeFromFav(state, id) {
+      if (state.getters.getFavourites.includes(parseInt(id)))
+        state.commit("removeFromFav", parseInt(id));
+      //updateFirebaseFromModel(state.favourites); //TODO remove
     },
   },
   modules: {},
