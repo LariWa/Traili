@@ -270,7 +270,7 @@ export default {
       // var found = this.$store.state.favourites.includes(this.trailInfo.id);
       /* it goes to indej.js in store to favourites -> find an element and compare id with the current id*/
 
-      if (this.$store.state.favourites.includes(this.trailInfo.id)) {
+      if (this.$store.state.favourites.includes(parseInt(this.trailInfo.id))) {
         return true;
       }
       return false;
