@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <h1>{{ headline }}</h1>
-    <v-row class="masonry">
+  <div class="overview-container">
+    <h2>{{ headline }}</h2>
+    <p class="col-sm-12 col-md-7">{{ teaser }}</p>
+    <v-row>
       <div
-        class="col-sm-12 col-md-4 col card"
+        class="col-sm-12 col-md-4 col card-layout"
         v-for="(detail, idx) in pagedAssets"
         :key="idx"
       >
@@ -13,13 +14,17 @@
         ></TrailOverviewCard>
       </div>
     </v-row>
-    <v-pagination v-model="page" :length="numPages"></v-pagination>
+    <v-pagination
+      v-if="pagination"
+      color="blue-grey lighten-2"
+      v-model="page"
+      :length="numPages"
+    ></v-pagination>
   </div>
 </template>
 
 <script>
 import TrailOverviewCard from "../components/TrailOverviewCard.vue";
-import Masonry from "masonry-layout";
 
 export default {
   name: "TrailsOverview",
@@ -32,13 +37,9 @@ export default {
   },
   props: {
     headline: String,
+    teaser: String,
     details: Array,
-  },
-  updated() {
-    this.createMasonry();
-  },
-  mounted: function () {
-    this.createMasonry();
+    pagination: Boolean,
   },
   computed: {
     numPages() {
@@ -53,11 +54,6 @@ export default {
   methods: {
     setCurrentTour: function (details) {
       this.$emit("setCurrent", details);
-    },
-    createMasonry: function () {
-      this.masonry = new Masonry(".masonry", {
-        itemSelector: "[class*='col-']",
-      });
     },
   },
 };

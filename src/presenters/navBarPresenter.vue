@@ -4,6 +4,7 @@
       @toFav="goToFavACB"
       @toSearch="route2SearchACB"
       @toLogin="route2LoginACB"
+      @toExplore="route2ExploreACB"
     />
     <SnackBar
       @setSnackbarValue="setShowLogInMessage"
@@ -50,6 +51,9 @@ export default {
     },
     route2LoginACB: function () {
       this.$router.push("/Login");
+    },
+    route2ExploreACB: function () {
+      this.$router.push("/Explore").catch(() => {});
     },
     setShowLogInMessage: function (value) {
       this.showingLogInMessage = value;

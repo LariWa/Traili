@@ -26,29 +26,41 @@
     <br />
     <v-divider></v-divider>
     <br />
-
+    <v-text class="no-data" v-if="searchText == ''"
+      >There are so many unexplored adventures waiting to be had! The first step
+      is to search for a place.</v-text
+    >
     <promiseNoData
+      v-if="searchText != ''"
       :promiseState="promiseState"
       :noDataString="'Sorry! No trails were found matching your search criteria.'"
     >
       <TrailsOverview
         :headline="'Results'"
+        :teaser="
+          'We found ' +
+          detailsResultsSorted.length +
+          ' tours that might interest you!'
+        "
         :details="detailsResultsSorted"
+        :pagination="true"
         @setCurrent="setCurrentACB"
       />
     </promiseNoData>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
 import TrailsOverview from "../views/TrailsOverview.vue";
+import Footer from "../components/Footer.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
 import promiseNoData from "../views/promiseNoData.vue";
 export default {
-  components: { SearchFormView, TrailsOverview, promiseNoData },
+  components: { SearchFormView, TrailsOverview, Footer, promiseNoData },
   data() {
     return {
       searchText: "",

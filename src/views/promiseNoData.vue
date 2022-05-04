@@ -1,8 +1,12 @@
 <template>
-  <div v-if="!promiseState || !promiseState.promise">{{ noDataString }}</div>
-  <div v-else-if="promiseState.error">{{ promiseState.error }}</div>
+  <div v-if="!promiseState || !promiseState.promise" class="no-data">
+    {{ noDataString }}
+  </div>
+  <div v-else-if="promiseState.error" class="error">
+    {{ promiseState.error }}
+  </div>
   <!-- TODO add loading gif -->
-  <div v-else-if="!promiseState.data">Loading</div>
+  <div v-else-if="!promiseState.data" class="loading">Loading...</div>
   <div v-else>
     <slot />
   </div>
