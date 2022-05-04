@@ -3,7 +3,7 @@
 $six-caps: 'Six Caps', sans-serif
 $josefin-sans: 'Josefin Sans', sans-serif
 
-$primary: #294336
+$primary: #54737C
 $secondary: #E6A000
 $background: transparent linear-gradient(119deg, rgba(41, 67, 54, 0.7) 0%, rgba(19, 31, 25, 0.7) 100%) 0% 0% no-repeat padding-box
 
@@ -66,8 +66,9 @@ footer
   font-family: $josefin-sans !important
 
 .nav-bar
-  background-color: #54737C !important
+  background-color: $primary !important
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important
+  z-index: 20 !important
 
 .nav-bar-title
   font-family: $six-caps
@@ -104,6 +105,8 @@ footer
     padding: 0 30px !important
   .v-card__text
     padding-bottom: 12px !important
+    &:first-of-type
+      padding-bottom: 0px !important
   .v-rating
     margin-top: -10px
 
@@ -116,7 +119,7 @@ footer
 
 .difficulty
   width: 100%
-  margin: 10px auto 15px auto
+  margin: 10px auto 20px auto
   span
     margin: auto
 
@@ -127,3 +130,14 @@ footer
 
 .v-pagination
   padding-bottom: 30px
+
+.detail-container
+  .col
+    padding: 0
+  .v-parallax
+    margin-top: -13vh
+  .back-button
+    z-index: 10
+    margin: 10px
+  .v-img > .v-card__text
+    color: $secondary !important

@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <v-btn class="ml-2 mb-10" small @click="backACB"> Go Back </v-btn>
+  <div class="detail-container">
+    <v-btn class="ml-2 mb-10 back-button" small @click="backACB">
+      Go Back
+    </v-btn>
 
-    <v-container v-if="trailInfo">
+    <div v-if="trailInfo">
       <v-row>
         <v-col cols="12">
           <v-parallax
@@ -37,7 +39,6 @@
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
-              style="color: #2196f3"
               v-if="trailInfo.time"
             >
               <div>Time: {{ convertTime(trailInfo.time.min) }} h</div>
@@ -55,7 +56,6 @@
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
-              style="color: #2196f3"
               v-if="trailInfo.length"
             >
               <div>Length: {{ convertDistance(trailInfo.length) }} km</div>
@@ -73,7 +73,6 @@
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
-              style="color: #2196f3"
               v-if="trailInfo.elevation"
             >
               <div>Ascent: {{ trailInfo.elevation.ascent }} m</div>
@@ -91,7 +90,6 @@
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
-              style="color: #2196f3"
               v-if="trailInfo.elevation"
             >
               <div>Descent: {{ trailInfo.elevation.descent }} m</div>
@@ -186,11 +184,7 @@
         </v-col>
       </v-row>
       <v-row wrap>
-        <v-col cols="12" md="6">
-          <VueWeather></VueWeather>
-        </v-col>
-
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
           <v-card>
             <v-carousel height="300px" v-if="trailInfo.images">
               <v-carousel-item
@@ -222,6 +216,10 @@
         </v-col>
       </v-row>
 
+      <v-col cols="12" md="6">
+        <VueWeather></VueWeather>
+      </v-col>
+
       <v-row>
         <v-col cols="12" md="6">
           <p>Best time of year:</p>
@@ -233,7 +231,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
   </div>
 </template>
 
