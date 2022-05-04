@@ -17,18 +17,18 @@ export default {
   },
   methods: {
     ...mapActions(["addToFav", "removeFromFav"]),
-    onAddToFav: function (trail) {
-      //console.log("onAddToFav " + trail);
+    onAddToFav: function (id) {
+      console.log("onAddToFav " + id);
       if (checkLogin()) {
-        this.addToFav(trail);
+        this.addToFav(id);
       } else this.$router.push("/Login");
     },
     onReturn: function () {
       this.$router.go(-1);
     },
 
-    onRemoveFromFav: function (trail) {
-      this.removeFromFav(trail);
+    onRemoveFromFav: function (id) {
+      this.removeFromFav(id);
     },
   },
 };

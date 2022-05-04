@@ -2,12 +2,26 @@
   <div>
     <v-row>
       <v-col>
-        <v-text-field
-          label="search for locations.."
-          hide-details="auto"
-          @change="onTextChangeACB"
-          @keypress="onKeyPressedACB"
-        ></v-text-field>
+        <gmap-autocomplete
+          class="introInput"
+          @place_changed="getAddressData"
+          :options="{
+            fields: ['geometry', 'formatted_address'],
+            componentRestrictions: { country: 'swe' },
+          }"
+        >
+          <template v-slot:default="slotProps">
+            <v-text-field
+              label="search for location..."
+              ref="input"
+              :value="searchText"
+              v-on:listeners="slotProps.listeners"
+              v-on:attrs="slotProps.attrs"
+            >
+              @change="onTextChangeACB" @keypress="onKeyPressedACB" >
+            </v-text-field>
+          </template>
+        </gmap-autocomplete>
       </v-col>
       <v-col>
         <v-combobox
@@ -50,7 +64,7 @@
               <v-btn icon @click="clearFiltersACB">
                 <v-icon>mdi-replay</v-icon>
               </v-btn>
-              <div v-for="slider in this.sliders" :key="slider.name">
+              <div v-for="slider in this.rangeSliders" :key="slider.name">
                 <RangeSlider
                   :range="slider.range"
                   :values="slider.sliderValues"
@@ -68,12 +82,30 @@
                   @change="checkBoxChangedACB($event, difficulty.name)"
                 ></v-checkbox>
               </div>
+              <div>
+                <span>{{ radiusSlider.name }} </span>
+                <span class="text-caption">in {{ radiusSlider.unit }}</span>
+                <span class="float-right">
+                  {{ radiusSlider.value + radiusSlider.unit }}
+                </span>
+                <v-slider
+                  :max="radiusSlider.max"
+                  :min="radiusSlider.min"
+                  :value="radiusSlider.value"
+                  @input="radiusSliderChangedACB"
+                ></v-slider>
+              </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
       <v-col>
-        <v-select :items="sortCateg" label="Sort by" @change="changeSortByACB">
+        <v-select
+          :items="sortCateg"
+          :value="sortByCateg"
+          label="Sort by"
+          @change="changeSortByACB"
+        >
         </v-select>
       </v-col>
       <v-col>
@@ -90,18 +122,22 @@
 
 <script>
 import RangeSlider from "../components/rangeSlider.vue";
+
 export default {
   components: {
     RangeSlider,
   },
   props: {
-    sliders: Array,
+    searchText: String,
+    rangeSliders: Array,
     difficulties: Array,
     selectedCategories: Array,
     categories: Array,
     allCategSet: Boolean,
     sortingIcon: String,
     sortCateg: Array,
+    radiusSlider: Object,
+    sortByCateg: String,
   },
   data() {
     return {
@@ -117,6 +153,8 @@ export default {
     "clearFilters",
     "changeSortingOrder",
     "changeSortBy",
+    "placeChanged",
+    "radiusValueChanged",
   ],
   methods: {
     onTextChangeACB: function (text) {
@@ -154,6 +192,31 @@ export default {
     changeSortByACB(value) {
       this.$emit("changeSortBy", value);
     },
+    getAddressData(place) {
+      this.$emit("placeChanged", place);
+      this.$emit("searchTextChanged", place.formatted_address);
+    },
+    radiusSliderChangedACB(value) {
+      this.$emit("radiusValueChanged", value);
+    },
   },
 };
 </script>
+<style>
+/* Hide google placeholder */
+input::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+input::-moz-placeholder {
+  opacity: 0;
+}
+
+input::-ms-input-placeholder {
+  opacity: 0;
+}
+
+input::-moz-placeholder {
+  opacity: 0;
+}
+</style>

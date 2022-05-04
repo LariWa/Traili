@@ -3,26 +3,145 @@
 $six-caps: 'Six Caps', sans-serif
 $josefin-sans: 'Josefin Sans', sans-serif
 
-$primary: #294336
+$primary: #54737C
 $secondary: #E6A000
-$background: transparent linear-gradient(119deg, #294336 0%, #131F19 100%) 0% 0% no-repeat padding-box
+$background: transparent linear-gradient(119deg, rgba(41, 67, 54, 0.7) 0%, rgba(19, 31, 25, 0.7) 100%) 0% 0% no-repeat padding-box
+
+.container, .container--fluid, .row
+  margin: 0 !important
+  padding: 0 !important
+
+h2
+  font-size: 28px
+  text-transform: uppercase
+  margin-top: 50px
+
+header
+  background-image: url(../header.png)
+  background-size: cover
+  height: 93vh
+  width: 100vw
+  top: 0
+  left: 0
+  color: white
+  text-transform: uppercase
+  @media screen and (max-width: 800px)
+    height: 60vh
+  @media screen and (max-width: 500px)
+    height: 43vh
+  h1
+    font-family: $six-caps
+    font-size: 25vw
+    font-weight: 300
+    margin: -7vw 0 0 15vw
+    float: none
+  h2
+    font-size: 2.3vw
+    font-weight: 300
+    margin: -6.5vw 0 0 16.7vw
+  p
+    padding: 15vh 0 0 20.8vw
+    font-size: 1.8vw
+    color: $secondary
+  .line
+    height: 0.2vw
+    width: 4vw
+    margin: 16.7vh 0 0 15vw
+    background: $secondary
+    position: absolute
+    @media screen and (max-width: 800px)
+      margin-top: 16vh
+    @media screen and (max-width: 500px)
+      margin-top: 15.6vh
+
+footer
+  background-image: url(../footer.png)
+  background-size: cover
+  height: 18vh
+  width: 100vw
+  bottom: 0
+  position: absolute
 
 .app
   font-family: $josefin-sans !important
 
 .nav-bar
-  background: $background
-  box-shadow: none !important
+  background-color: $primary !important
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important
+  z-index: 20 !important
 
 .nav-bar-title
   font-family: $six-caps
-  font-size: 23px
+  font-size: 28px
   img
     height: 40px
-    margin: -11px 10px
+    margin: -14px 10px
+
+.spacing
+  height: 19vh
+
+.no-data, .error, .loading
+  margin: 5vw 10vh
+  text-align: center
+  display: block
 
 .card
+  border-radius: 15px !important
+  text-align: center
+  min-height: 290px
+  p, .card-title
+    padding: 0 auto
+    display: block
+  p
+    margin: auto
+  hr
+    width: 70%
+    opacity: 0.5
+    margin-left: 15%
+    margin-top: -12px
+  button
+    margin: 5px auto 10px auto
+  .card-title, .card-text, .v-card__text
+    padding: 0 30px !important
+  .v-card__text
+    padding-bottom: 12px !important
+    &:first-of-type
+      padding-bottom: 0px !important
+  .v-rating
+    margin-top: -10px
+
+.card-layout
   float: left
 
-.masonry
+.card-title
+  line-height: 25px !important
+  margin-top: 30px
+
+.difficulty
+  width: 100%
+  margin: 10px auto 20px auto
+  span
+    margin: auto
+
+.overview-container
+  margin: 0 10vw
+  h2, .teaser
+    padding: 0 12px
+
+.v-pagination
+  padding-bottom: 30px
+
+.detail-container
+  .col
+    padding: 0
+  .v-parallax
+    margin-top: -13vh
+  .back-button
+    z-index: 10
+    margin: 10px
+  .v-img > .v-card__text
+    color: $secondary !important
+
+.not-found
   display: block
+  text-align: center

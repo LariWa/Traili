@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="2" @click="setCurrentTour(details)">
+  <v-card elevation="4" @click="setCurrentTour(details)" class="card">
     <v-img
       :src="
         details.primaryImage
@@ -18,28 +18,12 @@
         </v-row>
       </template>
     </v-img>
-    <v-card-title>
+    <v-card-title class="card-title">
       {{ details.title }}
     </v-card-title>
-    <v-card-subtitle v-html="details.shortText">
-      <!-- {{ details.shortText }} -->
-    </v-card-subtitle>
-    <v-card-text class="d-flex flex-wrap">
-      Rating:
-      <v-rating
-        :value="details.rating.qualityOfExperience"
-        color="amber"
-        dense
-        half-increments
-        readonly
-        small
-      ></v-rating>
-      <p class="ml-3 mr-3">-</p>
-      <p>Time: {{ convertTime(details.time.min) }} h</p>
-      <p class="ml-3 mr-3">-</p>
-      <p>Length: {{ convertDistance(details.length) }} km</p>
-      <p class="ml-3 mr-3">-</p>
+    <v-card-text class="d-flex flex-wrap card-text">
       <v-chip
+        class="difficulty"
         :color="
           details.rating.difficulty == 1
             ? 'green'
@@ -54,9 +38,28 @@
       >
         {{ getDifficulty(details.rating.difficulty) }}
       </v-chip>
+      <v-icon v-if="addedToFav" class="mx-3 mb-3" color="pink">mdi-heart</v-icon>
+      <v-icon v-else class="mx-3 mb-3" color="grey">mdi-heart</v-icon>
+      <v-card-text>Time: {{ convertTime(details.time.min) }} h</v-card-text>
+      <v-card-text
+        >Length: {{ convertDistance(details.length) }} km</v-card-text
+      >
+      <v-card-text
+        >Rating:
+        <v-rating
+          :value="details.rating.qualityOfExperience"
+          background-color="blue-grey lighten-2"
+          color="amber"
+          dense
+          half-increments
+          readonly
+          small
+        ></v-rating>
+      </v-card-text>
     </v-card-text>
+    <hr />
     <v-card-actions class="mb-8">
-      <v-btn text color="blue darken-2"> Show More </v-btn>
+      <v-btn text color="blue-grey lighten-2"> Show More </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -67,6 +70,19 @@ export default {
   props: {
     details: Object,
   },
+
+  computed: {
+    addedToFav() {
+      var found = this.$store.state.favourites.find(element => element.id === this.details.id);
+      /* it goes to indej.js in store to favourites -> find an element and compare id with the current id*/
+      
+      if (this.$store.state.favourites.indexOf(found) != -1) {
+        return true;
+      }
+      return false;
+    }
+  },
+
   methods: {
     convertDistance,
     convertTime,
@@ -74,7 +90,7 @@ export default {
 
     setCurrentTour: function (details) {
       this.$emit("setCurrent", details);
-    },
+    },    
   },
 };
 </script>

@@ -1,5 +1,35 @@
 import { project, key } from "./hikeAPIConfig.js";
 function searchHike(searchParams, category) {
+  if (searchParams.location) return searchNearBy(searchParams, category);
+  else return searchByKeyword(searchParams, category);
+}
+function searchNearBy(searchParams, category) {
+  return fetch(
+    "https://www.outdooractive.com/api/project/" +
+      project +
+      "/nearby/tour?" +
+      new URLSearchParams({
+        category: category,
+        key: key,
+        lang: "en",
+        fallback: false,
+      }) +
+      "&" +
+      new URLSearchParams(searchParams),
+    {
+      method: "GET", // HTTP method
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  )
+    .then(treatHTTPResponseACB)
+    .then(threatNearByResponse);
+  function threatNearByResponse(response) {
+    return response.result;
+  }
+}
+function searchByKeyword(searchParams, category) {
   return fetch(
     "https://www.outdooractive.com/api/project/" +
       project +
@@ -18,7 +48,9 @@ function searchHike(searchParams, category) {
         Accept: "application/json",
       },
     }
-  ).then(treatHTTPResponseACB);
+  )
+    .then(treatHTTPResponseACB)
+    .then(threatKeywordResponse);
 }
 
 function getHikeDetails(id) {
@@ -32,8 +64,6 @@ function getHikeDetails(id) {
         key: key,
         project: project,
         lang: "en",
-        fullyTranslatedLangus: "en",
-
         fallback: false,
       }),
     {
@@ -55,7 +85,6 @@ function getCategories() {
       new URLSearchParams({
         key: key,
         lang: "en",
-        fallback: false,
       }),
     {
       method: "GET",
@@ -69,18 +98,20 @@ function getCategories() {
 }
 
 function treatHTTPResponseACB(response) {
-  /*TODO throw if the HTTP response is not 200, otherwise return response.json()*/
   if (response.status != 200) {
     throw "Invalid response";
   } else {
     return response.json();
   }
 }
+
+function threatKeywordResponse(response) {
+  return response.data;
+}
 function treatCategoriesResponse(response) {
   return response.category;
 }
 function treatHikeResponse(response) {
-  // if (response.tour.length == 1) return response.tour[0];
   return response.tour;
 }
 export { searchHike, getHikeDetails, getCategories };
