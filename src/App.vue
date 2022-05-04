@@ -47,7 +47,7 @@ export default {
         updateFirebaseFromModel(state);
     });
     this.$store.dispatch("setCategories");
-    this.$router.push("/Explore");
+    this.$router.push("/Explore").catch(() => {});
   },
 
   destroyed() {
