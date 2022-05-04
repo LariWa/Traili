@@ -7,6 +7,8 @@
                         <h3>LOG IN</h3>
                     </v-col>
                     <v-col>
+                        
+                        
                         <v-snackbar v-model="snackbar"
                                     :timeout="timeout">
                             {{this.textStatus}}
@@ -19,7 +21,9 @@
                                     Close
                                 </v-btn>
                             </template>
-                        </v-snackbar>
+                        </v-snackbar> 
+
+
                     </v-col>
                     <v-col>
                         <v-btn icon @click="onQuitACB">
@@ -50,7 +54,11 @@
         data() {
             return {
                 snackbar: false,
-                timeout: 2000
+                timeout: 2000,
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                ],
             };
         },
         emits: [
@@ -61,9 +69,12 @@
             "onQuit",
             "onLogOut",
         ],
+        components: {
+        },
 
         methods: {
             onEmailChangeACB: function (text) {
+                this.ValidateEmail();
                 this.$emit("emailTextChanged", text);
             },
             onPswChangeACB: function (text) {
@@ -81,6 +92,16 @@
             },
             onQuitACB: function () {
                 this.$emit("onQuit");
+            },
+
+            ValidateEmail: function (text) {
+                var mailformat = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/; //not working
+
+                if (mailformat.test("emailTextChanged", text)){
+                    return (true)
+                }
+                    alert("You have entered an invalid email address!")
+                    return (false)
             }
         },
     }

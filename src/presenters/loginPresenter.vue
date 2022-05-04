@@ -74,7 +74,9 @@ export default {
                         this.$store.commit("setUID", user.uid);
                         updateModelFromFirebase();
                         this.$store.commit("setLoggedIn", true);
+                        this.$store.commit("setUserEmail", this.emailText);
                         this.$router.go(-1);
+                        
                     })
                     .catch((error) => {
                         const errorCode = error.code;

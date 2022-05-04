@@ -13,6 +13,7 @@ export default new Vuex.Store({
     currentTour: {},
     loggedIn: false,
     UID: "", //user account id from firebase
+    userEmail: "",
   },
   getters: {
     getCategories(state) {
@@ -72,6 +73,9 @@ export default new Vuex.Store({
     setFav(state, fav) {
       state.favourites = fav;
     },
+    setUserEmail(state, email){
+      state.userEmail = email;
+    }
   },
   actions: {
     //asynchronous
