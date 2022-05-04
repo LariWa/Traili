@@ -26,10 +26,10 @@
     <br />
     <v-divider></v-divider>
     <br />
-    <v-text class="no-data" v-if="searchText == ''"
-      >There are so many unexplored adventures waiting for you! The first step
-      is to search for a place.</v-text
-    >
+    <p class="no-data" v-if="searchText == ''">
+      There are so many unexplored adventures waiting for you! The first step is
+      to search for a place.
+    </p>
     <promiseNoData
       v-if="searchText != ''"
       :promiseState="promiseState"
