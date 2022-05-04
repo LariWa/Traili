@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="not-found">
     <h2>Ooopps!</h2>
     <p>Looks like you are lost!</p>
-    <button @click="goToExplore">Go back to Landing Page</button>
+    <v-btn @click="goToExplore">Go back to Landing Page</v-btn>
   </div>
 </template>
 <script>
