@@ -36,7 +36,7 @@ export default {
   props: {
     headline: String,
     results: Array,
-    details: Array,
+    details: Array,//display doesn't change with props, don't know why?????????
     searchText: String,
     state: Object,
   },
