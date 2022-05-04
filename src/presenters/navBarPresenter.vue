@@ -4,6 +4,7 @@
       @toFav="goToFavACB"
       @toSearch="route2SearchACB"
       @toLogin="route2LoginACB"
+      @onLogOut="logOutACB"
       @toExplore="route2ExploreACB"
     />
     <SnackBar
@@ -15,14 +16,19 @@
 </template>
 
 <script>
-//import loginPresenter from "../presenters/loginPresenter.vue";
 import NavbarView from "../views/NavbarView.vue";
 import SnackBar from "../components/Snackbar.vue";
+import {
+        getAuth,
+        signOut
+    }
+    from "firebase/auth";
+import { mapActions } from "vuex";
+
 export default {
   components: {
     NavbarView,
     SnackBar,
-    //loginPresenter
   },
 
   data() {
@@ -39,6 +45,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["clearData"]),
     goToFavACB: function () {
       if (this.$store.getters.getLoggedIn)
         this.$router.push("/Favourites").catch(() => {});
@@ -56,9 +63,22 @@ export default {
     route2ExploreACB: function () {
       this.$router.push("/Explore").catch(() => {});
     },
+    logOutACB() {
+        const auth = getAuth();
+            signOut(auth).then(() => {
+                this.clearData();//update firebase where there is a mutuation, so firebase data is deleted as well???
+                this.textStatus = "sign out!";
+                console.log("sign out");
+                this.$router.go(-1);
+            }).catch((error) => {
+                const errorMessage = error.message;
+                this.textStatus = errorMessage;
+                console.error("log out error: " + errorMessage);
+            });
+    },
     setShowLogInMessage: function (value) {
       this.showingLogInMessage = value;
-    },
+    }
   },
 };
 </script>

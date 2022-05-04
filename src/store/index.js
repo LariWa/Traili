@@ -11,6 +11,7 @@ export default new Vuex.Store({
     currentTour: {},
     loggedIn: false,
     UID: "", //user account id from firebase
+    userEmail: "",
   },
   getters: {
     getCategories(state) {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     setFav(state, fav) {
       state.favourites = fav;
     },
+    setUserEmail(state, email){
+      state.userEmail = email;
+    },
     setCategories(state, categories) {
       state.categories = categories;
     },
@@ -97,6 +101,9 @@ export default new Vuex.Store({
       if (state.getters.getFavourites.includes(parseInt(id)))
         state.commit("removeFromFav", parseInt(id));
       //updateFirebaseFromModel(state.favourites); //TODO remove
+    },
+    setUserEmail({commit}, email){
+      commit("setUserEmail", email);
     },
   },
   modules: {},
