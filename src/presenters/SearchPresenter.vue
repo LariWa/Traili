@@ -27,7 +27,7 @@
     <v-divider></v-divider>
     <br />
     <v-text class="no-data" v-if="searchText == ''"
-      >There are so many unexplored adventures waiting to be had! The first step
+      >There are so many unexplored adventures waiting for you! The first step
       is to search for a place.</v-text
     >
     <promiseNoData
