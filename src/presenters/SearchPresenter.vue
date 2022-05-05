@@ -34,6 +34,7 @@
       v-if="searchText != ''"
       :promiseState="promiseState"
       :noDataString="'Sorry! No trails were found matching your search criteria.'"
+      :actionNotStartedString="'Click search to find trails matching your criteria.'"
     >
       <TrailsOverview
         :headline="'Results'"
@@ -64,7 +65,7 @@ export default {
   data() {
     return {
       searchText: "",
-      promiseState: { data: [] },
+      promiseState: { data: null, error: null, promise: null },
       rangeSliders: [
         {
           sliderValues: [0, 13],
