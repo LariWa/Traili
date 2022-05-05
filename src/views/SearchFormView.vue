@@ -10,6 +10,7 @@
             componentRestrictions: { country: 'swe' },
           }"
         >
+          >
           <template v-slot:default="slotProps">
             <v-text-field
               label="search for location..."
@@ -17,8 +18,10 @@
               :value="searchText"
               v-on:listeners="slotProps.listeners"
               v-on:attrs="slotProps.attrs"
+              @change="onTextChangeACB"
+              @keypress="onKeyPressedACB"
             >
-              @change="onTextChangeACB" @keypress="onKeyPressedACB" >
+              >
             </v-text-field>
           </template>
         </gmap-autocomplete>
@@ -158,6 +161,7 @@ export default {
   ],
   methods: {
     onTextChangeACB: function (text) {
+      console.log(text);
       this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
@@ -193,8 +197,10 @@ export default {
       this.$emit("changeSortBy", value);
     },
     getAddressData(place) {
-      this.$emit("placeChanged", place);
-      this.$emit("searchTextChanged", place.formatted_address);
+      if (place.formatted_address) {
+        this.$emit("placeChanged", place);
+        this.onTextChangeACB(place.formatted_address);
+      }
     },
     radiusSliderChangedACB(value) {
       this.$emit("radiusValueChanged", value);

@@ -135,7 +135,7 @@ export default {
         this.promiseState.data &&
         this.promiseState.data.length > 0
       )
-        return this.promiseState.data[0];
+        return this.promiseState.data;
       else return [];
     },
     searchParams: function () {
@@ -167,10 +167,18 @@ export default {
     },
     search: function () {
       resolvePromise(
-        this.searchPromise().then(this.getDetails),
+        this.searchPromise()
+          .then(this.getDetails)
+          .then((res) => {
+            return this.flatResult(res);
+          }),
         this.promiseState,
         null
       );
+    },
+    flatResult(result) {
+      if (result) return result.flat(1);
+      else return result;
     },
     searchPromise: function () {
       const component = this;
