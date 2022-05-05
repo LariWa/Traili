@@ -60,12 +60,15 @@ import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
 import promiseNoData from "../views/promiseNoData.vue";
+import { getCategories } from "../hikeSource";
 export default {
   components: { SearchFormView, TrailsOverview, Footer, promiseNoData },
   data() {
     return {
       searchText: "",
       promiseState: { data: null, error: null, promise: null },
+      categoryPromiseState: { data: null, error: null, promise: null },
+
       rangeSliders: [
         {
           sliderValues: [0, 13],
@@ -111,6 +114,9 @@ export default {
         value: 50,
       },
     };
+  },
+  mounted() {
+    resolvePromise(getCategories(), this.categoryPromiseState);
   },
   watch: {
     categories() {
@@ -158,7 +164,8 @@ export default {
       return this.categoryNamesToIds(this.selectedCategories);
     },
     categories() {
-      return this.$store.getters.getCategories.map((item) => item.name);
+      if (!this.categoryPromiseState.data) return [];
+      return this.categoryPromiseState.data.map((item) => item.name);
     },
   },
   methods: {
@@ -221,7 +228,7 @@ export default {
       difficulty.selected = value;
     },
     categoryNamesToIds(names) {
-      return this.$store.getters.getCategories
+      return this.categoryPromiseState.data
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
     },

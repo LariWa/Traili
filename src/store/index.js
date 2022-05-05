@@ -1,22 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { getCategories as getCategoriesFetch } from "../hikeSource.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     favourites: [], //array of objects
-    categories: [],
     currentTour: {},
     loggedIn: false,
     UID: "", //user account id from firebase
     userEmail: "",
   },
   getters: {
-    getCategories(state) {
-      return state.categories;
-    },
     getCurrentTour(state) {
       return state.currentTour;
     },
@@ -63,17 +58,10 @@ export default new Vuex.Store({
     setUserEmail(state, email) {
       state.userEmail = email;
     },
-    setCategories(state, categories) {
-      state.categories = categories;
-    },
   },
   actions: {
     //asynchronous
-    async setCategories({ commit }) {
-      getCategoriesFetch().then((categories) =>
-        commit("setCategories", categories)
-      );
-    },
+
     setCurrentTour({ commit }, currentTour) {
       commit("setCurrentTour", currentTour);
     },

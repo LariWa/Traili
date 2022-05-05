@@ -14,7 +14,6 @@
 
 <script>
 import {
-  testFirebase,
   updateModelFromFirebase,
   updateFirebaseFromModel,
 } from "./firebaseModel";
@@ -38,7 +37,6 @@ export default {
   }),
 
   mounted() {
-    testFirebase();
     //persistence
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -61,7 +59,6 @@ export default {
       if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
         updateFirebaseFromModel(store);
     });
-    this.$store.dispatch("setCategories");
     this.$router.push("/Explore").catch(() => {});
   },
 
