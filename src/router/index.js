@@ -26,4 +26,8 @@ export default new VueRouter({
     { path: "/Login", name: "login", component: login },
     { path: "*", name: "pageNotFound", component: pageNotFound },
   ],
+  scrollBehavior() {
+    // always scroll to top
+    return { x: 0, y: 0 };
+  },
 });
