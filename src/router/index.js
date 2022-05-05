@@ -16,7 +16,7 @@ Vue.use(VueRouter);
 
 //configure router
 export default new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: "/Traili/",
   routes: [
     { path: "/Explore", name: "explore", component: explore },
