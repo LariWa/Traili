@@ -21,23 +21,18 @@
             <v-text-field
               type="text "
               label="Email"
-
               :value="email"
               :rules="emailRules"
               required
-
               @change="onEmailChangeACB"
             ></v-text-field>
             <v-text-field
               type="password"
               label="Password"
-
               :value="password"
               :counter="6"
               :rules="passwordRules"
               required
-
-
               @change="onPswChangeACB"
             ></v-text-field>
           </v-form>
@@ -46,12 +41,9 @@
         <v-divider></v-divider>
 
         <v-card-actions>
-            <v-btn @click="onLoginACB">Login</v-btn>
-            <v-btn @click="onCreateACB">Create</v-btn>
+          <v-btn @click="onLoginACB">Login</v-btn>
+          <v-btn @click="onCreateACB">Create</v-btn>
         </v-card-actions>
-
-
-
       </v-card>
     </v-dialog>
   </div>
@@ -63,14 +55,10 @@ export default {
     textStatus: String,
     showLogInPopUp: Boolean,
 
-
     email: String,
     emailRules: Array,
     password: String,
     passwordRules: Array,
-
-
-
   },
   data() {
     return {
@@ -108,7 +96,7 @@ export default {
     },
     onQuitACB: function () {
       this.$emit("onQuit");
-      this.dialog=false;
+      this.dialog = false;
     },
   },
 };

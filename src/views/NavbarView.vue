@@ -11,10 +11,11 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn icon @click="getLoggedIn">
+      <v-btn v-if="loggedIn" icon @click="setShowLoggedInViewACB(true)">
         <v-icon>mdi-account-circle </v-icon>
       </v-btn>
       <login-view
+        v-if="!loggedIn"
         @emailTextChanged="onEmailChangeACB"
         @pswTextChanged="onPswChangeACB"
         @onCreate="onCreateACB"
@@ -28,20 +29,6 @@
         :password="password"
         :passwordRules="passwordRules"
       />
-
-      <div v-if="showDropdown" class="sign-out-dropdown">
-        <v-card>
-          <v-navigation-drawer permanent expand-on-hover>
-            <v-list-item link>
-              <v-list-item-content>
-                {{ userEmail }}
-                <br />
-                <v-btn @click="onLogOutACB">Sign out</v-btn>
-              </v-list-item-content>
-            </v-list-item>
-          </v-navigation-drawer>
-        </v-card>
-      </div>
     </v-app-bar>
   </div>
 </template>
@@ -51,7 +38,6 @@ import loginView from "./loginView.vue";
 export default {
   components: { loginView },
   name: "NavbarView",
-  emits: ["toLogin", "toSearch", "toFav", "onLogOut"],
   data: function () {
     return {
       showDropdown: false,
@@ -61,11 +47,12 @@ export default {
     "emailTextChanged",
     "pswTextChanged",
     "onCreate",
-    "onLogin",
+    "toLogin",
     "onQuit",
     "onLogOut",
     "toSearch",
     "toFav",
+    "showLoggedInView",
   ],
 
   props: {
@@ -74,6 +61,7 @@ export default {
     emailRules: Array,
     password: String,
     passwordRules: Array,
+    loggedIn: Boolean,
   },
 
   computed: {
@@ -128,6 +116,9 @@ export default {
 
     setShowLogInACB: function (value) {
       this.$emit("setShowLogIn", value);
+    },
+    setShowLoggedInViewACB(value) {
+      this.$emit("setShowLoggedInView", value);
     },
   },
 };

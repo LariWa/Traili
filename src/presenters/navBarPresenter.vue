@@ -16,6 +16,8 @@
       :emailRules="emailRules"
       :password="password"
       :passwordRules="passwordRules"
+      :loggedIn="loggedIn"
+      @setShowLoggedInView="setShowLoggedInViewACB"
     />
     <SnackBar
       @setSnackbarValue="setShowLogInMessage"
@@ -23,9 +25,9 @@
       :text="'Please log in to see your favourite trails'"
     />
     <logged-in-view
-      @showLoggedInView="showLoggedInViewACB"
+      @showLoggedInView="setShowLoggedInViewACB"
       :name="name"
-      :email="email"
+      :email="userEmail"
       :avatarInitials="avatarInitials"
       :showLoggedInView="showLoggedInView"
       @onLogOut="logOutACB"
@@ -40,10 +42,16 @@
 import NavbarView from "../views/NavbarView.vue";
 import SnackBar from "../components/Snackbar.vue";
 
-import { getAuth, signOut } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { mapActions } from "vuex";
 import LoggedInView from "@/views/loggedInView.vue";
 import emailToName from "email-to-name";
+import LoginView from "@/views/loginView.vue";
 export default {
   components: {
     NavbarView,
@@ -55,7 +63,7 @@ export default {
   data() {
     return {
       showingLogInMessage: false,
-      showLoggedInView: true,
+      showLoggedInView: false,
       emailText: "",
       pswText: "",
       textStatus: "",
@@ -81,11 +89,11 @@ export default {
       else if (this.showingLogInMessage) return true;
       return false;
     },
-    email: function () {
+    userEmail: function () {
       return this.$store.getters.getEmail;
     },
     name: function () {
-      return emailToName.process(this.email);
+      return emailToName.process(this.userEmail);
     },
     avatarInitials: function () {
       return this.name
@@ -93,15 +101,17 @@ export default {
         .join("")
         .toUpperCase();
     },
+    loggedIn: function () {
+      return this.$store.getters.getLoggedIn;
+    },
   },
   methods: {
     ...mapActions(["setUID", "setLoggedIn", "clearData", "setUserEmail"]),
     goToFavACB: function () {
-      if (this.$store.getters.getLoggedIn)
-        this.$router.push("/Favourites").catch(() => {});
+      if (this.loggedIn) this.$router.push("/Favourites").catch(() => {});
       else {
         this.showingLogInMessage = true;
-        this.$router.push("/Login").catch(() => {});
+        this.showLogInPopUp = true;
       }
     },
 
@@ -160,7 +170,6 @@ export default {
           this.setUserEmail(this.emailText);
           this.setUID(user.uid);
           this.setLoggedIn(true);
-          this.$router.go(-1);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -177,7 +186,6 @@ export default {
           this.clearData(); //update firebase where there is a mutuation, so firebase data is deleted as well???
           this.textStatus = "sign out!";
           console.log("sign out");
-          this.$router.go(-1);
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -188,7 +196,7 @@ export default {
     setShowLogInMessage: function (value) {
       this.showingLogInMessage = value;
     },
-    showLoggedInViewACB: function (value) {
+    setShowLoggedInViewACB: function (value) {
       this.showLoggedInView = value;
     },
   },

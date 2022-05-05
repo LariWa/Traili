@@ -8,11 +8,10 @@
     right
   >
     <template v-slot:prepend>
-      <v-list-item three-line>
+      <v-list-item two-line>
         <v-list-item-avatar color="#033">
           <span class="white--text text-h5">{{ avatarInitials }}</span>
         </v-list-item-avatar>
-
         <v-list-item-content>
           <v-list-item-title>{{ name }}</v-list-item-title>
           <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
@@ -22,7 +21,7 @@
 
     <v-divider></v-divider>
     <div class="text-center">
-      <v-btn class="justify-center" @click="onLogOutACB">Sign out</v-btn>
+      <v-btn @click="onLogOutACB">Sign out</v-btn>
     </div>
   </v-navigation-drawer>
 </template>
