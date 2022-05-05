@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div>
         <login-view       @emailTextChanged="emailChangedACB"
                           @pswTextChanged="pswChangedACB"
@@ -102,4 +102,4 @@ export default {
         },
    },
 }
-</script>
+</script>-->

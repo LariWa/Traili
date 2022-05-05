@@ -11,44 +11,74 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn icon @click="getLoggedIn">
-        <v-icon>mdi-account-circle </v-icon>
-      </v-btn>
-      
+      <login-view
+        @emailTextChanged="onEmailChangeACB"
+        @pswTextChanged="onPswChangeACB"
+        @onCreate="onCreateACB"
+        @onLogin="onLoginACB"
+        @setShowLogIn="setShowLogInACB"
+        @onLogOut="onLogOutACB"
+        :textStatus="''"
+        :showLogInPopUp="showLogInPopUp"
+        :email="email"
+        :emailRules="emailRules"
+        :password="password"
+        :passwordRules="passwordRules"
+      />
+
       <div v-if="showDropdown" class="sign-out-dropdown">
         <v-card>
           <v-navigation-drawer permanent expand-on-hover>
             <v-list-item link>
               <v-list-item-content>
                 {{ userEmail }}
-                <br/>
+                <br />
                 <v-btn @click="onLogOutACB">Sign out</v-btn>
               </v-list-item-content>
             </v-list-item>
           </v-navigation-drawer>
         </v-card>
       </div>
-
     </v-app-bar>
   </div>
 </template>
 <script>
-
+import loginView from "./loginView.vue";
 
 export default {
+  components: { loginView },
   name: "NavbarView",
-  emits: ["toLogin", "toSearch", "toFav", "onLogOut"],
   data: function () {
     return {
       showDropdown: false,
-    }
+    };
+  },
+  emits: [
+    "emailTextChanged",
+    "pswTextChanged",
+    "onCreate",
+    "onLogin",
+    "onQuit",
+    "onLogOut",
+    "toSearch",
+    "toFav",
+  ],
+
+  props: {
+    showLogInPopUp: Boolean,
+    email: String,
+    emailRules: Array,
+    password: String,
+    passwordRules: Array,
   },
 
   computed: {
-    userEmail: function() {
+    userEmail: function () {
       console.log(" userEmail " + this.$store.state.userEmail);
       return this.$store.state.userEmail;
-    }
+    },
+    /*have to put this into presenter*/
+    /*in presenter sth like :textStatus="textStatus" */
   },
 
   methods: {
@@ -60,50 +90,41 @@ export default {
     },
     goToLogin: function () {
       this.$emit("toLogin");
-    },   
+    },
     getLoggedIn: function () {
       var loggedIn = this.$store.state.loggedIn;
 
       if (!loggedIn) {
         this.goToLogin();
-        
-      }
-      else {
+      } else {
         this.showDropdown = true;
       }
     },
     onLogOutACB: function () {
       this.$emit("onLogOut");
       this.showDropdown = false;
-    },   
+    },
     goToExplore: function () {
       this.$emit("toExplore");
+    },
+
+    onEmailChangeACB: function (text) {
+      this.$emit("emailTextChanged", text);
+    },
+    onPswChangeACB: function (text) {
+      this.$emit("pswTextChanged", text);
+    },
+    onCreateACB: function () {
+      this.$emit("onCreate");
+      this.snackbar = false;
+    },
+    onLoginACB: function () {
+      this.$emit("onLogin");
+    },
+
+    setShowLogInACB: function (value) {
+      this.$emit("setShowLogIn", value);
     },
   },
 };
 </script>
-
-<!--<style scoped>
-  .sign-out-dropdown{
-    
-  }
-
-</style>-->
-<!--<v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <v-icon></v-icon>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              {{ userEmail }}
-              <br/>
-              <v-btn @click="onLogOutACB">Sign out</v-btn>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>-->
-
-        <!--<v-card>
-          <v-btn @click="onLogOutACB">Sign out</v-btn>
-          <br/>
-          {{ userEmail }}
-        </v-card>-->

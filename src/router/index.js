@@ -4,7 +4,7 @@ import explore from "../presenters/ExplorePresenter.vue";
 import search from "../presenters/SearchPresenter.vue";
 import details from "../presenters/TrailDetailsPresenter.vue";
 import favourites from "../presenters/FavouritePresenter.vue";
-import login from "../presenters/loginPresenter.vue";
+//import login from "../presenters/loginPresenter.vue";
 import pageNotFound from "../presenters/PageNotFoundPresenter.vue";
 const originalReplace = VueRouter.prototype.replace;
 
@@ -23,7 +23,7 @@ export default new VueRouter({
     { path: "/Search", name: "search", component: search },
     { path: "/TrialDetails", name: "details", component: details },
     { path: "/Favourites", name: "favourites", component: favourites },
-    { path: "/Login", name: "login", component: login },
+    //{ path: "/Login", name: "login", component: login },
     { path: "*", name: "pageNotFound", component: pageNotFound },
   ],
 });
