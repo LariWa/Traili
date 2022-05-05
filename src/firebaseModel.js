@@ -16,18 +16,17 @@ function testFirebase() {
   set(ref(db, "test2/"), "test");
 }
 
-function updateFirebaseFromModel(state) {
-  const REF = state.UID;
+function updateFirebaseFromModel(store) {
+  const REF = store.getters.getUID;
   console.log("REF when updating firebase: " + REF);
   if (REF && REF != "") {
     const db = getDatabase();
-    set(ref(db, REF + "/favourites"), state.favourites);
+    set(ref(db, REF + "/favourites"), store.getters.getFavourites);
   } else console.log("cannot update model, please sign in!");
 }
 
-function updateModelFromFirebase(state, store) {
-  console.log(store.state.UID);
-  const REF = state.UID;
+function updateModelFromFirebase(store) {
+  const REF = store.getters.getUID;
   if (REF && REF != "") {
     const db = getDatabase();
     onValue(
@@ -37,7 +36,7 @@ function updateModelFromFirebase(state, store) {
         if (fav === null) {
           //never add to fav in this account
           set(ref(db, REF + "/favourites"), []);
-        } else if (fav !== state.favourites) {
+        } else if (fav !== store.getters.getFavourites) {
           //avoid loop
           store.dispatch("setFav", fav);
           console.log("from firebase: ");

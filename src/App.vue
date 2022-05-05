@@ -20,6 +20,8 @@ import {
 } from "./firebaseModel";
 import NavBar from "./presenters/navBarPresenter.vue";
 import store from "./store/index.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 var unsubscribe;
 
 export default {
@@ -37,14 +39,27 @@ export default {
 
   mounted() {
     testFirebase();
+    //persistence
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+              //save user info
+            this.$store.dispatch("setUID", user.uid);
+            this.$store.dispatch("setLoggedIn", true);
+        }
+        else{
+            console.log("no user in on auth state change");
+          }
+      });
+
     unsubscribe = store.subscribe((mutation, state) => {
       console.log("subscribe: ");
       console.log(state);
       console.log("mutation: ");
       console.log(mutation);
-      if (mutation.type === "setUID") updateModelFromFirebase(state, store);
+      if (mutation.type === "setUID") updateModelFromFirebase(store);
       if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
-        updateFirebaseFromModel(state, store);
+        updateFirebaseFromModel(store);
     });
     this.$store.dispatch("setCategories");
     this.$router.push("/Explore").catch(() => {});

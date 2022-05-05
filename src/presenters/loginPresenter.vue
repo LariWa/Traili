@@ -16,7 +16,9 @@ import {
         getAuth,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
-        signOut
+        signOut,
+        //browserLocalPersistence,
+        //setPersistence
     }
         from "firebase/auth";
 //import { updateModelFromFirebase } from "../firebaseModel";
@@ -63,9 +65,9 @@ export default {
                     });
             },
        loginACB: function () {
-                const auth = getAuth();
+           const auth = getAuth();
                 //sign in
-                signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
+           signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
                     .then((userCredential) => {
                         // Signed in
                         const user = userCredential.user;
