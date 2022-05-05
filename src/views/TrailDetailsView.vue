@@ -317,27 +317,4 @@ export default {
   },
 };
 </script>
-
-<!--
-    <div v-for="(element, index) in trailInfo.wayType.elements" :key="index">
-        {{ element.title }}
-        </div>
-
-    {{trailInfo.wayType.elements[0].title}}
-//splice() method changes the contents of an array by removing or replacing existing elements
-//indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present.
-if (this.$store.state.favourites.indexOf(found) != -1)
-
-state.favourites.splice(state.favourites.indexOf(found), 1); => remove one element
-    /*dificulty: function (value) {
-      if (value == 1) {
-        return "easy";
-      } else if (value == 2) {
-        return "moderate";
-      } else if (value == 3) {
-        return "difficult";
-      } else {
-        return "difficulty unknown";
-      }
-    },*/-->
     
