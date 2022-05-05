@@ -32,15 +32,12 @@ export default {
       promiseState: { data: null, error: null, promise: null },
     };
   },
+  mounted() {
+    this.loadFavourites();
+  },
   watch: {
     favouriteTrails() {
-      if (this.favouriteTrails.length > 0)
-        resolvePromise(getHikeDetails(this.favouriteTrails), this.promiseState);
-      else {
-        this.promiseState.data = null;
-        this.promiseState.error = null;
-        this.promiseState.promise = null;
-      }
+      this.loadFavourites();
     },
   },
   computed: {
@@ -55,6 +52,15 @@ export default {
   methods: {
     setCurrentACB(id) {
       setCurrentTour(id, this);
+    },
+    loadFavourites() {
+      if (this.favouriteTrails.length > 0)
+        resolvePromise(getHikeDetails(this.favouriteTrails), this.promiseState);
+      else {
+        this.promiseState.data = null;
+        this.promiseState.error = null;
+        this.promiseState.promise = null;
+      }
     },
   },
 };
