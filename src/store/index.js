@@ -35,6 +35,9 @@ export default new Vuex.Store({
     getLoggedIn(state) {
       return state.loggedIn;
     },
+    getEmail(state) {
+      return state.userEmail;
+    },
   },
 
   mutations: {
@@ -57,7 +60,7 @@ export default new Vuex.Store({
     setFav(state, fav) {
       state.favourites = fav;
     },
-    setUserEmail(state, email){
+    setUserEmail(state, email) {
       state.userEmail = email;
     },
     setCategories(state, categories) {
@@ -102,7 +105,7 @@ export default new Vuex.Store({
         state.commit("removeFromFav", parseInt(id));
       //updateFirebaseFromModel(state.favourites); //TODO remove
     },
-    setUserEmail({commit}, email){
+    setUserEmail({ commit }, email) {
       commit("setUserEmail", email);
     },
   },

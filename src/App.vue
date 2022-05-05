@@ -1,9 +1,9 @@
 <template>
   <v-app class="app">
-    <NavBar />
-
     <v-main>
+      <NavBar />
       <v-container fluid>
+        <!-- <logged-in-view /> -->
         <keep-alive>
           <router-view />
         </keep-alive>
