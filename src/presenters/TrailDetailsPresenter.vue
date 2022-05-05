@@ -8,7 +8,6 @@
 
 <script>
 import TrailDetails from "../views/TrailDetailsView.vue";
-import { checkLogin } from "../authen/sign";
 import { mapActions } from "vuex";
 export default {
   components: { TrailDetails },
@@ -18,8 +17,9 @@ export default {
   methods: {
     ...mapActions(["addToFav", "removeFromFav"]),
     onAddToFav: function (id) {
-      console.log("onAddToFav " + id);
-      if (checkLogin()) {
+        console.log("onAddToFav " + id + " logged in? " + this.$store.getters.getLoggedIn);
+
+        if (this.$store.getters.getLoggedIn) {
         this.addToFav(id);
       } else this.$router.push("/Login");
     },

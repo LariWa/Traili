@@ -14,7 +14,6 @@
 
 <script>
 import {
-  testFirebase,
   updateModelFromFirebase,
   updateFirebaseFromModel,
 } from "./firebaseModel";
@@ -38,7 +37,6 @@ export default {
   }),
 
   mounted() {
-    testFirebase();
     //persistence
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -52,11 +50,11 @@ export default {
           }
       });
 
-    unsubscribe = store.subscribe((mutation, state) => {
-      console.log("subscribe: ");
-      console.log(state);
-      console.log("mutation: ");
-      console.log(mutation);
+    unsubscribe = store.subscribe((mutation, ) => {
+      //console.log("subscribe: ");
+      //console.log(state);
+      //console.log("mutation: ");
+      //console.log(mutation);
       if (mutation.type === "setUID") updateModelFromFirebase(store);
       if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
         updateFirebaseFromModel(store);

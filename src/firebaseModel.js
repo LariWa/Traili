@@ -6,19 +6,10 @@ import { getDatabase, ref, set, onValue } from "firebase/database";
 //import firebase from "firebase/app";
 initializeApp(firebaseConfig);
 
-function testFirebase() {
-  // firebase // why is this not working?
-  //   .database()
-  //   .ref("test" + "/test")
-  //   .set("dummy");
-
-  const db = getDatabase();
-  set(ref(db, "test2/"), "test");
-}
 
 function updateFirebaseFromModel(store) {
   const REF = store.getters.getUID;
-  console.log("REF when updating firebase: " + REF);
+  //console.log("REF when updating firebase: " + REF);
   if (REF && REF != "") {
     const db = getDatabase();
     set(ref(db, REF + "/favourites"), store.getters.getFavourites);
@@ -39,12 +30,12 @@ function updateModelFromFirebase(store) {
         } else if (fav !== store.getters.getFavourites) {
           //avoid loop
           store.dispatch("setFav", fav);
-          console.log("from firebase: ");
-          console.log(fav);
+          //console.log("from firebase: ");
+          //console.log(fav);
         }
       }
     );
   } else console.log("cannot update firebase, please sign in!");
 }
 
-export { updateFirebaseFromModel, updateModelFromFirebase, testFirebase };
+export { updateFirebaseFromModel, updateModelFromFirebase};

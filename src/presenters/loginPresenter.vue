@@ -49,11 +49,11 @@ export default {
                 const auth = getAuth();
                 //create new
                 createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)
-                    .then((userCredential) => {
+                    .then(() => {
                         // Signed in
-                        const user = userCredential.user;
+                        //const user = userCredential.user;
                         this.textStatus="User created";
-                        console.log(user);
+                        //console.log(user);
                         this.loginACB();
                     })
                     .catch((error) => {
@@ -72,8 +72,8 @@ export default {
                         // Signed in
                         const user = userCredential.user;
                         this.textStatus = "User logged in";
-                        console.log("user signed in:");
-                        console.log(user.uid);
+                        //console.log("user signed in:");
+                        //console.log(user.uid);
                         this.setUserEmail(this.emailText);
                         this.setUID(user.uid);
                         this.setLoggedIn(true);
@@ -94,7 +94,7 @@ export default {
             signOut(auth).then(() => {
                 this.clearData();//update firebase where there is a mutuation, so firebase data is deleted as well???
                 this.textStatus = "sign out!";
-                console.log("sign out");
+                //console.log("sign out");
                 this.$router.go(-1);
             }).catch((error) => {
                 const errorMessage = error.message;
