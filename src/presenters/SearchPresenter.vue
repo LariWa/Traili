@@ -34,6 +34,7 @@
       v-if="searchText != ''"
       :promiseState="promiseState"
       :noDataString="'Sorry! No trails were found matching your search criteria.'"
+      :actionNotStartedString="'Click search to find trails matching your criteria.'"
     >
       <TrailsOverview
         :headline="'Results'"
@@ -59,12 +60,15 @@ import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
 import promiseNoData from "../views/promiseNoData.vue";
+import { getCategories } from "../hikeSource";
 export default {
   components: { SearchFormView, TrailsOverview, Footer, promiseNoData },
   data() {
     return {
       searchText: "",
-      promiseState: { data: [] },
+      promiseState: { data: null, error: null, promise: null },
+      categoryPromiseState: { data: null, error: null, promise: null },
+
       rangeSliders: [
         {
           sliderValues: [0, 13],
@@ -111,6 +115,9 @@ export default {
       },
     };
   },
+  mounted() {
+    resolvePromise(getCategories(), this.categoryPromiseState);
+  },
   watch: {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
@@ -134,7 +141,7 @@ export default {
         this.promiseState.data &&
         this.promiseState.data.length > 0
       )
-        return this.promiseState.data[0];
+        return this.promiseState.data;
       else return [];
     },
     searchParams: function () {
@@ -157,7 +164,8 @@ export default {
       return this.categoryNamesToIds(this.selectedCategories);
     },
     categories() {
-      return this.$store.getters.getCategories.map((item) => item.name);
+      if (!this.categoryPromiseState.data) return [];
+      return this.categoryPromiseState.data.map((item) => item.name);
     },
   },
   methods: {
@@ -166,10 +174,18 @@ export default {
     },
     search: function () {
       resolvePromise(
-        this.searchPromise().then(this.getDetails),
+        this.searchPromise()
+          .then(this.getDetails)
+          .then((res) => {
+            return this.flatResult(res);
+          }),
         this.promiseState,
         null
       );
+    },
+    flatResult(result) {
+      if (result) return result.flat(1);
+      else return result;
     },
     searchPromise: function () {
       const component = this;
@@ -212,7 +228,7 @@ export default {
       difficulty.selected = value;
     },
     categoryNamesToIds(names) {
-      return this.$store.getters.getCategories
+      return this.categoryPromiseState.data
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
     },

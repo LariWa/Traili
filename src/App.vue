@@ -1,9 +1,9 @@
 <template>
   <v-app class="app">
-    <NavBar />
-
     <v-main>
+      <NavBar />
       <v-container fluid>
+        <!-- <logged-in-view /> -->
         <keep-alive>
           <router-view />
         </keep-alive>
@@ -40,15 +40,15 @@ export default {
     //persistence
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-              //save user info
-            this.$store.dispatch("setUID", user.uid);
-            this.$store.dispatch("setLoggedIn", true);
-        }
-        else{
-            console.log("no user in on auth state change");
-          }
-      });
+      if (user) {
+        //save user info
+        this.$store.dispatch("setUID", user.uid);
+        this.$store.dispatch("setLoggedIn", true);
+        this.$store.dispatch("setUserEmail", user.email);
+      } else {
+        console.log("no user in on auth state change");
+      }
+    });
 
     unsubscribe = store.subscribe((mutation, ) => {
       //console.log("subscribe: ");
@@ -59,7 +59,6 @@ export default {
       if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
         updateFirebaseFromModel(store);
     });
-    this.$store.dispatch("setCategories");
     this.$router.push("/Explore").catch(() => {});
   },
 

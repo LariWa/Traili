@@ -7,7 +7,8 @@ function resolvePromise(promiseToResolve, promiseState, notifyACB) {
   function saveDataACB(result) {
     if (promiseState.promise !== promiseToResolve) return;
     /* TODO save result in promiseState, as before */
-    promiseState.data = result;
+    if (!result) promiseState.data = [];
+    else promiseState.data = result;
     //console.log("search result: %o",result);
     if (notifyACB) notifyACB();
   }
