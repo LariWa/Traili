@@ -20,9 +20,9 @@
       @setShowLoggedInView="setShowLoggedInViewACB"
     />
     <SnackBar
-      @setSnackbarValue="setShowLogInMessage"
-      :showSnackbar="showLogInMessage"
-      :text="'Please log in to see your favourite trails'"
+      @setSnackbarValue="setSnackbarValueACB"
+      :showSnackbar="showSnackbar"
+      :text="snackbarText"
     />
     <logged-in-view
       @showLoggedInView="setShowLoggedInViewACB"
@@ -80,6 +80,8 @@ export default {
         (v) =>
           (v && v.length >= 6) || "Password must be more than 6 characters",
       ],
+      showSnackbar: false,
+      snackbarText: "",
     };
   },
 
@@ -110,7 +112,10 @@ export default {
     goToFavACB: function () {
       if (this.loggedIn) this.$router.push("/Favourites").catch(() => {});
       else {
-        this.showingLogInMessage = true;
+        this.setSnackbarSettings(
+          true,
+          "Please log in to see your favourite trails!"
+        );
         this.showLogInPopUp = true;
       }
     },
@@ -170,6 +175,7 @@ export default {
           this.setUserEmail(this.emailText);
           this.setUID(user.uid);
           this.setLoggedIn(true);
+          this.setSnackbarSettings(true, "You are now logged in!");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -186,6 +192,8 @@ export default {
           this.clearData(); //update firebase where there is a mutuation, so firebase data is deleted as well???
           this.textStatus = "sign out!";
           console.log("sign out");
+          this.showLoggedInView = false;
+          this.setSnackbarSettings(true, "You are now logged out!");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -198,6 +206,13 @@ export default {
     },
     setShowLoggedInViewACB: function (value) {
       this.showLoggedInView = value;
+    },
+    setSnackbarValueACB: function (value) {
+      this.showSnackbar = value;
+    },
+    setSnackbarSettings(visibility, text) {
+      this.showSnackbar = visibility;
+      this.snackbarText = text;
     },
   },
 };
