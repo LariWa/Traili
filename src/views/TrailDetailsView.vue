@@ -19,15 +19,10 @@
             "
             lazy-src="https://picsum.photos/id/11/100/60"
           >
-            <!--<v-overlay absolute :value="overlay">-->
             <h1 align="center" justify="center">{{ trailInfo.title }}</h1>
-            <!--</v-overlay>-->
           </v-parallax>
         </v-col>
       </v-row>
-
-      <!--src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"-->
-
       <v-row class="white" wrap>
         <v-col cols="6" md="3">
           <v-card class="white" flat>
@@ -35,7 +30,7 @@
               style="margin: auto"
               max-height="60px"
               max-width="60px"
-              :src="iconOne"
+              src="https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png"
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
@@ -52,7 +47,7 @@
               style="margin: auto"
               max-height="60px"
               max-width="60px"
-              :src="iconTwo"
+              src="https://static.thenounproject.com/png/2325457-200.png"
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
@@ -69,7 +64,7 @@
               style="margin: auto"
               max-height="60px"
               max-width="60px"
-              :src="iconThree"
+              src="https://static.thenounproject.com/png/209086-200.png"
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
@@ -86,7 +81,7 @@
               style="margin: auto"
               max-height="60px"
               max-width="60px"
-              :src="iconThree"
+              src="https://static.thenounproject.com/png/209086-200.png"
             ></v-img>
             <v-card-text
               class="text-center font-weight-medium"
@@ -117,8 +112,12 @@
             <v-card-text v-if="trailInfo.rating">
               <h3>Additional Details</h3>
               <br />
-              <div class="mb-3">Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
-              <div class="mt-3 mb-3">Lowest point: {{ trailInfo.elevation.minAltitude }} m</div>
+              <div class="mb-3">
+                Highest point: {{ trailInfo.elevation.maxAltitude }} m
+              </div>
+              <div class="mt-3 mb-3">
+                Lowest point: {{ trailInfo.elevation.minAltitude }} m
+              </div>
               <div class="mt-3 mb-3">
                 Difficulty:
                 <v-chip
@@ -148,7 +147,6 @@
                   v-bind:rating="trailInfo.rating.qualityOfExperience"
                 >
                 </star-rating>
-                <!--If you want to pass all the properties of an object as props, you can use v-bind without an argument-->
               </div>
               <br />
               <v-btn
@@ -158,10 +156,7 @@
                 dark
                 small
                 color="pink"
-                @click="
-                  removeFromFavACB();
-                  snackbar = true;
-                "
+                @click="removeFromFavACB()"
               >
                 <v-icon dark>mdi-heart</v-icon>
               </v-btn>
@@ -172,29 +167,10 @@
                 dark
                 small
                 color="grey"
-                @click="
-                  addToFavACB();
-                  snackbar = true;
-                "
+                @click="addToFavACB()"
               >
                 <v-icon dark>mdi-heart</v-icon>
               </v-btn>
-              <v-snackbar v-model="snackbar" :timeout="timeout">
-                {{ text }}
-
-                <template v-slot:action="{ attrs }">
-                  <v-btn
-                    color="blue"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar = false"
-                  >
-                    Close
-                  </v-btn>
-                </template>
-              </v-snackbar>
-
-              
             </v-card-text>
           </v-card>
         </v-col>
@@ -231,11 +207,9 @@
           </v-card>
         </v-col>
       </v-row>
-
       <v-col cols="12" md="6">
         <VueWeather></VueWeather>
       </v-col>
-
       <v-row>
         <v-col cols="12" md="6">
           <p>Best time of year:</p>
@@ -252,24 +226,11 @@
 </template>
 
 <script>
-//import trailData from "./TourDetailsExample.json";
 import VueWeather from "../presenters/weatherPresenter.vue";
 import StarRating from "vue-star-rating";
 import { convertDistance, convertTime, getDifficulty } from "../utilities";
 
 export default {
-  data() {
-    return {
-      //trailInfo: trailData.tour[0],
-      //trailInfo: this.$store.state.currentTour,
-      iconOne: "https://www.iconpacks.net/icons/1/free-time-icon-968-thumb.png",
-      iconTwo: "https://static.thenounproject.com/png/2325457-200.png",
-      iconThree: "https://static.thenounproject.com/png/209086-200.png",
-      snackbar: false,
-      text: "",
-      timeout: 2000,
-    };
-  },
   components: {
     VueWeather,
     StarRating,
@@ -283,9 +244,6 @@ export default {
       return this.$store.getters.getCurrentTour;
     },
     addedToFav() {
-      // var found = this.$store.state.favourites.includes(this.trailInfo.id);
-      /* it goes to indej.js in store to favourites -> find an element and compare id with the current id*/
-
       if (this.$store.state.favourites.includes(parseInt(this.trailInfo.id))) {
         return true;
       }
@@ -297,16 +255,13 @@ export default {
     convertDistance,
     convertTime,
     getDifficulty,
-
     backACB: function () {
       this.$emit("goBack");
     },
     addToFavACB: function () {
-      this.text = "Trail added to favourites";
       this.$emit("addToFav", this.trailInfo.id);
     },
     removeFromFavACB: function () {
-      this.text = "Trail removed from favourites";
       this.$emit("removeFromFav", this.trailInfo.id);
     },
     removeHTML: function (str) {
@@ -317,4 +272,3 @@ export default {
   },
 };
 </script>
-    
