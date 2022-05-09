@@ -34,7 +34,16 @@
     />
     <v-spacer />
 
-    <login-view> </login-view>
+
+
+
+    <login-view
+      @showError="displayErrorACB"
+      :errorAlert="errorText"
+    />
+
+
+
   </div>
 </template>
 
@@ -68,7 +77,6 @@ export default {
       pswText: "",
       textStatus: "",
       showLogInPopUp: false,
-
       email: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -82,6 +90,16 @@ export default {
       ],
       showSnackbar: false,
       snackbarText: "",
+
+
+
+
+      errorText: "",
+
+
+
+
+
     };
   },
 
@@ -127,15 +145,12 @@ export default {
       this.pswlText = text;
     },
     setShowLogInACB: function (value) {
-      //this.$router.go(-1);
       this.showLogInPopUp = value;
     },
-
     route2SearchACB: function () {
       this.$router.push("/Search").catch(() => {});
     },
     route2LoginACB: function () {
-      //this.$router.push("/Login").catch(() => {});
       this.showLogInPopUp = true;
     },
     route2ExploreACB: function () {
@@ -174,6 +189,7 @@ export default {
           console.log(user.uid);
           this.setUserEmail(this.emailText);
           this.setUID(user.uid);
+          this.showLogInPopUp = false;
           this.setLoggedIn(true);
           this.setSnackbarSettings(true, "You are now logged in!");
         })
@@ -181,7 +197,8 @@ export default {
           const errorCode = error.code;
           const errorMessage = error.message;
           this.textStatus = errorMessage;
-          alert("login error: " + errorCode + errorMessage);
+          this.displayErrorACB("login error: " + errorCode + errorMessage);
+          //alert("login error: " + errorCode + errorMessage);
         });
     },
 
@@ -214,6 +231,15 @@ export default {
       this.showSnackbar = visibility;
       this.snackbarText = text;
     },
+    
+
+
+
+
+    displayErrorACB(text) {
+      this.errorText = text;
+    },
+
   },
 };
 </script>
