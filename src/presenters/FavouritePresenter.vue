@@ -44,10 +44,6 @@ export default {
     favouriteTrails: function () {
       return this.$store.getters.getFavourites;
     },
-    results: function () {
-      if (this.favouriteTrails.length > 0) return ["hasData"];
-      else return [];
-    },
   },
   methods: {
     setCurrentACB(id) {

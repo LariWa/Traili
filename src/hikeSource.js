@@ -1,4 +1,4 @@
-import { project, key } from "./hikeAPIConfig.js";
+import { project, key } from "./APIConfig.js";
 function searchHike(searchParams, category) {
   if (searchParams.location) return searchNearBy(searchParams, category);
   else return searchByKeyword(searchParams, category);
@@ -51,6 +51,9 @@ function searchByKeyword(searchParams, category) {
   )
     .then(treatHTTPResponseACB)
     .then(threatKeywordResponse);
+  function threatKeywordResponse(response) {
+    return response.data;
+  }
 }
 
 function getHikeDetails(id) {
@@ -62,7 +65,6 @@ function getHikeDetails(id) {
       "?" +
       new URLSearchParams({
         key: key,
-        project: project,
         lang: "en",
         fallback: false,
       }),
@@ -75,6 +77,9 @@ function getHikeDetails(id) {
   )
     .then(treatHTTPResponseACB)
     .then(treatHikeResponse);
+  function treatHikeResponse(response) {
+    return response.tour;
+  }
 }
 
 function getCategories() {
@@ -95,23 +100,14 @@ function getCategories() {
   )
     .then(treatHTTPResponseACB)
     .then(treatCategoriesResponse);
-}
-
-function treatHTTPResponseACB(response) {
-  if (response.status != 200) {
-    throw "Invalid response";
-  } else {
-    return response.json();
+  function treatCategoriesResponse(response) {
+    return response.category;
   }
 }
 
-function threatKeywordResponse(response) {
-  return response.data;
+function treatHTTPResponseACB(response) {
+  if (response.status != 200) throw "Invalid response";
+  else return response.json();
 }
-function treatCategoriesResponse(response) {
-  return response.category;
-}
-function treatHikeResponse(response) {
-  return response.tour;
-}
+
 export { searchHike, getHikeDetails, getCategories };
