@@ -1,24 +1,19 @@
 <template>
   <div>
     <search-form-view
-      :searchText="searchText"
-      @searchTextChanged="searchTextChanged"
       @search="search"
+      :searchText="searchText"
+      @searchTextChanged="searchTextChangedACB"
       :categories="categories"
       :selectedCategories="selectedCategories"
-      @categoriesChanged="categoriesChanged"
-      @sliderChanged="sliderChangedACB"
+      @categoriesChanged="categoriesChangedACB"
       :rangeSliders="rangeSliders"
+      @rangeSliderChanged="sliderChangedACB"
       :difficulties="difficulties"
-      @checkboxChanged="difficultiesChangedACB"
+      @difficultiesChanged="difficultiesChangedACB"
       @clearFilters="clearFiltersACB"
       @setAllCategories="setAllCategoriesACB"
       :allCategSet="allCategSet"
-      @changeSortingOrder="changeSortingOrderACB"
-      :sortingIcon="sortingIcon"
-      :sortCateg="sortCateg"
-      :sortByCateg="sortByCateg"
-      @changeSortBy="changeSortByACB"
       @placeChanged="placeChangedACB"
       :radiusSlider="radiusSlider"
       @radiusValueChanged="changeRadiusValueACB"
@@ -46,6 +41,11 @@
         :details="detailsResultsSorted"
         :pagination="true"
         @setCurrent="setCurrentACB"
+        :sortingIcon="sortingIcon"
+        :sortCategories="sortCategories"
+        :sortByCateg="sortByCateg"
+        @changeSortBy="changeSortByACB"
+        @changeSortingOrder="changeSortingOrderACB"
       />
     </promiseNoData>
     <Footer></Footer>
@@ -102,7 +102,7 @@ export default {
       allCategSet: true,
       sortingIcon: "mdi-sort-ascending",
       sortAsc: true,
-      sortCateg: ["most relevant", "title", "length", "ranking"],
+      sortCategories: ["most relevant", "title", "length", "ranking"],
       sortByCateg: "most relevant",
       place: {},
       detailsResultsSorted: [],
@@ -122,16 +122,16 @@ export default {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
     },
+    //sort results
 
     detailsResults() {
-      this.detailsResultsSorted = [...this.detailsResults];
-      if (
-        this.detailsResults.length > 0 &&
-        this.sortByCateg != "most relevant"
-      ) {
-        this.detailsResultsSorted.sort(this.compare);
-        if (!this.sortAsc) this.detailsResultsSorted.reverse();
-      }
+      this.sortResults();
+    },
+    sortAsc() {
+      this.sortResults();
+    },
+    sortByCateg() {
+      this.sortResults();
     },
   },
   computed: {
@@ -154,10 +154,10 @@ export default {
         asc_e: this.getSliderValue("Ascent", 1),
         tim_s: this.getSliderValue("Duration", 0, 60), //in minutes
         tim_e: this.getSliderValue("Duration", 1, 60),
-        len_s: this.getSliderValue("Distance", 0, 1000),
+        len_s: this.getSliderValue("Distance", 0, 1000), //in meter
         len_e: this.getSliderValue("Distance", 1, 1000),
         radius: this.radiusSlider.value * 1000,
-        location: this.getLocation(),
+        location: this.getLocation(), //lon, lat
       };
     },
     categoryIds: function () {
@@ -169,23 +169,14 @@ export default {
     },
   },
   methods: {
-    searchTextChanged: function (text) {
-      this.searchText = text;
-    },
+    //search logic -----------------------------------------------------------------
     search: function () {
-      resolvePromise(
-        this.searchPromise()
-          .then(this.getDetails)
-          .then((res) => {
-            return this.flatResult(res);
-          }),
-        this.promiseState,
-        null
-      );
-    },
-    flatResult(result) {
-      if (result) return result.flat(1);
-      else return result;
+      if (this.searchText != "")
+        resolvePromise(
+          this.searchPromise() //get trail ids matching the search criteria
+            .then(this.getDetails), //get trail details of ids
+          this.promiseState
+        );
     },
     searchPromise: function () {
       const component = this;
@@ -201,7 +192,29 @@ export default {
         }
       }
     },
-    categoriesChanged: function (categories) {
+    getDetails(searchResults) {
+      var ids = searchResults.map((item) => item.id);
+      if (ids && ids.length > 0) {
+        var steps = 500; //avoid breaking the API
+        var promises = [];
+        for (let i = 0; i < ids.length; i += steps) {
+          promises.push(getHikeDetails(ids.slice(i, i + steps)));
+        }
+        return Promise.all(promises).then((res) => {
+          return flatResult(res); //combine all results in an array
+        });
+      }
+      function flatResult(result) {
+        if (result) return result.flat(1);
+        else return result;
+      }
+    },
+
+    //search form changes-----------------------------------------------
+    searchTextChangedACB: function (text) {
+      this.searchText = text;
+    },
+    categoriesChangedACB: function (categories) {
       this.selectedCategories = categories;
     },
     sliderChangedACB: function (value, name) {
@@ -209,6 +222,32 @@ export default {
         (element) => element.sliderName == name
       );
       slider.sliderValues = value;
+    },
+    difficultiesChangedACB(value, name) {
+      var difficulty = this.difficulties.find(
+        (element) => element.name == name
+      );
+      difficulty.selected = value;
+    },
+    placeChangedACB(place) {
+      this.place = place;
+    },
+    changeRadiusValueACB(value) {
+      this.radiusSlider.value = value;
+    },
+    changeSortByACB(value) {
+      this.sortByCateg = value;
+    },
+
+    //functions to create searchParams for API--------------------------
+    getLocation() {
+      if (this.searchText == this.place.formatted_address)
+        return (
+          this.place.geometry.location.lng() +
+          "," +
+          this.place.geometry.location.lat()
+        );
+      return "";
     },
     getSliderValue(name, index, convertVal) {
       if (!convertVal) convertVal = 1;
@@ -221,20 +260,13 @@ export default {
         else return slider.sliderValues[1] * convertVal;
       }
     },
-    difficultiesChangedACB(value, name) {
-      var difficulty = this.difficulties.find(
-        (element) => element.name == name
-      );
-      difficulty.selected = value;
-    },
     categoryNamesToIds(names) {
       return this.categoryPromiseState.data
         .filter((category) => names.includes(category.name))
         .map((item) => item.id);
     },
-    setCurrentACB(tour) {
-      setCurrentTour(tour, this);
-    },
+
+    //functions for interaction with search form (e.g. reseting filters/categories)---
     clearFiltersACB() {
       //reset rangeSliders
       this.rangeSliders.forEach(
@@ -256,42 +288,27 @@ export default {
         ? "mdi-sort-ascending"
         : "mdi-sort-descending";
     },
-    changeSortByACB(value) {
-      this.sortByCateg = value;
+
+    //go to details view if tour is selected
+    setCurrentACB(tour) {
+      setCurrentTour(tour, this);
     },
-    placeChangedACB(place) {
-      this.place = place;
-    },
-    getLocation() {
-      if (this.searchText == this.place.formatted_address)
-        return (
-          this.place.geometry.location.lng() +
-          "," +
-          this.place.geometry.location.lat()
+    sortResults() {
+      this.detailsResultsSorted = [...this.detailsResults];
+      if (
+        this.detailsResults.length > 0 &&
+        this.sortByCateg != "most relevant"
+      ) {
+        this.detailsResultsSorted.sort((a, b) =>
+          compare(a, b, this.sortByCateg)
         );
-      return "";
-    },
-    compare(a, b) {
-      if (a[this.sortByCateg] < b[this.sortByCateg]) {
-        return -1;
       }
-      if (a[this.sortByCateg] > b[this.sortByCateg]) {
-        return 1;
-      }
-      return 0;
-    },
-    changeRadiusValueACB(value) {
-      this.radiusSlider.value = value;
-    },
-    getDetails(searchResults) {
-      var ids = searchResults.map((item) => item.id);
-      if (ids && ids.length > 0) {
-        var steps = 500; //avoid breaking the API
-        var promises = [];
-        for (let i = 0; i < ids.length; i += steps) {
-          promises.push(getHikeDetails(ids.slice(i, i + steps)));
-        }
-        return Promise.all(promises);
+      if (!this.sortAsc) this.detailsResultsSorted.reverse();
+
+      function compare(a, b, sortBy) {
+        if (a[sortBy] < b[sortBy]) return -1;
+        if (a[sortBy] > b[sortBy]) return 1;
+        return 0;
       }
     },
   },

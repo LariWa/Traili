@@ -30,7 +30,7 @@
           class="clear"
           :input-value="allCategSet"
           @change="allCategChangedACB"
-          :label="'Clear/Select all fitlers'"
+          :label="'Clear/Select all categories'"
           color="blue-grey lighten-2"
         ></v-checkbox>
       </v-col>
@@ -38,7 +38,7 @@
         <h3 class="search-label">Where do you want to do it?</h3>
         <gmap-autocomplete
           class="introInput"
-          @place_changed="getAddressData"
+          @place_changed="getAddressDataACB"
           :options="{
             fields: ['geometry', 'formatted_address'],
             componentRestrictions: { country: 'swe' },
@@ -64,7 +64,7 @@
     </v-row>
     <v-row>
       <v-col class="col-12">
-        <v-expansion-panels :value="openPanels">
+        <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -77,7 +77,7 @@
                   :values="slider.sliderValues"
                   :name="slider.sliderName"
                   :unit="slider.unit"
-                  @changed="sliderChangedACB"
+                  @changed="rangeSliderChangedACB"
                 />
               </div>
               <p>Trail Difficulty</p>
@@ -106,20 +106,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
-      <v-col>
-        <v-select
-          :items="sortCateg"
-          :value="sortByCateg"
-          label="Sort by"
-          @change="changeSortByACB"
-        >
-        </v-select>
-      </v-col>
-      <v-col>
-        <v-btn icon @click="changeSortingOrderACB">
-          <v-icon>{{ sortingIcon }}</v-icon>
-        </v-btn>
-      </v-col>
+
       <v-col class="col-12">
         <v-btn id="searchBtn" class="col-12" @click="onSearchACB" color="amber"
           >Search!</v-btn
@@ -143,31 +130,22 @@ export default {
     selectedCategories: Array,
     categories: Array,
     allCategSet: Boolean,
-    sortingIcon: String,
-    sortCateg: Array,
     radiusSlider: Object,
-    sortByCateg: String,
   },
-  data() {
-    return {
-      openPanels: [],
-    };
-  },
+
   emits: [
     "searchTextChanged",
     "search",
     "categoriesChanged",
-    "sliderChanged",
-    "checkboxChanged",
+    "rangeSliderChanged",
+    "difficultiesChanged",
     "clearFilters",
-    "changeSortingOrder",
-    "changeSortBy",
+    "setAllCategories",
     "placeChanged",
     "radiusValueChanged",
   ],
   methods: {
     onTextChangeACB: function (text) {
-      console.log(text);
       this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
@@ -178,17 +156,16 @@ export default {
       }
     },
     onSearchACB: function () {
-      this.openPanels = [];
       this.$emit("search");
     },
     onDropDownChangeACB: function (value) {
       this.$emit("categoriesChanged", value);
     },
-    sliderChangedACB(value, name) {
-      this.$emit("sliderChanged", value, name);
+    rangeSliderChangedACB(value, name) {
+      this.$emit("rangeSliderChanged", value, name);
     },
     checkBoxChangedACB(value, name) {
-      this.$emit("checkboxChanged", value, name);
+      this.$emit("difficultiesChanged", value, name);
     },
     clearFiltersACB() {
       this.$emit("clearFilters");
@@ -196,14 +173,10 @@ export default {
     allCategChangedACB(value) {
       this.$emit("setAllCategories", value);
     },
-    changeSortingOrderACB() {
-      this.$emit("changeSortingOrder");
-    },
-    changeSortByACB(value) {
-      this.$emit("changeSortBy", value);
-    },
-    getAddressData(place) {
+
+    getAddressDataACB(place) {
       if (place.formatted_address) {
+        //valid place
         this.$emit("placeChanged", place);
         this.onTextChangeACB(place.formatted_address);
       }

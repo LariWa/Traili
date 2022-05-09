@@ -34,7 +34,7 @@ function getDifficulty(value) {
 function setCurrentTour(tour, component) {
   // component.$store.commit("setCurrentTourID", id);
   component.$store.dispatch("setCurrentTour", tour);
-  component.$router.push("/TrialDetails");
+  component.$router.push("/TrailDetails");
 }
 
 export {

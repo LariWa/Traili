@@ -2,6 +2,16 @@
   <div class="overview-container">
     <h2>{{ headline }}</h2>
     <p class="col-sm-12 col-md-7">{{ teaser }}</p>
+    <v-select
+      :items="sortCategories"
+      :value="sortByCateg"
+      label="Sort by"
+      @change="changeSortByACB"
+    >
+    </v-select>
+    <v-btn icon @click="changeSortingOrderACB">
+      <v-icon>{{ sortingIcon }}</v-icon>
+    </v-btn>
     <v-row>
       <div
         class="col-sm-12 col-md-4 col card-layout"
@@ -40,6 +50,9 @@ export default {
     teaser: String,
     details: Array,
     pagination: Boolean,
+    sortingIcon: String,
+    sortCategories: Array,
+    sortByCateg: String,
   },
   computed: {
     numPages() {
@@ -54,6 +67,12 @@ export default {
   methods: {
     setCurrentTour: function (details) {
       this.$emit("setCurrent", details);
+    },
+    changeSortingOrderACB() {
+      this.$emit("changeSortingOrder");
+    },
+    changeSortByACB(value) {
+      this.$emit("changeSortBy", value);
     },
   },
 };

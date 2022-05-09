@@ -21,7 +21,7 @@ export default new VueRouter({
   routes: [
     { path: "/Explore", name: "explore", component: explore },
     { path: "/Search", name: "search", component: search },
-    { path: "/TrialDetails", name: "details", component: details },
+    { path: "/TrailDetails", name: "details", component: details },
     { path: "/Favourites", name: "favourites", component: favourites },
     //{ path: "/Login", name: "login", component: login },
     { path: "*", name: "pageNotFound", component: pageNotFound },
