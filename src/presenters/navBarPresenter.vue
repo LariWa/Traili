@@ -18,6 +18,7 @@
       :passwordRules="passwordRules"
       :loggedIn="loggedIn"
       @setShowLoggedInView="setShowLoggedInViewACB"
+      :errorAlert="errorText"
     />
     <SnackBar
       @setSnackbarValue="setSnackbarValueACB"
@@ -33,17 +34,6 @@
       @onLogOut="logOutACB"
     />
     <v-spacer />
-
-
-
-
-    <login-view
-      @showError="displayErrorACB"
-      :errorAlert="errorText"
-    />
-
-
-
   </div>
 </template>
 
@@ -60,13 +50,11 @@ import {
 import { mapActions } from "vuex";
 import LoggedInView from "@/views/loggedInView.vue";
 import emailToName from "email-to-name";
-import LoginView from "@/views/loginView.vue";
 export default {
   components: {
     NavbarView,
     SnackBar,
     LoggedInView,
-    LoginView,
   },
 
   data() {
@@ -91,15 +79,7 @@ export default {
       showSnackbar: false,
       snackbarText: "",
 
-
-
-
       errorText: "",
-
-
-
-
-
     };
   },
 
@@ -231,15 +211,10 @@ export default {
       this.showSnackbar = visibility;
       this.snackbarText = text;
     },
-    
-
-
-
 
     displayErrorACB(text) {
       this.errorText = text;
     },
-
   },
 };
 </script>

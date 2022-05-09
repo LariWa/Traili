@@ -28,6 +28,7 @@
         :emailRules="emailRules"
         :password="password"
         :passwordRules="passwordRules"
+        :errorAlert="errorAlert"
       />
     </v-app-bar>
   </div>
@@ -57,6 +58,7 @@ export default {
     password: String,
     passwordRules: Array,
     loggedIn: Boolean,
+    errorAlert: String,
   },
 
   computed: {

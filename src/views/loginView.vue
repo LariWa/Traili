@@ -36,15 +36,11 @@
           </v-form>
         </v-card-text>
 
-
-
         <div @show_Error="ondisplayErrorACB">
           <v-alert type="error">
-            <p>{{errorAlert}}</p>
+            {{ errorAlert }}
           </v-alert>
         </div>
-
-
 
         <v-divider></v-divider>
         <v-card-actions>
@@ -66,13 +62,7 @@ export default {
     password: String,
     passwordRules: Array,
 
-
-
     errorAlert: String,
-
-
-
-
   },
   emits: [
     "emailTextChanged",
@@ -82,18 +72,12 @@ export default {
     "onQuit",
     "setShowLogIn",
 
-
     "showError",
   ],
   methods: {
-
-    ondisplayErrorACB: function(text){
-      this.$emit("showError", text)
+    ondisplayErrorACB: function (text) {
+      this.$emit("showError", text);
     },
-
-
-
-
 
     updateShowLogIn(value) {
       this.$emit("setShowLogIn", value);
