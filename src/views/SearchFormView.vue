@@ -1,36 +1,11 @@
 <template>
-  <div>
+  <div class="search-container">
     <v-row>
-      <v-col>
-        <gmap-autocomplete
-          class="introInput"
-          @place_changed="getAddressData"
-          :options="{
-            fields: ['geometry', 'formatted_address'],
-            componentRestrictions: { country: 'swe' },
-          }"
-        >
-          >
-          <template v-slot:default="slotProps">
-            <v-text-field
-              label="search for location..."
-              ref="input"
-              :value="searchText"
-              v-on:listeners="slotProps.listeners"
-              v-on:attrs="slotProps.attrs"
-              @change="onTextChangeACB"
-              @keypress="onKeyPressedACB"
-            >
-              >
-            </v-text-field>
-          </template>
-        </gmap-autocomplete>
-      </v-col>
-      <v-col>
+      <v-col class="col-12 col-md-6">
+        <h3>What adventure are you looking for?</h3>
         <v-combobox
           :value="selectedCategories"
           :items="categories"
-          label="Categories"
           multiple
           chips
           @change="onDropDownChangeACB"
@@ -41,7 +16,6 @@
               v-bind="attrs"
               :color="`${item.color} lighten-3`"
               :input-value="selected"
-              label
             >
               <span class="pr-2">
                 {{ item }}
@@ -53,14 +27,44 @@
             </span>
           </template> </v-combobox
         ><v-checkbox
+          class="clear"
           :input-value="allCategSet"
           @change="allCategChangedACB"
+          :label="'Clear/Select all fitlers'"
+          color="blue-grey lighten-2"
         ></v-checkbox>
+      </v-col>
+      <v-col class="col-12 col-md-6">
+        <h3 class="search-label">Where do you want to do it?</h3>
+        <gmap-autocomplete
+          class="introInput"
+          @place_changed="getAddressData"
+          :options="{
+            fields: ['geometry', 'formatted_address'],
+            componentRestrictions: { country: 'swe' },
+          }"
+        >
+          >
+          <template v-slot:default="slotProps">
+            <v-text-field
+              label="Search for a location..."
+              ref="input"
+              :value="searchText"
+              color="blue-grey lighten-2"
+              v-on:listeners="slotProps.listeners"
+              v-on:attrs="slotProps.attrs"
+              @change="onTextChangeACB"
+              @keypress="onKeyPressedACB"
+            >
+              >
+            </v-text-field>
+          </template>
+        </gmap-autocomplete>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <v-expansion-panels style="max-width: 30vw" :value="openPanels">
+      <v-col class="col-12">
+        <v-expansion-panels :value="openPanels">
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -116,8 +120,10 @@
           <v-icon>{{ sortingIcon }}</v-icon>
         </v-btn>
       </v-col>
-      <v-col>
-        <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
+      <v-col class="col-12">
+        <v-btn id="searchBtn" class="col-12" @click="onSearchACB" color="amber"
+          >Search!</v-btn
+        >
       </v-col>
     </v-row>
   </div>
@@ -208,21 +214,3 @@ export default {
   },
 };
 </script>
-<style>
-/* Hide google placeholder */
-input::-webkit-input-placeholder {
-  opacity: 0;
-}
-
-input::-moz-placeholder {
-  opacity: 0;
-}
-
-input::-ms-input-placeholder {
-  opacity: 0;
-}
-
-input::-moz-placeholder {
-  opacity: 0;
-}
-</style>
