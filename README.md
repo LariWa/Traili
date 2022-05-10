@@ -29,6 +29,8 @@ https://user-images.githubusercontent.com/40071882/162197998-8f61144d-888d-4e64-
     - SearchPresenter.vue: displays the seach form and the results, provides general search data and search results fetched from API
     - weatherPresenter.vue: send the API config data to the weather widget (regarded as view)
     - TrailDetailsPresenter.vue: add the trail to an array of favourite tours 
+    - loginPresenter.vue:handle the firebase create account, login and logout process for the login view
+    - 
 - views/
      - SearchFormView.vue: view for the search bar and filter options
      - SearchResultsView.vue: view for displaying the search results
