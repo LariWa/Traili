@@ -35,6 +35,8 @@ https://user-images.githubusercontent.com/40071882/162197998-8f61144d-888d-4e64-
      - SearchFormView.vue: view for the search bar and filter options
      - SearchResultsView.vue: view for displaying the search results
      - TrailDetails.vue: view for displaying the details of the specific trail 
+     - loginView.vue: view for user to manage his/her account, offering interfaces of login, create and log out.
+     - 
 - components/
    - rangeSlider.vue: a range slider, which is used in SearchFormView
 - router/
