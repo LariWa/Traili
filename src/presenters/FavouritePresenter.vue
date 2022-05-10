@@ -10,23 +10,22 @@
         :teaser="'We save all your favourite tours here so that you can experience them later.'"
         :details="promiseState.data"
         :pagination="true"
+        :sort="true"
         @setCurrent="setCurrentACB"
       />
     </promiseNoData>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import TrailsOverview from "../views/TrailsOverview.vue";
-import Footer from "../components/Footer.vue";
+import TrailsOverview from "./TrailsOverviewPresenter.vue";
 import { setCurrentTour } from "@/utilities";
 import { getHikeDetails } from "@/hikeSource";
 import { resolvePromise } from "../resolvePromise.js";
 import promiseNoData from "../views/promiseNoData.vue";
 
 export default {
-  components: { TrailsOverview, Footer, promiseNoData },
+  components: { TrailsOverview, promiseNoData },
   data() {
     return {
       promiseState: { data: null, error: null, promise: null },

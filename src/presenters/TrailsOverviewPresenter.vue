@@ -2,16 +2,23 @@
   <div class="overview-container">
     <h2>{{ headline }}</h2>
     <p class="col-sm-12 col-md-7">{{ teaser }}</p>
-    <v-select
-      :items="sortCategories"
-      :value="sortByCateg"
-      label="Sort by"
-      @change="changeSortByACB"
-    >
-    </v-select>
-    <v-btn icon @click="changeSortingOrderACB">
-      <v-icon>{{ sortingIcon }}</v-icon>
-    </v-btn>
+    <v-row v-if="sort">
+      <v-select
+        :items="sortCategories"
+        :value="sortByCateg"
+        label="Sort by"
+        @change="changeSortByACB"
+        class="col-10 col-md-11 sort-select"
+      >
+      </v-select>
+      <v-btn
+        icon
+        @click="changeSortingOrderACB"
+        class="col-2 col-md-1 sort-icon"
+      >
+        <v-icon>{{ sortingIcon }}</v-icon>
+      </v-btn>
+    </v-row>
     <v-row>
       <div
         class="col-sm-12 col-md-4 col card-layout"
@@ -50,6 +57,7 @@ export default {
     teaser: String,
     details: Array,
     pagination: Boolean,
+    sort: Boolean,
     sortingIcon: String,
     sortCategories: Array,
     sortByCateg: String,

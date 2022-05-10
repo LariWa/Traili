@@ -40,6 +40,7 @@
         "
         :details="detailsResultsSorted"
         :pagination="true"
+        :sort="true"
         @setCurrent="setCurrentACB"
         :sortingIcon="sortingIcon"
         :sortCategories="sortCategories"
@@ -48,21 +49,19 @@
         @changeSortingOrder="changeSortingOrderACB"
       />
     </promiseNoData>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
-import TrailsOverview from "../views/TrailsOverview.vue";
-import Footer from "../components/Footer.vue";
+import TrailsOverview from "./TrailsOverviewPresenter.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
 import { setCurrentTour } from "@/utilities";
 import promiseNoData from "../views/promiseNoData.vue";
 import { getCategories } from "../hikeSource";
 export default {
-  components: { SearchFormView, TrailsOverview, Footer, promiseNoData },
+  components: { SearchFormView, TrailsOverview, promiseNoData },
   data() {
     return {
       searchText: "",
