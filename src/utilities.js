@@ -1,3 +1,5 @@
+import store from "./store/index.js";
+
 // convert m into km
 function convertDistance(m) {
   let km = m / 1000;
@@ -37,10 +39,18 @@ function setCurrentTour(tour, component) {
   component.$router.push("/TrailDetails");
 }
 
+function addedToFav(id) {
+  if (store.state.favourites.includes(parseInt(id))) {
+    return true;
+  }
+  return false;
+}
+
 export {
   convertDistance,
   convertTime,
   twoDigits,
   getDifficulty,
   setCurrentTour,
+  addedToFav,
 };

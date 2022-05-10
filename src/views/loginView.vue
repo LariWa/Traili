@@ -15,7 +15,6 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
-
         <v-card-text>
           <v-form>
             <v-text-field
@@ -38,8 +37,13 @@
           </v-form>
         </v-card-text>
 
-        <v-divider></v-divider>
+        <div v-if="errorAlert" @show_Error="onDisplayErrorACB">
+          <v-alert type="error">
+            {{ errorAlert }}
+          </v-alert>
+        </div>
 
+        <v-divider></v-divider>
         <v-card-actions>
           <v-btn @click="onLoginACB">Login</v-btn>
           <v-btn @click="onCreateACB">Create</v-btn>
@@ -54,18 +58,11 @@ export default {
   props: {
     textStatus: String,
     showLogInPopUp: Boolean,
-
     email: String,
     emailRules: Array,
     password: String,
     passwordRules: Array,
-  },
-  data() {
-    return {
-      snackbar: false,
-      timeout: 2000,
-      dialog: false,
-    };
+    errorAlert: String,
   },
   emits: [
     "emailTextChanged",
@@ -74,10 +71,12 @@ export default {
     "onLogin",
     "onQuit",
     "setShowLogIn",
+    "showError",
   ],
-  components: {},
-
   methods: {
+    onDisplayErrorACB: function (text) {
+      this.$emit("showError", text);
+    },
     updateShowLogIn(value) {
       this.$emit("setShowLogIn", value);
     },
@@ -89,14 +88,12 @@ export default {
     },
     onCreateACB: function () {
       this.$emit("onCreate");
-      this.snackbar = false;
     },
     onLoginACB: function () {
       this.$emit("onLogin");
     },
     onQuitACB: function () {
       this.$emit("onQuit");
-      this.dialog = false;
     },
   },
 };

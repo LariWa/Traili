@@ -18,6 +18,7 @@
       :passwordRules="passwordRules"
       :loggedIn="loggedIn"
       @setShowLoggedInView="setShowLoggedInViewACB"
+      :errorAlert="errorText"
     />
     <SnackBar
       @setSnackbarValue="setSnackbarValueACB"
@@ -33,8 +34,6 @@
       @onLogOut="logOutACB"
     />
     <v-spacer />
-
-    <login-view> </login-view>
   </div>
 </template>
 
@@ -51,13 +50,11 @@ import {
 import { mapActions } from "vuex";
 import LoggedInView from "@/views/loggedInView.vue";
 import emailToName from "email-to-name";
-import LoginView from "@/views/loginView.vue";
 export default {
   components: {
     NavbarView,
     SnackBar,
     LoggedInView,
-    LoginView,
   },
 
   data() {
@@ -68,7 +65,6 @@ export default {
       pswText: "",
       textStatus: "",
       showLogInPopUp: false,
-
       email: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -82,6 +78,7 @@ export default {
       ],
       showSnackbar: false,
       snackbarText: "",
+      errorText: "",
     };
   },
 
@@ -124,7 +121,6 @@ export default {
     setShowLogInACB: function (value) {
       this.showLogInPopUp = value;
     },
-
     route2SearchACB: function () {
       this.$router.push("/Search").catch(() => {});
     },
@@ -147,11 +143,9 @@ export default {
           this.loginACB();
         })
         .catch((error) => {
-          //const errorCode = error.code;
           const errorMessage = error.message;
           this.textStatus = errorMessage;
           console.error("create error: " + errorMessage);
-          // ..
         });
     },
     loginACB: function () {
@@ -166,6 +160,7 @@ export default {
           console.log(user.uid);
           this.setUserEmail(this.emailText);
           this.setUID(user.uid);
+          this.showLogInPopUp = false;
           this.setLoggedIn(true);
           this.setSnackbarSettings(true, "You are now logged in!");
         })
@@ -173,7 +168,8 @@ export default {
           const errorCode = error.code;
           const errorMessage = error.message;
           this.textStatus = errorMessage;
-          alert("login error: " + errorCode + errorMessage);
+          this.displayErrorACB("login error: " + errorCode + errorMessage);
+          
         });
     },
 
@@ -181,7 +177,7 @@ export default {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          this.clearData(); //update firebase where there is a mutuation, so firebase data is deleted as well???
+          this.clearData(); 
           this.textStatus = "sign out!";
           console.log("sign out");
           this.showLoggedInView = false;
@@ -205,6 +201,9 @@ export default {
     setSnackbarSettings(visibility, text) {
       this.showSnackbar = visibility;
       this.snackbarText = text;
+    },
+    displayErrorACB(text) {
+      this.errorText = text;
     },
   },
 };

@@ -28,6 +28,7 @@
         :emailRules="emailRules"
         :password="password"
         :passwordRules="passwordRules"
+        :errorAlert="errorAlert"
       />
     </v-app-bar>
   </div>
@@ -38,11 +39,6 @@ import loginView from "./loginView.vue";
 export default {
   components: { loginView },
   name: "NavbarView",
-  data: function () {
-    return {
-      showDropdown: false,
-    };
-  },
   emits: [
     "emailTextChanged",
     "pswTextChanged",
@@ -62,15 +58,7 @@ export default {
     password: String,
     passwordRules: Array,
     loggedIn: Boolean,
-  },
-
-  computed: {
-    userEmail: function () {
-      console.log(" userEmail " + this.$store.state.userEmail);
-      return this.$store.state.userEmail;
-    },
-    /*have to put this into presenter*/
-    /*in presenter sth like :textStatus="textStatus" */
+    errorAlert: String,
   },
 
   methods: {
@@ -83,23 +71,12 @@ export default {
     goToLogin: function () {
       this.$emit("toLogin");
     },
-    getLoggedIn: function () {
-      var loggedIn = this.$store.state.loggedIn;
-
-      if (!loggedIn) {
-        this.goToLogin();
-      } else {
-        this.showDropdown = true;
-      }
-    },
     onLogOutACB: function () {
       this.$emit("onLogOut");
-      this.showDropdown = false;
     },
     goToExplore: function () {
       this.$emit("toExplore");
     },
-
     onEmailChangeACB: function (text) {
       this.$emit("emailTextChanged", text);
     },
@@ -108,12 +85,10 @@ export default {
     },
     onCreateACB: function () {
       this.$emit("onCreate");
-      this.snackbar = false;
     },
     onLoginACB: function () {
       this.$emit("onLogin");
     },
-
     setShowLogInACB: function (value) {
       this.$emit("setShowLogIn", value);
     },
