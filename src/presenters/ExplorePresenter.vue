@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header />
     <promiseNoData
       :promiseState="promiseState"
       :noDataString="'There are no recommended tours!'"
