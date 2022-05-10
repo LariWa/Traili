@@ -18,6 +18,10 @@
         </v-row>
       </template>
     </v-img>
+    <v-icon v-if="addedToFav" class="mx-3 mb-3 heart" color="pink"
+      >mdi-heart</v-icon
+    >
+    <v-icon v-else class="mx-3 mb-3 heart" color="grey">mdi-heart</v-icon>
     <v-card-title class="card-title">
       {{ details.title }}
     </v-card-title>
@@ -38,9 +42,6 @@
       >
         {{ getDifficulty(details.rating.difficulty) }}
       </v-chip>
-      
-      <v-icon v-if="addedToFav" class="mx-3 mb-3" color="pink">mdi-heart</v-icon>
-      <v-icon v-else class="mx-3 mb-3" color="grey">mdi-heart</v-icon>
       <v-card-text>Time: {{ convertTime(details.time.min) }} h</v-card-text>
       <v-card-text
         >Length: {{ convertDistance(details.length) }} km</v-card-text
@@ -74,8 +75,8 @@ export default {
 
   computed: {
     addedToFav() {
-      return (this.$store.state.favourites.includes(parseInt(this.details.id)));
-    }
+      return this.$store.state.favourites.includes(parseInt(this.details.id));
+    },
   },
 
   methods: {
@@ -85,7 +86,7 @@ export default {
 
     setCurrentTour: function (details) {
       this.$emit("setCurrent", details);
-    },    
+    },
   },
 };
 </script>

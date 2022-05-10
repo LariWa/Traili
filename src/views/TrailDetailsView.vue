@@ -15,22 +15,22 @@
                 ? 'http://img.oastatic.com/img/' +
                   trailInfo.primaryImage.id +
                   '/.jpg'
-                : 'placeholderImage.jpg'
+                : 'https://picsum.photos/id/600/1000/300?grayscale'
             "
             lazy-src="https://picsum.photos/id/11/100/60"
           >
-            <!--<v-overlay absolute :value="overlay">-->
-            <h1 align="center" justify="center">{{ trailInfo.title }}</h1>
-            <!--</v-overlay>-->
+            <v-overlay absolute :value="overlay">
+              <h1 align="center" justify="center">{{ trailInfo.title }}</h1>
+            </v-overlay>
           </v-parallax>
         </v-col>
       </v-row>
 
       <!--src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"-->
 
-      <v-row class="white" wrap>
+      <v-row class="ml-auto mr-auto col-10">
         <v-col cols="6" md="3">
-          <v-card class="white" flat>
+          <v-card class="white">
             <v-img
               style="margin: auto"
               max-height="60px"
@@ -47,7 +47,7 @@
         </v-col>
 
         <v-col cols="6" md="3">
-          <v-card class="white" flat>
+          <v-card class="white">
             <v-img
               style="margin: auto"
               max-height="60px"
@@ -64,7 +64,7 @@
         </v-col>
 
         <v-col cols="6" md="3">
-          <v-card class="white" flat>
+          <v-card class="white">
             <v-img
               style="margin: auto"
               max-height="60px"
@@ -81,7 +81,7 @@
         </v-col>
 
         <v-col cols="6" md="3">
-          <v-card class="white" flat>
+          <v-card class="white">
             <v-img
               style="margin: auto"
               max-height="60px"
@@ -98,7 +98,7 @@
         </v-col>
       </v-row>
 
-      <v-row wrap>
+      <v-row class="ml-auto mr-auto col-10" wrap>
         <v-col cols="12" md="9">
           <v-card>
             <v-card-text v-if="trailInfo.longText">
@@ -117,8 +117,12 @@
             <v-card-text v-if="trailInfo.rating">
               <h3>Additional Details</h3>
               <br />
-              <div class="mb-3">Highest point: {{ trailInfo.elevation.maxAltitude }} m</div>
-              <div class="mt-3 mb-3">Lowest point: {{ trailInfo.elevation.minAltitude }} m</div>
+              <div class="mb-3">
+                Highest point: {{ trailInfo.elevation.maxAltitude }} m
+              </div>
+              <div class="mt-3 mb-3">
+                Lowest point: {{ trailInfo.elevation.minAltitude }} m
+              </div>
               <div class="mt-3 mb-3">
                 Difficulty:
                 <v-chip
@@ -179,6 +183,8 @@
               >
                 <v-icon dark>mdi-heart</v-icon>
               </v-btn>
+              <v-label v-if="addedToFav"> Remove from favourites </v-label>
+              <v-label v-else> Add to favourites </v-label>
               <v-snackbar v-model="snackbar" :timeout="timeout">
                 {{ text }}
 
@@ -193,16 +199,14 @@
                   </v-btn>
                 </template>
               </v-snackbar>
-
-              
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-      <v-row wrap>
-        <v-col cols="12" md="12">
+      <v-row class="ml-auto mr-auto col-10" wrap>
+        <v-col cols="12" md="6">
           <v-card>
-            <v-carousel height="300px" v-if="trailInfo.images">
+            <v-carousel height="auto" v-if="trailInfo.images">
               <v-carousel-item
                 v-for="(item, i) in trailInfo.images.image"
                 :key="i"
@@ -230,20 +234,9 @@
             </v-carousel>
           </v-card>
         </v-col>
-      </v-row>
-
-      <v-col cols="12" md="6">
-        <VueWeather></VueWeather>
-      </v-col>
-
-      <v-row>
         <v-col cols="12" md="6">
-          <p>Best time of year:</p>
-          <v-card class="d-flex justify-space-around mb-6">
-            <div v-for="(season, index) in trailInfo.season" :key="index">
-              <div v-if="season === true" class="green--text">{{ index }}</div>
-              <div v-else class="grey--text">{{ index }}</div>
-            </div>
+          <v-card>
+            <VueWeather></VueWeather>
           </v-card>
         </v-col>
       </v-row>
@@ -317,4 +310,3 @@ export default {
   },
 };
 </script>
-    
