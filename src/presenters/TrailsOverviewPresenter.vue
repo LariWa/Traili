@@ -28,6 +28,7 @@
         <TrailOverviewCard
           :details="detail"
           @setCurrent="setCurrentTour"
+          :addedToFav="addedToFav"
         ></TrailOverviewCard>
       </div>
     </v-row>
@@ -43,6 +44,7 @@
 
 <script>
 import TrailOverviewCard from "../components/TrailOverviewCard.vue";
+import {addedToFav} from "../utilities.js";
 
 export default {
   name: "TrailsOverview",
@@ -72,6 +74,10 @@ export default {
       const data = [...this.details];
       return data.splice(startIndex, this.pageSize);
     },
+    addedToFav: function() {
+      return addedToFav(this.details.id);
+    },
+
   },
   methods: {
     setCurrentTour: function (details) {

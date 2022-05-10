@@ -40,7 +40,7 @@
           </v-form>
         </v-card-text>
 
-        <div v-if="errorAlert" @show_Error="onDisplayErrorACB">
+        <div v-if="errorAlert">
           <v-alert type="error">
             {{ errorAlert }}
           </v-alert>
@@ -74,12 +74,8 @@ export default {
     "onLogin",
     "onQuit",
     "setShowLogIn",
-    "showError",
   ],
   methods: {
-    onDisplayErrorACB: function (text) {
-      this.$emit("showError", text);
-    },
     updateShowLogIn(value) {
       this.$emit("setShowLogIn", value);
     },

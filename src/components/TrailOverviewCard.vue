@@ -71,13 +71,14 @@ export default {
   name: "TrailOverviewCard",
   props: {
     details: Object,
+    addedToFav: Boolean,
   },
 
-  computed: {
+  /*computed: {
     addedToFav() {
       return this.$store.state.favourites.includes(parseInt(this.details.id));
     },
-  },
+  },*/
 
   methods: {
     convertDistance,
