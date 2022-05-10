@@ -17,7 +17,7 @@
                   '/.jpg'
                 : 'https://picsum.photos/id/600/1000/300?grayscale'
             "
-            lazy-src="https://picsum.photos/id/11/100/60"
+            lazy-src="https://picsum.photos/id/11/100/300?grayscale"
           >
             <v-overlay absolute :value="overlay">
               <h1 align="center" justify="center">{{ trailInfo.title }}</h1>
