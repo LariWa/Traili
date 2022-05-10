@@ -19,7 +19,7 @@
             "
             lazy-src="https://picsum.photos/id/11/100/60"
           >
-            <v-overlay absolute :value="overlay">
+            <v-overlay absolute>
               <h1 align="center" justify="center">{{ trailInfo.title }}</h1>
             </v-overlay>
           </v-parallax>
