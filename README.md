@@ -50,6 +50,8 @@ https://user-images.githubusercontent.com/40071882/162197998-8f61144d-888d-4e64-
 - resolvePromise.js: resolves promises to avoid race condition
 - hikeSource.js: API calls for searching, details and categories
 - utilities.js: methods used accross different views
+- firebaseConfig.js: firebase config details
+- firebaseModel.js: maintain the data persistence between model and firebase.
 
 ## Project setup
 ```
