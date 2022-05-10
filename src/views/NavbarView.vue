@@ -11,20 +11,19 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn v-if="loggedIn" icon @click="setShowLoggedInViewACB(true)">
-        <v-icon>mdi-account-circle </v-icon>
-      </v-btn>
       <login-presenter v-if="!loggedIn" />
+      <logout-presenter v-if="loggedIn" />
     </v-app-bar>
   </div>
 </template>
 <script>
 import loginPresenter from "../presenters/loginPresenter.vue";
+import logoutPresenter from "../presenters/logoutPresenter.vue";
 
 export default {
-  components: { loginPresenter },
+  components: { loginPresenter, logoutPresenter },
   name: "NavbarView",
-  emits: ["onLogOut", "toSearch", "toFav", "showLoggedInView"],
+  emits: ["toSearch", "toFav", "toExplore"],
 
   props: {
     loggedIn: Boolean,
@@ -37,16 +36,8 @@ export default {
     goToSearch: function () {
       this.$emit("toSearch");
     },
-
-    onLogOutACB: function () {
-      this.$emit("onLogOut");
-    },
     goToExplore: function () {
       this.$emit("toExplore");
-    },
-
-    setShowLoggedInViewACB(value) {
-      this.$emit("setShowLoggedInView", value);
     },
   },
 };

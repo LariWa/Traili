@@ -70,6 +70,7 @@ export default {
     "onLogin",
     "onQuit",
     "setShowLogIn",
+    "showError",
   ],
   methods: {
     updateShowLogIn(value) {
