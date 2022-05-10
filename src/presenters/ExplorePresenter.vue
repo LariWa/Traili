@@ -10,24 +10,23 @@
         :teaser="'Explore the trending trips which our team has carefully selected for you. Start planing and choose the trail that suits you best.'"
         :details="promiseState.data"
         :pagination="false"
+        :sort="false"
         @setCurrent="setCurrentACB"
       />
     </promiseNoData>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import TrailsOverview from "../views/TrailsOverview.vue";
+import TrailsOverview from "./TrailsOverviewPresenter.vue";
 import Header from "../components/Header.vue";
-import Footer from "../components/Footer.vue";
 import { setCurrentTour } from "@/utilities";
 import { getHikeDetails } from "@/hikeSource";
 import { resolvePromise } from "../resolvePromise.js";
 import promiseNoData from "../views/promiseNoData.vue";
 
 export default {
-  components: { TrailsOverview, Header, Footer, promiseNoData },
+  components: { TrailsOverview, Header, promiseNoData },
   data() {
     return {
       highlights: [117425031, 156278167, 153219273],

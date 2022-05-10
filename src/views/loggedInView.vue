@@ -33,6 +33,7 @@ export default {
     email: String,
     avatarInitials: String,
   },
+  emits: ["showLoggedInView", "onLogOut"],
   methods: {
     updateShowLoggedInACB: function (value) {
       this.$emit("showLoggedInView", value);

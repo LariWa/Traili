@@ -3,12 +3,12 @@
     <v-main>
       <NavBar />
       <v-container fluid>
-        <!-- <logged-in-view /> -->
         <keep-alive>
           <router-view />
         </keep-alive>
       </v-container>
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
@@ -18,6 +18,7 @@ import {
   updateFirebaseFromModel,
 } from "./firebaseModel";
 import NavBar from "./presenters/navBarPresenter.vue";
+import Footer from "./components/Footer.vue";
 import store from "./store/index.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -28,8 +29,7 @@ export default {
 
   components: {
     NavBar,
-    /*SearchFormPresenter,*/
-    /*TrailDetailsPresenter,*/
+    Footer,
   },
 
   data: () => ({
@@ -50,7 +50,7 @@ export default {
       }
     });
 
-    unsubscribe = store.subscribe((mutation, ) => {
+    unsubscribe = store.subscribe((mutation) => {
       //console.log("subscribe: ");
       //console.log(state);
       //console.log("mutation: ");

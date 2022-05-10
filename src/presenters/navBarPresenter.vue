@@ -3,7 +3,7 @@
     <NavbarView
       @toFav="goToFavACB"
       @toSearch="route2SearchACB"
-      @toLogin="route2LoginACB"
+      @toLogin="showLogInACB"
       @toExplore="route2ExploreACB"
       @emailTextChanged="emailChangedACB"
       @pswTextChanged="pswChangedACB"
@@ -83,11 +83,6 @@ export default {
   },
 
   computed: {
-    showLogInMessage: function () {
-      if (this.$store.getters.getLoggedIn) return false;
-      else if (this.showingLogInMessage) return true;
-      return false;
-    },
     userEmail: function () {
       return this.$store.getters.getEmail;
     },
@@ -129,11 +124,10 @@ export default {
     route2SearchACB: function () {
       this.$router.push("/Search").catch(() => {});
     },
-    route2LoginACB: function () {
+    showLogInACB: function () {
       this.showLogInPopUp = true;
     },
     route2ExploreACB: function () {
-      this.showLoggedInView = true;
       this.$router.push("/Explore").catch(() => {});
     },
 

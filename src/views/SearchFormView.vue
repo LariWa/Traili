@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="search-container">
     <v-row>
-      <v-col>
+      <v-col class="col-12 col-md-6">
+        <h3 class="search-label">Where do you want to go?</h3>
         <gmap-autocomplete
           class="introInput"
-          @place_changed="getAddressData"
+          @place_changed="getAddressDataACB"
           :options="{
             fields: ['geometry', 'formatted_address'],
             componentRestrictions: { country: 'swe' },
@@ -13,9 +14,10 @@
           >
           <template v-slot:default="slotProps">
             <v-text-field
-              label="search for location..."
+              label="Search for a location..."
               ref="input"
               :value="searchText"
+              color="blue-grey lighten-2"
               v-on:listeners="slotProps.listeners"
               v-on:attrs="slotProps.attrs"
               @change="onTextChangeACB"
@@ -26,11 +28,11 @@
           </template>
         </gmap-autocomplete>
       </v-col>
-      <v-col>
+      <v-col class="col-12 col-md-6">
+        <h3 class="category-label">What adventure are you looking for?</h3>
         <v-combobox
           :value="selectedCategories"
           :items="categories"
-          label="Categories"
           multiple
           chips
           @change="onDropDownChangeACB"
@@ -41,7 +43,6 @@
               v-bind="attrs"
               :color="`${item.color} lighten-3`"
               :input-value="selected"
-              label
             >
               <span class="pr-2">
                 {{ item }}
@@ -53,14 +54,17 @@
             </span>
           </template> </v-combobox
         ><v-checkbox
+          class="clear"
           :input-value="allCategSet"
           @change="allCategChangedACB"
+          :label="'Clear/Select all categories'"
+          color="blue-grey lighten-2"
         ></v-checkbox>
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <v-expansion-panels style="max-width: 30vw" :value="openPanels">
+      <v-col class="col-12">
+        <v-expansion-panels>
           <v-expansion-panel>
             <v-expansion-panel-header> Filter </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -73,7 +77,7 @@
                   :values="slider.sliderValues"
                   :name="slider.sliderName"
                   :unit="slider.unit"
-                  @changed="sliderChangedACB"
+                  @changed="rangeSliderChangedACB"
                 />
               </div>
               <p>Trail Difficulty</p>
@@ -102,22 +106,11 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
-      <v-col>
-        <v-select
-          :items="sortCateg"
-          :value="sortByCateg"
-          label="Sort by"
-          @change="changeSortByACB"
+
+      <v-col class="col-12">
+        <v-btn id="searchBtn" class="col-12" @click="onSearchACB" color="amber"
+          >Search!</v-btn
         >
-        </v-select>
-      </v-col>
-      <v-col>
-        <v-btn icon @click="changeSortingOrderACB">
-          <v-icon>{{ sortingIcon }}</v-icon>
-        </v-btn>
-      </v-col>
-      <v-col>
-        <v-btn id="searchBtn" @click="onSearchACB">Search!</v-btn>
       </v-col>
     </v-row>
   </div>
@@ -137,31 +130,22 @@ export default {
     selectedCategories: Array,
     categories: Array,
     allCategSet: Boolean,
-    sortingIcon: String,
-    sortCateg: Array,
     radiusSlider: Object,
-    sortByCateg: String,
   },
-  data() {
-    return {
-      openPanels: [],
-    };
-  },
+
   emits: [
     "searchTextChanged",
     "search",
     "categoriesChanged",
-    "sliderChanged",
-    "checkboxChanged",
+    "rangeSliderChanged",
+    "difficultiesChanged",
     "clearFilters",
-    "changeSortingOrder",
-    "changeSortBy",
+    "setAllCategories",
     "placeChanged",
     "radiusValueChanged",
   ],
   methods: {
     onTextChangeACB: function (text) {
-      console.log(text);
       this.$emit("searchTextChanged", text);
     },
     onKeyPressedACB: function (event) {
@@ -172,17 +156,16 @@ export default {
       }
     },
     onSearchACB: function () {
-      this.openPanels = [];
       this.$emit("search");
     },
     onDropDownChangeACB: function (value) {
       this.$emit("categoriesChanged", value);
     },
-    sliderChangedACB(value, name) {
-      this.$emit("sliderChanged", value, name);
+    rangeSliderChangedACB(value, name) {
+      this.$emit("rangeSliderChanged", value, name);
     },
     checkBoxChangedACB(value, name) {
-      this.$emit("checkboxChanged", value, name);
+      this.$emit("difficultiesChanged", value, name);
     },
     clearFiltersACB() {
       this.$emit("clearFilters");
@@ -190,14 +173,10 @@ export default {
     allCategChangedACB(value) {
       this.$emit("setAllCategories", value);
     },
-    changeSortingOrderACB() {
-      this.$emit("changeSortingOrder");
-    },
-    changeSortByACB(value) {
-      this.$emit("changeSortBy", value);
-    },
-    getAddressData(place) {
+
+    getAddressDataACB(place) {
       if (place.formatted_address) {
+        //valid place
         this.$emit("placeChanged", place);
         this.onTextChangeACB(place.formatted_address);
       }
@@ -208,21 +187,3 @@ export default {
   },
 };
 </script>
-<style>
-/* Hide google placeholder */
-input::-webkit-input-placeholder {
-  opacity: 0;
-}
-
-input::-moz-placeholder {
-  opacity: 0;
-}
-
-input::-ms-input-placeholder {
-  opacity: 0;
-}
-
-input::-moz-placeholder {
-  opacity: 0;
-}
-</style>
