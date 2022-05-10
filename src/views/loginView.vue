@@ -1,11 +1,14 @@
 <template>
   <div class="text-center">
-    <v-dialog :value="showLogInPopUp" width="500">
-      <!--<template v-slot:activator="{ attrs }">
+    <v-dialog 
+    :value="showLogInPopUp" 
+    @input="updateShowLogIn"
+    width="500">
+      <template v-slot:activator="{ attrs }">
         <v-btn icon v-bind="attrs" @click="updateShowLogIn(true)">
           <v-icon>mdi-account-circle </v-icon>
         </v-btn>
-      </template>-->
+      </template>
 
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
