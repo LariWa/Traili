@@ -3,22 +3,9 @@
     <NavbarView
       @toFav="goToFavACB"
       @toSearch="route2SearchACB"
-      @toLogin="showLogInACB"
       @toExplore="route2ExploreACB"
-      @emailTextChanged="emailChangedACB"
-      @pswTextChanged="pswChangedACB"
-      @onCreate="createACB"
-      @onLogin="loginACB"
-      @setShowLogIn="setShowLogInACB"
-      :textStatus="''"
-      :showLogInPopUp="showLogInPopUp"
-      :email="email"
-      :emailRules="emailRules"
-      :password="password"
-      :passwordRules="passwordRules"
       :loggedIn="loggedIn"
       @setShowLoggedInView="setShowLoggedInViewACB"
-      :errorAlert="errorText"
     />
     <SnackBar
       @setSnackbarValue="setSnackbarValueACB"
@@ -41,12 +28,7 @@
 import NavbarView from "../views/NavbarView.vue";
 import SnackBar from "../components/Snackbar.vue";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { mapActions } from "vuex";
 import LoggedInView from "@/views/loggedInView.vue";
 import emailToName from "email-to-name";
@@ -61,24 +43,9 @@ export default {
     return {
       showingLogInMessage: false,
       showLoggedInView: false,
-      emailText: "",
-      pswText: "",
-      textStatus: "",
-      showLogInPopUp: false,
       email: "",
-      emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
-      password: "",
-      passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) =>
-          (v && v.length >= 6) || "Password must be more than 6 characters",
-      ],
       showSnackbar: false,
       snackbarText: "",
-      errorText: "",
     };
   },
 
@@ -112,72 +79,18 @@ export default {
       }
     },
 
-    emailChangedACB: function (text) {
-      this.emailText = text;
-    },
-    pswChangedACB: function (text) {
-      this.pswlText = text;
-    },
-    setShowLogInACB: function (value) {
-      this.showLogInPopUp = value;
-    },
     route2SearchACB: function () {
       this.$router.push("/Search").catch(() => {});
     },
-    showLogInACB: function () {
-      this.showLogInPopUp = true;
-    },
     route2ExploreACB: function () {
       this.$router.push("/Explore").catch(() => {});
-    },
-
-    createACB: function () {
-      const auth = getAuth();
-      //create new
-      createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          this.textStatus = "User created";
-          console.log(user);
-          this.loginACB();
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          this.textStatus = errorMessage;
-          console.error("create error: " + errorMessage);
-        });
-    },
-    loginACB: function () {
-      const auth = getAuth();
-      //sign in
-      signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          this.textStatus = "User logged in";
-          console.log("user signed in:");
-          console.log(user.uid);
-          this.setUserEmail(this.emailText);
-          this.setUID(user.uid);
-          this.showLogInPopUp = false;
-          this.setLoggedIn(true);
-          this.setSnackbarSettings(true, "You are now logged in!");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          this.textStatus = errorMessage;
-          this.displayErrorACB("login error: " + errorCode + errorMessage);
-          
-        });
     },
 
     logOutACB() {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          this.clearData(); 
+          this.clearData();
           this.textStatus = "sign out!";
           console.log("sign out");
           this.showLoggedInView = false;
@@ -201,9 +114,6 @@ export default {
     setSnackbarSettings(visibility, text) {
       this.showSnackbar = visibility;
       this.snackbarText = text;
-    },
-    displayErrorACB(text) {
-      this.errorText = text;
     },
   },
 };

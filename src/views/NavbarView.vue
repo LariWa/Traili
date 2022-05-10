@@ -24,26 +24,10 @@ import loginPresenter from "../presenters/loginPresenter.vue";
 export default {
   components: { loginPresenter },
   name: "NavbarView",
-  emits: [
-    "emailTextChanged",
-    "pswTextChanged",
-    "onCreate",
-    "toLogin",
-    "onQuit",
-    "onLogOut",
-    "toSearch",
-    "toFav",
-    "showLoggedInView",
-  ],
+  emits: ["onLogOut", "toSearch", "toFav", "showLoggedInView"],
 
   props: {
-    showLogInPopUp: Boolean,
-    email: String,
-    emailRules: Array,
-    password: String,
-    passwordRules: Array,
     loggedIn: Boolean,
-    errorAlert: String,
   },
 
   methods: {
@@ -53,30 +37,14 @@ export default {
     goToSearch: function () {
       this.$emit("toSearch");
     },
-    goToLogin: function () {
-      this.$emit("toLogin");
-    },
+
     onLogOutACB: function () {
       this.$emit("onLogOut");
     },
     goToExplore: function () {
       this.$emit("toExplore");
     },
-    onEmailChangeACB: function (text) {
-      this.$emit("emailTextChanged", text);
-    },
-    onPswChangeACB: function (text) {
-      this.$emit("pswTextChanged", text);
-    },
-    onCreateACB: function () {
-      this.$emit("onCreate");
-    },
-    onLoginACB: function () {
-      this.$emit("onLogin");
-    },
-    setShowLogInACB: function (value) {
-      this.$emit("setShowLogIn", value);
-    },
+
     setShowLoggedInViewACB(value) {
       this.$emit("setShowLoggedInView", value);
     },

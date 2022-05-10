@@ -6,13 +6,12 @@
       @onCreate="createACB"
       @onLogin="loginACB"
       @setShowLogIn="setShowLogInACB"
-      :textStatus="''"
       :showLogInPopUp="showLogInPopUp"
       :email="emailText"
       :emailRules="emailRules"
       :password="password"
       :passwordRules="passwordRules"
-      :errorAlert="errorAlert"
+      :errorAlert="errorText"
     />
   </div>
 </template>
@@ -33,7 +32,6 @@ export default {
     return {
       emailText: "",
       pswText: "",
-      textStatus: "",
       showLogInPopUp: false,
       emailRules: [
         (v) => !!v || "E-mail is required",
@@ -45,7 +43,7 @@ export default {
         (v) =>
           (v && v.length >= 6) || "Password must be more than 6 characters",
       ],
-      errorAlert: "",
+      errorText: "",
     };
   },
 
@@ -71,8 +69,8 @@ export default {
         .catch((error) => {
           //const errorCode = error.code;
           const errorMessage = error.message;
-          this.textStatus = errorMessage;
-          console.error("create error: " + errorMessage);
+          this.setDisplayError("login error: " + error.code + errorMessage);
+          //console.error("create error: " + errorMessage);
           // ..
         });
     },
@@ -89,14 +87,17 @@ export default {
           this.setLoggedIn(true);
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           this.textStatus = errorMessage;
-          console.error("login error: " + errorCode + errorMessage);
+          this.setDisplayError("login error: " + error.code + errorMessage);
+          //console.error("login error: " + errorCode + errorMessage);
         });
     },
     setShowLogInACB: function (value) {
       this.showLogInPopUp = value;
+    },
+    setDisplayError(text) {
+      this.errorText = text;
     },
   },
 };
