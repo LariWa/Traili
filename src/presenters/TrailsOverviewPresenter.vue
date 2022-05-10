@@ -34,8 +34,9 @@
     <v-pagination
       v-if="pagination"
       color="blue-grey lighten-2"
-      v-model="page"
+      :value="page"
       :length="numPages"
+      @input="changePageACB"
     ></v-pagination>
   </div>
 </template>
@@ -81,6 +82,9 @@ export default {
     },
     changeSortByACB(value) {
       this.$emit("changeSortBy", value);
+    },
+    changePageACB(value) {
+      this.page = value;
     },
   },
 };

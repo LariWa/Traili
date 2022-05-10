@@ -132,7 +132,6 @@ export default {
       this.showLogInPopUp = true;
     },
     route2ExploreACB: function () {
-      this.showLoggedInView = true;
       this.$router.push("/Explore").catch(() => {});
     },
 
