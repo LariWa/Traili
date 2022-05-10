@@ -14,7 +14,7 @@
     </v-alert>
   </div>
   <!-- TODO add loading gif -->
-  <div v-else-if="!promiseState.data" class="loading">Loading...</div>
+  <div v-else-if="!promiseState.data" class="loading"><img src="../assets/hikingGif1.1.gif" /></div>
   <div v-else>
     <slot />
   </div>
