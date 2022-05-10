@@ -1,7 +1,7 @@
 <template>
   <div class="search-container">
     <v-row>
-      <v-col class="col-12 col-md-6">
+      <v-col class="col-12 col-md-4">
         <h3 class="search-label">Where do you want to go?</h3>
         <gmap-autocomplete
           class="introInput"
@@ -28,7 +28,7 @@
           </template>
         </gmap-autocomplete>
       </v-col>
-      <v-col class="col-12 col-md-6">
+      <v-col class="col-12 col-md-8">
         <h3 class="category-label">What adventure are you looking for?</h3>
         <v-combobox
           :value="selectedCategories"

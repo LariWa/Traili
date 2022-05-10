@@ -1,9 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog 
-    :value="showLogInPopUp" 
-    @input="updateShowLogIn"
-    width="500">
+    <v-dialog :value="showLogInPopUp" @input="updateShowLogIn" width="500">
       <template v-slot:activator="{ attrs }">
         <v-btn icon v-bind="attrs" @click="updateShowLogIn(true)">
           <v-icon>mdi-account-circle </v-icon>
@@ -59,7 +56,6 @@
 <script>
 export default {
   props: {
-    textStatus: String,
     showLogInPopUp: Boolean,
     email: String,
     emailRules: Array,

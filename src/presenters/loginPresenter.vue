@@ -1,26 +1,28 @@
-<!--<template>
-    <div>
-        <login-view       @emailTextChanged="emailChangedACB"
-                          @pswTextChanged="pswChangedACB"
-                          @onCreate="createACB"
-                          @onLogin="loginACB" 
-                          @onQuit="quitACB"
-                          @onLogOut="logOutACB"
-                          :textStatus="textStatus"/>
-    </div>
+<template>
+  <div>
+    <login-view
+      @emailTextChanged="emailChangedACB"
+      @pswTextChanged="pswChangedACB"
+      @onCreate="createACB"
+      @onLogin="loginACB"
+      @setShowLogIn="setShowLogInACB"
+      :showLogInPopUp="showLogInPopUp"
+      :email="emailText"
+      :emailRules="emailRules"
+      :password="password"
+      :passwordRules="passwordRules"
+      :errorAlert="errorText"
+    />
+  </div>
 </template>
 
 <script>
 import loginView from "../views/loginView.vue";
 import {
-        getAuth,
-        createUserWithEmailAndPassword,
-        signInWithEmailAndPassword,
-        signOut,
-        //browserLocalPersistence,
-        //setPersistence
-    }
-        from "firebase/auth";
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 //import { updateModelFromFirebase } from "../firebaseModel";
 import { mapActions } from "vuex";
 
@@ -30,78 +32,73 @@ export default {
     return {
       emailText: "",
       pswText: "",
-      textStatus: "",
+      showLogInPopUp: false,
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
+      password: "",
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) =>
+          (v && v.length >= 6) || "Password must be more than 6 characters",
+      ],
+      errorText: "",
     };
   },
-  
-   methods: {
-       ...mapActions(["setUID", "setLoggedIn","clearData", "setUserEmail"]),
-       emailChangedACB: function (text) {
-                this.emailText = text;
-            },
-       pswChangedACB: function (text) {
-                this.pswlText = text;
-       },
-       quitACB: function () {
-           this.$router.go(-1);
-       },
-       createACB: function () {
-                const auth = getAuth();
-                //create new
-                createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)
-                    .then(() => {
-                        // Signed in
-                        //const user = userCredential.user;
-                        this.textStatus="User created";
-                        //console.log(user);
-                        this.loginACB();
-                    })
-                    .catch((error) => {
-                        //const errorCode = error.code;
-                        const errorMessage = error.message;
-                        this.textStatus = errorMessage;
-                        console.error("create error: " + errorMessage);
-                        // ..
-                    });
-            },
-       loginACB: function () {
-           const auth = getAuth();
-                //sign in
-           signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
-                    .then((userCredential) => {
-                        // Signed in
-                        const user = userCredential.user;
-                        this.textStatus = "User logged in";
-                        //console.log("user signed in:");
-                        //console.log(user.uid);
-                        this.setUserEmail(this.emailText);
-                        this.setUID(user.uid);
-                        this.setLoggedIn(true);
-                        this.$router.go(-1);
-                        
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        this.textStatus = errorMessage;
-                        console.error("login error: " + errorCode + errorMessage);
-                    });
-            },
 
-
-       logOutACB() {
-            const auth = getAuth();
-            signOut(auth).then(() => {
-                this.clearData();//update firebase where there is a mutuation, so firebase data is deleted as well???
-                this.textStatus = "sign out!";
-                //console.log("sign out");
-                this.$router.go(-1);
-            }).catch((error) => {
-                const errorMessage = error.message;
-                this.textStatus = errorMessage;
-                console.error("log out error: " + errorMessage);
-            });
-        },
-   },
-}
-</script>-->
+  methods: {
+    ...mapActions(["setUID", "setLoggedIn", "clearData", "setUserEmail"]),
+    emailChangedACB: function (text) {
+      this.emailText = text;
+    },
+    pswChangedACB: function (text) {
+      this.pswlText = text;
+    },
+    createACB: function () {
+      const auth = getAuth();
+      //create new
+      createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)
+        .then(() => {
+          // Signed in
+          //const user = userCredential.user;
+          this.textStatus = "User created";
+          //console.log(user);
+          this.loginACB();
+        })
+        .catch((error) => {
+          //const errorCode = error.code;
+          const errorMessage = error.message;
+          this.setDisplayError("login error: " + error.code + errorMessage);
+          //console.error("create error: " + errorMessage);
+          // ..
+        });
+    },
+    loginACB: function () {
+      const auth = getAuth();
+      //sign in
+      signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          this.textStatus = "User logged in";
+          this.setUserEmail(this.emailText);
+          this.setUID(user.uid);
+          this.setLoggedIn(true);
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          this.textStatus = errorMessage;
+          this.setDisplayError("login error: " + error.code + errorMessage);
+          //console.error("login error: " + errorCode + errorMessage);
+        });
+    },
+    setShowLogInACB: function (value) {
+      this.showLogInPopUp = value;
+    },
+    setDisplayError(text) {
+      this.errorText = text;
+    },
+  },
+};
+</script>
