@@ -61,13 +61,6 @@ export default {
     errorAlert: String,
   },
 
-  computed: {
-    userEmail: function () {
-      console.log(" userEmail " + this.$store.state.userEmail);
-      return this.$store.state.userEmail;
-    },
-  },
-
   methods: {
     goToFavourites: function () {
       this.$emit("toFav");

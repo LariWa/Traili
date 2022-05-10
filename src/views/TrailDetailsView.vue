@@ -237,18 +237,8 @@ export default {
   },
   props: {
     trail: Array,
-  },
-
-  computed: {
-    trailInfo() {
-      return this.$store.getters.getCurrentTour;
-    },
-    addedToFav() {
-      if (this.$store.state.favourites.includes(parseInt(this.trailInfo.id))) {
-        return true;
-      }
-      return false;
-    },
+    trailInfo: Object,
+    addedToFav: Boolean,
   },
 
   methods: {

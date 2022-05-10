@@ -78,7 +78,6 @@ export default {
       ],
       showSnackbar: false,
       snackbarText: "",
-
       errorText: "",
     };
   },
@@ -150,11 +149,9 @@ export default {
           this.loginACB();
         })
         .catch((error) => {
-          //const errorCode = error.code;
           const errorMessage = error.message;
           this.textStatus = errorMessage;
           console.error("create error: " + errorMessage);
-          // ..
         });
     },
     loginACB: function () {
@@ -178,7 +175,7 @@ export default {
           const errorMessage = error.message;
           this.textStatus = errorMessage;
           this.displayErrorACB("login error: " + errorCode + errorMessage);
-          //alert("login error: " + errorCode + errorMessage);
+          
         });
     },
 
@@ -186,7 +183,7 @@ export default {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
-          this.clearData(); //update firebase where there is a mutuation, so firebase data is deleted as well???
+          this.clearData(); 
           this.textStatus = "sign out!";
           console.log("sign out");
           this.showLoggedInView = false;
@@ -211,7 +208,6 @@ export default {
       this.showSnackbar = visibility;
       this.snackbarText = text;
     },
-
     displayErrorACB(text) {
       this.errorText = text;
     },
