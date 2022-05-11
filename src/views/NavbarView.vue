@@ -11,54 +11,22 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn v-if="loggedIn" icon @click="setShowLoggedInViewACB(true)">
-        <v-icon>mdi-account-circle </v-icon>
-      </v-btn>
-      <login-view
-        v-if="!loggedIn"
-        @emailTextChanged="onEmailChangeACB"
-        @pswTextChanged="onPswChangeACB"
-        @onCreate="onCreateACB"
-        @onLogin="onLoginACB"
-        @setShowLogIn="setShowLogInACB"
-        @onLogOut="onLogOutACB"
-        :textStatus="''"
-        :showLogInPopUp="showLogInPopUp"
-        :email="email"
-        :emailRules="emailRules"
-        :password="password"
-        :passwordRules="passwordRules"
-        :errorAlert="errorAlert"
-      />
+      <login-presenter v-if="!loggedIn" />
+      <logout-presenter v-if="loggedIn" />
     </v-app-bar>
   </div>
 </template>
 <script>
-import loginView from "./loginView.vue";
+import loginPresenter from "../presenters/loginPresenter.vue";
+import logoutPresenter from "../presenters/logoutPresenter.vue";
 
 export default {
-  components: { loginView },
+  components: { loginPresenter, logoutPresenter },
   name: "NavbarView",
-  emits: [
-    "emailTextChanged",
-    "pswTextChanged",
-    "onCreate",
-    "toLogin",
-    "onQuit",
-    "onLogOut",
-    "toSearch",
-    "toFav",
-    "showLoggedInView",
-  ],
+  emits: ["toSearch", "toFav", "toExplore"],
 
   props: {
-    showLogInPopUp: Boolean,
-    email: String,
-    emailRules: Array,
-    password: String,
-    passwordRules: Array,
     loggedIn: Boolean,
-    errorAlert: String,
   },
 
   methods: {
@@ -68,32 +36,8 @@ export default {
     goToSearch: function () {
       this.$emit("toSearch");
     },
-    goToLogin: function () {
-      this.$emit("toLogin");
-    },
-    onLogOutACB: function () {
-      this.$emit("onLogOut");
-    },
     goToExplore: function () {
       this.$emit("toExplore");
-    },
-    onEmailChangeACB: function (text) {
-      this.$emit("emailTextChanged", text);
-    },
-    onPswChangeACB: function (text) {
-      this.$emit("pswTextChanged", text);
-    },
-    onCreateACB: function () {
-      this.$emit("onCreate");
-    },
-    onLoginACB: function () {
-      this.$emit("onLogin");
-    },
-    setShowLogInACB: function (value) {
-      this.$emit("setShowLogIn", value);
-    },
-    setShowLoggedInViewACB(value) {
-      this.$emit("setShowLoggedInView", value);
     },
   },
 };

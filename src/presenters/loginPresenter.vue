@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div>
         <login-view       @emailTextChanged="emailChangedACB"
                           @pswTextChanged="pswChangedACB"
@@ -22,7 +22,18 @@ export default {
     return {
       emailText: "",
       pswText: "",
-      textStatus: "",
+      showLogInPopUp: false,
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
+      password: "",
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) =>
+          (v && v.length >= 6) || "Password must be more than 6 characters",
+      ],
+      errorText: "",
     };
   },
   
