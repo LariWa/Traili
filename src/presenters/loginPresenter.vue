@@ -68,13 +68,13 @@ export default {
             },
 
 
-       logOutACB() {
-           signout();
-           this.clearData();
-           //this.textStatus = "sign out!";
-           //console.log("sign out");
-           this.$router.go(-1);
-  
+      logOutACB() {
+          signout();
+          this.clearData();
+          //this.textStatus = "sign out!";
+          //console.log("sign out");
+          this.$router.go(-1);
+      },
     setDisplayError(text) {
       this.errorText = text;
     },
