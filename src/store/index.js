@@ -80,7 +80,14 @@ export default new Vuex.Store({
       commit("setUID", "");
       commit("setFav", []);
       commit("setLoggedIn", false);
-    },
+      },
+
+    // initialize lcoal user data after log in
+      initData({ commit }, user) {
+        commit("setUID", user.uid);
+        commit("setLoggedIn", true);
+        commit("setUserEmail", user.email);
+      },
 
     addToFav(state, id) {
       if (!state.getters.getFavourites.includes(parseInt(id))) {
