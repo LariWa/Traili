@@ -5,7 +5,7 @@
       @pswTextChanged="pswChangedACB"
       @onCreate="createACB"
       @onLogin="loginACB"
-      @setShowLogIn="setShowLogInACB"
+      @setShowLogIn="setShowLogInPopUp"
       :showLogInPopUp="showLogInPopUp"
       :email="emailText"
       :emailRules="emailRules"
@@ -32,7 +32,6 @@ export default {
     return {
       emailText: "",
       pswText: "",
-      showLogInPopUp: false,
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -46,9 +45,20 @@ export default {
       errorText: "",
     };
   },
+  computed: {
+    showLogInPopUp() {
+      return this.$store.getters.getShowLogInPopUp;
+    },
+  },
 
   methods: {
-    ...mapActions(["setUID", "setLoggedIn", "clearData", "setUserEmail"]),
+    ...mapActions([
+      "setUID",
+      "setLoggedIn",
+      "clearData",
+      "setUserEmail",
+      "setShowLogInPopUp",
+    ]),
     emailChangedACB: function (text) {
       this.emailText = text;
     },
@@ -93,9 +103,7 @@ export default {
           //console.error("login error: " + errorCode + errorMessage);
         });
     },
-    setShowLogInACB: function (value) {
-      this.showLogInPopUp = value;
-    },
+
     setDisplayError(text) {
       this.errorText = text;
     },
