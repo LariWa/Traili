@@ -14,7 +14,9 @@
     </v-alert>
   </div>
   <!-- TODO add loading gif -->
-  <div v-else-if="!promiseState.data" class="loading"><img class="gif" src="../assets/hikingGif1.1.gif" /></div>
+  <div v-else-if="!promiseState.data" class="loading">
+    <img class="gif" src="../assets/hikingGif1.1.gif" />
+  </div>
   <div v-else>
     <slot />
   </div>
@@ -29,12 +31,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.gif {
-    height: auto; 
-    width: auto; 
-    max-width: 300px; 
-    max-height: 300px;
-}
-</style>
