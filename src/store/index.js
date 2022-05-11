@@ -10,6 +10,9 @@ export default new Vuex.Store({
     loggedIn: false,
     UID: "", //user account id from firebase
     userEmail: "",
+    snackbarValue: false,
+    snackbarText: "",
+    showLogInPopUp: false,
   },
   getters: {
     getCurrentTour(state) {
@@ -32,6 +35,15 @@ export default new Vuex.Store({
     },
     getEmail(state) {
       return state.userEmail;
+    },
+    getSnackbarValue(state) {
+      return state.snackbarValue;
+    },
+    getSnackbarText(state) {
+      return state.snackbarText;
+    },
+    getShowLogInPopUp(state) {
+      return state.showLogInPopUp;
     },
   },
 
@@ -57,6 +69,15 @@ export default new Vuex.Store({
     },
     setUserEmail(state, email) {
       state.userEmail = email;
+    },
+    setSnackbarValue(state, value) {
+      state.snackbarValue = value;
+    },
+    setSnackbarText(state, text) {
+      state.snackbarText = text;
+    },
+    setShowLogInPopUp(state, text) {
+      state.showLogInPopUp = text;
     },
   },
   actions: {
@@ -102,6 +123,16 @@ export default new Vuex.Store({
     },
     setUserEmail({ commit }, email) {
       commit("setUserEmail", email);
+    },
+    setSnackbar({ commit }, text) {
+      commit("setSnackbarValue", true);
+      commit("setSnackbarText", text);
+    },
+    setSnackbarValue({ commit }, value) {
+      commit("setSnackbarValue", value);
+    },
+    setShowLogInPopUp({ commit }, value) {
+      commit("setShowLogInPopUp", value);
     },
   },
   modules: {},

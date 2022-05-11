@@ -1,13 +1,19 @@
-<!--<template>
-    <div>
-        <login-view       @emailTextChanged="emailChangedACB"
-                          @pswTextChanged="pswChangedACB"
-                          @onCreate="createACB"
-                          @onLogin="loginACB" 
-                          @onQuit="quitACB"
-                          @onLogOut="logOutACB"
-                          :textStatus="textStatus"/>
-    </div>
+<template>
+  <div>
+    <login-view
+      @emailTextChanged="emailChangedACB"
+      @pswTextChanged="pswChangedACB"
+      @onCreate="createACB"
+      @onLogin="loginACB"
+      @setShowLogIn="setShowLogInPopUp"
+      :showLogInPopUp="showLogInPopUp"
+      :email="emailText"
+      :emailRules="emailRules"
+      :password="password"
+      :passwordRules="passwordRules"
+      :errorAlert="errorText"
+    />
+  </div>
 </template>
 
 <script>
@@ -22,7 +28,6 @@ export default {
     return {
       emailText: "",
       pswText: "",
-      showLogInPopUp: false,
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -36,7 +41,12 @@ export default {
       errorText: "",
     };
   },
-  
+  computed: {
+    showLogInPopUp() {
+      return this.$store.getters.getShowLogInPopUp;
+    },
+  },
+
   methods: {
        ...mapActions(["initData", "clearData"]),
        emailChangedACB: function (text) {
@@ -64,7 +74,10 @@ export default {
            //this.textStatus = "sign out!";
            //console.log("sign out");
            this.$router.go(-1);
-        },
-   },
-}
+  
+    setDisplayError(text) {
+      this.errorText = text;
+    },
+  },
+};
 </script>

@@ -5,28 +5,26 @@
       :promiseState="promiseState"
       :noDataString="'There are no recommended tours!'"
     >
-      <TrailsOverview
+      <trails-overview-presenter
         :headline="'Highlights'"
         :teaser="'Explore the trending trips which our team has carefully selected for you. Start planing and choose the trail that suits you best.'"
         :details="promiseState.data"
         :pagination="false"
         :sort="false"
-        @setCurrent="setCurrentACB"
       />
     </promiseNoData>
   </div>
 </template>
 
 <script>
-import TrailsOverview from "./TrailsOverviewPresenter.vue";
 import Header from "../components/Header.vue";
 import { setCurrentTour } from "@/utilities";
 import { getHikeDetails } from "@/hikeSource";
 import { resolvePromise } from "../resolvePromise.js";
 import promiseNoData from "../views/promiseNoData.vue";
-
+import TrailsOverviewPresenter from "../presenters/TrailsOverviewPresenter.vue";
 export default {
-  components: { TrailsOverview, Header, promiseNoData },
+  components: { TrailsOverviewPresenter, Header, promiseNoData },
   data() {
     return {
       highlights: [117425031, 156278167, 153219273],

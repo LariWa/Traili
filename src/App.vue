@@ -7,6 +7,7 @@
           <router-view />
         </keep-alive>
       </v-container>
+      <snackbar-presenter />
     </v-main>
     <Footer />
   </v-app>
@@ -21,6 +22,7 @@ import NavBar from "./presenters/navBarPresenter.vue";
 import Footer from "./components/Footer.vue";
 import store from "./store/index.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import SnackbarPresenter from "./presenters/SnackbarPresenter.vue";
 
 var unsubscribe;
 
@@ -30,6 +32,7 @@ export default {
   components: {
     NavBar,
     Footer,
+    SnackbarPresenter,
   },
 
   data: () => ({
@@ -42,13 +45,17 @@ export default {
     onAuthStateChanged(auth, (user) => {//
       if (user) {
         //save user info
+        //@Yawen maybe create one action in the store login, which does all the methods
         this.$store.dispatch("setUID", user.uid);
         this.$store.dispatch("setLoggedIn", true);
         this.$store.dispatch("setUserEmail", user.email);
+        this.$store.dispatch("setSnackbar", "You are logged in!");
+        this.$store.dispatch("setShowLogInPopUp", false);
       } else {
-        if (unsubscribe)
-              unsubscribe();
-          //clearData();
+        if (unsubscribe) {
+          this.$store.dispatch("setSnackbar", "You are logged out!");
+        }
+        console.log("no user in on auth state change");
       }
     });
 

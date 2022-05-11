@@ -67,6 +67,8 @@
 </template>
 <script>
 import { convertDistance, convertTime, getDifficulty } from "../utilities";
+import { addedToFav } from "../utilities.js";
+
 export default {
   name: "TrailOverviewCard",
   props: {
@@ -75,7 +77,7 @@ export default {
 
   computed: {
     addedToFav() {
-      return this.$store.state.favourites.includes(parseInt(this.details.id));
+      return addedToFav(this.$store, this.details.id);
     },
   },
 
