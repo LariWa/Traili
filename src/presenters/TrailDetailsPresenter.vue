@@ -19,7 +19,7 @@
 import TrailDetails from "../views/TrailDetailsView.vue";
 import { mapActions } from "vuex";
 import SnackBar from "../components/Snackbar.vue";
-import {addedToFav} from "../utilities.js"
+import { addedToFav } from "../utilities.js";
 
 export default {
   components: { TrailDetails, SnackBar },
@@ -34,11 +34,11 @@ export default {
     trailInfo() {
       return this.$store.getters.getCurrentTour;
     },
-    addedToFav: function() {
-      return addedToFav(this.trailInfo.id);
+    addedToFav: function () {
+      return addedToFav(this.$store, this.trailInfo.id);
     },
   },
-  
+
   methods: {
     ...mapActions(["addToFav", "removeFromFav"]),
     onAddToFav: function (id) {

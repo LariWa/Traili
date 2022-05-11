@@ -1,58 +1,36 @@
 <template>
-  <div class="overview-container">
-    <h2>{{ headline }}</h2>
-    <p class="col-sm-12 col-md-7">{{ teaser }}</p>
-    <v-row v-if="sort">
-      <v-select
-        :items="sortCategories"
-        :value="sortByCateg"
-        label="Sort by"
-        @change="changeSortByACB"
-        class="col-10 col-md-11 sort-select"
-      >
-      </v-select>
-      <v-btn
-        icon
-        @click="changeSortingOrderACB"
-        class="col-2 col-md-1 sort-icon"
-      >
-        <v-icon>{{ sortingIcon }}</v-icon>
-      </v-btn>
-    </v-row>
-    <v-row>
-      <div
-        class="col-sm-12 col-md-4 col card-layout"
-        v-for="(detail, idx) in pagedAssets"
-        :key="idx"
-      >
-        <TrailOverviewCard
-          :details="detail"
-          @setCurrent="setCurrentTour"
-          :addedToFav="addedToFav"
-        ></TrailOverviewCard>
-      </div>
-    </v-row>
-    <v-pagination
-      v-if="pagination"
-      color="blue-grey lighten-2"
-      :value="page"
-      :length="numPages"
-      @input="changePageACB"
-    ></v-pagination>
-  </div>
+  <TrailsOverview
+    :headline="headline"
+    :teaser="teaser"
+    :sort="sort"
+    :pagination="pagination"
+    @setCurrent="setCurrentACB"
+    :sortingIcon="sortingIcon"
+    :sortCategories="sortCategories"
+    :sortByCateg="sortByCateg"
+    @changeSortBy="changeSortByACB"
+    @changeSortingOrder="changeSortingOrderACB"
+    :pagedAssets="pagedAssets"
+    :numPages="numPages"
+    :page="page"
+    @changePage="changePageACB"
+  />
 </template>
-
 <script>
-import TrailOverviewCard from "../components/TrailOverviewCard.vue";
-import {addedToFav} from "../utilities.js";
-
+import { setCurrentTour, addedToFav } from "@/utilities";
+import TrailsOverview from "../views/TrailsOverview.vue";
 export default {
-  name: "TrailsOverview",
-  components: { TrailOverviewCard },
+  components: {
+    TrailsOverview,
+  },
   data() {
     return {
       page: 1,
       pageSize: 21,
+      sortAsc: true,
+      sortCategories: ["most relevant", "title", "length", "ranking"],
+      sortByCateg: "most relevant",
+      sortingIcon: "mdi-sort-ascending",
     };
   },
   props: {
@@ -61,33 +39,52 @@ export default {
     details: Array,
     pagination: Boolean,
     sort: Boolean,
-    sortingIcon: String,
-    sortCategories: Array,
-    sortByCateg: String,
   },
   computed: {
     numPages() {
-      return Math.ceil(this.details.length / this.pageSize);
+      return Math.ceil(this.detailsSorted.length / this.pageSize);
     },
     pagedAssets() {
+      if (!this.pagination) return this.detailsSorted; //no pages
       const startIndex = (this.page - 1) * this.pageSize;
-      const data = [...this.details];
+      const data = [...this.detailsSorted];
       return data.splice(startIndex, this.pageSize);
     },
     addedToFav: function() {
       return addedToFav(this.details.id);
     },
 
+    detailsSorted() {
+      if (this.sort) return this.sortResults();
+      else return this.details;
+    },
   },
   methods: {
-    setCurrentTour: function (details) {
-      this.$emit("setCurrent", details);
+    changeSortByACB(value) {
+      this.sortByCateg = value;
     },
     changeSortingOrderACB() {
-      this.$emit("changeSortingOrder");
+      this.sortAsc = !this.sortAsc;
+      this.sortingIcon = this.sortAsc
+        ? "mdi-sort-ascending"
+        : "mdi-sort-descending";
     },
-    changeSortByACB(value) {
-      this.$emit("changeSortBy", value);
+    sortResults() {
+      var sorted = [...this.details];
+      if (this.details.length > 0 && this.sortByCateg != "most relevant") {
+        sorted.sort((a, b) => compare(a, b, this.sortByCateg));
+      }
+      if (!this.sortAsc) sorted.reverse();
+      return sorted;
+      function compare(a, b, sortBy) {
+        if (a[sortBy] < b[sortBy]) return -1;
+        if (a[sortBy] > b[sortBy]) return 1;
+        return 0;
+      }
+    },
+    //go to details view if tour is selected
+    setCurrentACB(tour) {
+      setCurrentTour(tour, this);
     },
     changePageACB(value) {
       this.page = value;

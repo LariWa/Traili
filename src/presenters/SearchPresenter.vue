@@ -31,22 +31,16 @@
       :noDataString="'Sorry! No trails were found matching your search criteria.'"
       :actionNotStartedString="'Click search to find trails matching your criteria.'"
     >
-      <TrailsOverview
+      <trails-overview-presenter
         :headline="'Results'"
         :teaser="
           'We found ' +
-          detailsResultsSorted.length +
+          detailsResults.length +
           ' tours that might interest you!'
         "
-        :details="detailsResultsSorted"
-        :pagination="true"
+        :details="detailsResults"
         :sort="true"
-        @setCurrent="setCurrentACB"
-        :sortingIcon="sortingIcon"
-        :sortCategories="sortCategories"
-        :sortByCateg="sortByCateg"
-        @changeSortBy="changeSortByACB"
-        @changeSortingOrder="changeSortingOrderACB"
+        :pagination="true"
       />
     </promiseNoData>
   </div>
@@ -54,14 +48,17 @@
 
 <script>
 import SearchFormView from "../views/SearchFormView.vue";
-import TrailsOverview from "./TrailsOverviewPresenter.vue";
 import { resolvePromise } from "../resolvePromise.js";
 import { searchHike, getHikeDetails } from "../hikeSource.js";
-import { setCurrentTour } from "@/utilities";
 import promiseNoData from "../views/promiseNoData.vue";
 import { getCategories } from "../hikeSource";
+import TrailsOverviewPresenter from "./TrailsOverviewPresenter.vue";
 export default {
-  components: { SearchFormView, TrailsOverview, promiseNoData },
+  components: {
+    SearchFormView,
+    promiseNoData,
+    TrailsOverviewPresenter,
+  },
   data() {
     return {
       searchText: "",
@@ -99,12 +96,7 @@ export default {
       ],
       selectedCategories: [],
       allCategSet: true,
-      sortingIcon: "mdi-sort-ascending",
-      sortAsc: true,
-      sortCategories: ["most relevant", "title", "length", "ranking"],
-      sortByCateg: "most relevant",
       place: {},
-      detailsResultsSorted: [],
       radiusSlider: {
         name: "Search radius",
         unit: "km",
@@ -120,17 +112,6 @@ export default {
   watch: {
     categories() {
       this.selectedCategories = this.categories; //select all categories at start
-    },
-    //sort results
-
-    detailsResults() {
-      this.sortResults();
-    },
-    sortAsc() {
-      this.sortResults();
-    },
-    sortByCateg() {
-      this.sortResults();
     },
   },
   computed: {
@@ -234,9 +215,6 @@ export default {
     changeRadiusValueACB(value) {
       this.radiusSlider.value = value;
     },
-    changeSortByACB(value) {
-      this.sortByCateg = value;
-    },
 
     //functions to create searchParams for API--------------------------
     getLocation() {
@@ -280,35 +258,6 @@ export default {
       if (select) {
         this.selectedCategories = this.categories;
       } else this.selectedCategories = [];
-    },
-    changeSortingOrderACB() {
-      this.sortAsc = !this.sortAsc;
-      this.sortingIcon = this.sortAsc
-        ? "mdi-sort-ascending"
-        : "mdi-sort-descending";
-    },
-
-    //go to details view if tour is selected
-    setCurrentACB(tour) {
-      setCurrentTour(tour, this);
-    },
-    sortResults() {
-      this.detailsResultsSorted = [...this.detailsResults];
-      if (
-        this.detailsResults.length > 0 &&
-        this.sortByCateg != "most relevant"
-      ) {
-        this.detailsResultsSorted.sort((a, b) =>
-          compare(a, b, this.sortByCateg)
-        );
-      }
-      if (!this.sortAsc) this.detailsResultsSorted.reverse();
-
-      function compare(a, b, sortBy) {
-        if (a[sortBy] < b[sortBy]) return -1;
-        if (a[sortBy] > b[sortBy]) return 1;
-        return 0;
-      }
     },
   },
 };
