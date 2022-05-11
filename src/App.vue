@@ -50,6 +50,7 @@ export default {
         this.$store.dispatch("setLoggedIn", true);
         this.$store.dispatch("setUserEmail", user.email);
         this.$store.dispatch("setSnackbar", "You are logged in!");
+        this.$store.dispatch("setShowLogInPopUp", false);
       } else {
         if (unsubscribe) {
           this.$store.dispatch("setSnackbar", "You are logged out!");
