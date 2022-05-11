@@ -45,7 +45,7 @@ export default {
        quitACB: function () {
            this.$router.go(-1);
        },
-       createACB: function () {
+       createACB: function () {//move to firebaseModel, import-----------------
                 const auth = getAuth();
                 //create new
                 createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)

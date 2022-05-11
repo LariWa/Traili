@@ -39,14 +39,16 @@ export default {
   mounted() {
     //persistence
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {//
       if (user) {
         //save user info
         this.$store.dispatch("setUID", user.uid);
         this.$store.dispatch("setLoggedIn", true);
         this.$store.dispatch("setUserEmail", user.email);
       } else {
-        console.log("no user in on auth state change");
+        if (unsubscribe)
+              unsubscribe();
+          //clearData();
       }
     });
 
