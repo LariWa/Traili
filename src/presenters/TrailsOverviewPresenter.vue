@@ -4,20 +4,18 @@
     :teaser="teaser"
     :sort="sort"
     :pagination="pagination"
-    @setCurrent="setCurrentACB"
     :sortingIcon="sortingIcon"
     :sortCategories="sortCategories"
     :sortByCateg="sortByCateg"
     @changeSortBy="changeSortByACB"
     @changeSortingOrder="changeSortingOrderACB"
-    :pagedAssets="pagedAssets"
+    :details="pagedAssets"
     :numPages="numPages"
     :page="page"
     @changePage="changePageACB"
   />
 </template>
 <script>
-import { setCurrentTour } from "@/utilities";
 import TrailsOverview from "../views/TrailsOverview.vue";
 export default {
   components: {
@@ -78,10 +76,7 @@ export default {
         return 0;
       }
     },
-    //go to details view if tour is selected
-    setCurrentACB(tour) {
-      setCurrentTour(tour, this);
-    },
+
     changePageACB(value) {
       this.page = value;
     },

@@ -22,16 +22,10 @@
     <v-row>
       <div
         class="col-sm-12 col-md-4 col card-layout"
-        v-for="(detail, idx) in pagedAssets"
+        v-for="(detail, idx) in details"
         :key="idx"
       >
-        <TrailOverviewCardPresenter
-          :details="details" 
-          @setCurrent="setCurrentTour"
-          :addedToFav="addedToFav"
-        >
-        </TrailOverviewCardPresenter>
-
+        <TrailOverviewCardPresenter :details="detail" />
       </div>
     </v-row>
     <v-pagination
@@ -46,7 +40,7 @@
 
 <script>
 //import TrailOverviewCard from "../components/TrailOverviewCard.vue";
-import TrailOverviewCardPresenter from "../presenters/TrailOverviewCardPresenter.vue"
+import TrailOverviewCardPresenter from "../presenters/TrailOverviewCardPresenter.vue";
 
 export default {
   components: { TrailOverviewCardPresenter },
@@ -60,18 +54,13 @@ export default {
     sortingIcon: String,
     sortCategories: Array,
     sortByCateg: String,
-    pagedAssets: Array,
+    details: Array,
     page: Number,
     numPages: Number,
-
-    details: Object,
     addedToFav: Boolean,
   },
 
   methods: {
-    setCurrentTour: function (details) {
-      this.$emit("setCurrent", details);
-    },
     changeSortingOrderACB() {
       this.$emit("changeSortingOrder");
     },

@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="4" @click="setCurrentTour(details)" class="card">
+  <v-card elevation="4" @click="setCurrentTour" class="card">
     <v-img
       :src="
         details.primaryImage
@@ -74,14 +74,14 @@ export default {
     details: Object,
     addedToFav: Boolean,
   },
-  
+
   methods: {
     convertDistance,
     convertTime,
     getDifficulty,
 
-    setCurrentTour: function (details) {
-      this.$emit("setCurrent", details);
+    setCurrentTour: function () {
+      this.$emit("setCurrent");
     },
   },
 };
