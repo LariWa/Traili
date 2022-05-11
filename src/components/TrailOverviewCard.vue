@@ -67,7 +67,6 @@
 </template>
 <script>
 import { convertDistance, convertTime, getDifficulty } from "../utilities";
-import { addedToFav } from "../utilities.js";
 
 export default {
   name: "TrailOverviewCard",
@@ -75,13 +74,7 @@ export default {
     details: Object,
     addedToFav: Boolean,
   },
-
-  /*computed: {
-    addedToFav() {
-      return addedToFav(this.$store, this.details.id);
-    },
-  },*/
-
+  
   methods: {
     convertDistance,
     convertTime,

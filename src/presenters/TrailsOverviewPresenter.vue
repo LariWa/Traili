@@ -17,7 +17,7 @@
   />
 </template>
 <script>
-import { setCurrentTour, addedToFav } from "@/utilities";
+import { setCurrentTour } from "@/utilities";
 import TrailsOverview from "../views/TrailsOverview.vue";
 export default {
   components: {
@@ -50,10 +50,6 @@ export default {
       const data = [...this.detailsSorted];
       return data.splice(startIndex, this.pageSize);
     },
-    addedToFav: function() {
-      return addedToFav(this.details.id);
-    },
-
     detailsSorted() {
       if (this.sort) return this.sortResults();
       else return this.details;

@@ -25,10 +25,13 @@
         v-for="(detail, idx) in pagedAssets"
         :key="idx"
       >
-        <TrailOverviewCard
-          :details="detail"
+        <TrailOverviewCardPresenter
+          :details="details" 
           @setCurrent="setCurrentTour"
-        ></TrailOverviewCard>
+          :addedToFav="addedToFav"
+        >
+        </TrailOverviewCardPresenter>
+
       </div>
     </v-row>
     <v-pagination
@@ -42,11 +45,12 @@
 </template>
 
 <script>
-import TrailOverviewCard from "../components/TrailOverviewCard.vue";
+//import TrailOverviewCard from "../components/TrailOverviewCard.vue";
+import TrailOverviewCardPresenter from "../presenters/TrailOverviewCardPresenter.vue"
 
 export default {
+  components: { TrailOverviewCardPresenter },
   name: "TrailsOverview",
-  components: { TrailOverviewCard },
 
   props: {
     headline: String,
@@ -59,6 +63,9 @@ export default {
     pagedAssets: Array,
     page: Number,
     numPages: Number,
+
+    details: Object,
+    addedToFav: Boolean,
   },
 
   methods: {
