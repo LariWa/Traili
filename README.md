@@ -16,7 +16,7 @@ https://user-images.githubusercontent.com/40071882/167830437-dff3bb5d-0fee-4962-
     - navbarPresenter.vue: presents the navigation bar
     - pageNotFoundPresenter.vue: presents the page not found information if the route is not defined
     - SearchPresenter.vue: presents the search form and the results, provides general search data and search results fetched from API
-    - SnackbarPresenter.vue: presents a snackbar which displays notifications (e.g. succesful login)
+    - SnackbarPresenter.vue: presents a snackbar which displays notifications (e.g. successful login)
     - TrailDetailsPresenter.vue: presents the details about a trail 
     - TrailOverviewPresenter.vue: presents the overview of the given trails used for the search results, favourite trails and example trails on the start page
     - weatherPresenter.vue: send the API config data to the weather widget (regarded as view)
@@ -32,11 +32,11 @@ https://user-images.githubusercontent.com/40071882/167830437-dff3bb5d-0fee-4962-
      - TrailOverview.vue: view for displaying an overview of trails
      
 - components/
-    - Footer.vue: footer imgae
+    - Footer.vue: footer image
     - Header.vue: header image which is used for the landing page
     - rangeSlider.vue: a range slider which is used in SearchFormView
     - Snackbar.vue: displaying notifications in a snackbar
-    - TrailOverviewCard.vue: card displaying trail informations, used for the overview
+    - TrailOverviewCard.vue: card displaying trail information, used for the overview
     
 - router/
    - index.js: create the router object and configure the routes
@@ -44,13 +44,13 @@ https://user-images.githubusercontent.com/40071882/167830437-dff3bb5d-0fee-4962-
     - index.js: vueX store for the data model
 - assets/
     - some logo pictures
-- main.js: mount app and use store, vuetify and router
-- app.vue: mount the default webpage TODO as view, create presenter
+- main.js: mount app and use store, vuetify and router, app presenter
+- app.vue: main view
 - resolvePromise.js: resolves promises to avoid race condition
 - hikeSource.js: API calls for searching, details and categories
-- utilities.js: methods used accross different views
+- utilities.js: methods used across different views
 - firebaseConfig.js: firebase config details
-- firebaseModel.js: maintain the data persistence between model and firebase.
+- firebaseModel.js: maintain the data persistence between model and firebase, authentication
 
 ## Project setup
 ```
