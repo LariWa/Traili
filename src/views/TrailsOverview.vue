@@ -39,7 +39,6 @@
 </template>
 
 <script>
-//import TrailOverviewCard from "../components/TrailOverviewCard.vue";
 import TrailOverviewCardPresenter from "../presenters/TrailOverviewCardPresenter.vue";
 
 export default {

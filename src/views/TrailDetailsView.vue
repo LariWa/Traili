@@ -143,15 +143,16 @@
               </div>
               <div class="mt-3">
                 Quality of experience:
-                <star-rating
-                  :inline="true"
-                  :star-size="20"
-                  :read-only="true"
-                  :show-rating="false"
-                  v-bind:max-rating="6"
-                  v-bind:rating="trailInfo.rating.qualityOfExperience"
+                <v-rating
+                  :value="trailInfo.rating.qualityOfExperience"
+                  background-color="blue-grey lighten-2"
+                  color="amber"
+                  dense
+                  half-increments
+                  readonly
+                  small
                 >
-                </star-rating>
+                </v-rating>
               </div>
               <br />
               <v-btn
@@ -225,13 +226,11 @@
 
 <script>
 import VueWeather from "../presenters/weatherPresenter.vue";
-import StarRating from "vue-star-rating";
 import { convertDistance, convertTime, getDifficulty } from "../utilities";
 
 export default {
   components: {
     VueWeather,
-    StarRating,
   },
   props: {
     trail: Array,
