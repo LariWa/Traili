@@ -2,17 +2,14 @@ import "firebase/database";
 import firebaseConfig from "/src/firebaseConfig.js";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-//import store from "./store/index.js";
-//import firebase from "firebase/app";
 import {
-    getAuth,
-    signOut,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
+  getAuth,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 initializeApp(firebaseConfig);
-
 
 function updateFirebaseFromModel(store) {
   const REF = store.getters.getUID;
@@ -38,45 +35,47 @@ function updateModelFromFirebase(store) {
         }
       }
     );
-  } 
+  }
 }
 
 function createUser(emailText, pswText) {
-    const auth = getAuth();
-    //create new
-    createUserWithEmailAndPassword(auth, emailText, pswText)
-        .then(() => {
-            // Signed in
-            login(emailText, pswText);
-        })
-        .catch((error) => {
-            const errorMessage = error.message
-            console.error("create error: " + errorMessage);
-        });
-}
-
-function login(emailText, pswText) {
-    const auth = getAuth();
-    //sign in
-    signInWithEmailAndPassword(auth, emailText, pswText)
-        .then(() => {
-            // Signed in
-
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("login error: " + errorCode + errorMessage);
-        });
-}
-
-function signout() {
-    const auth = getAuth();
-    signOut(auth).then(() => {
-    }).catch((error) => {
-        const errorMessage = error.message;
-        console.error("log out error: " + errorMessage);
+  const auth = getAuth();
+  //create new
+  return createUserWithEmailAndPassword(auth, emailText, pswText)
+    .then(() => {
+      // Signed in
+      login(emailText, pswText);
+    })
+    .catch((error) => {
+      throw new Error("create error: " + error.code + error.message);
     });
 }
 
-export { updateFirebaseFromModel, updateModelFromFirebase, createUser, login, signout };
+function login(emailText, pswText) {
+  const auth = getAuth();
+  //sign in
+  return signInWithEmailAndPassword(auth, emailText, pswText)
+    .then(() => {
+      // Signed in
+    })
+    .catch((error) => {
+      throw new Error("login error: " + error.code + error.message);
+    });
+}
+
+function signout() {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {})
+    .catch((error) => {
+      console.error("log out error: " + error.message);
+    });
+}
+
+export {
+  updateFirebaseFromModel,
+  updateModelFromFirebase,
+  createUser,
+  login,
+  signout,
+};

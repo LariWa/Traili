@@ -14,21 +14,9 @@
 </template>
 
 <script>
-
 import NavBar from "./presenters/navBarPresenter.vue";
 import Footer from "./components/Footer.vue";
 import SnackbarPresenter from "./presenters/SnackbarPresenter.vue";
-
-/*
-import {
-        updateModelFromFirebase,
-        updateFirebaseFromModel,
-    } from "./firebaseModel";
-
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import store from "./store/index.js";
-var unsubscribe;
-*/
 
 export default {
   name: "App",
@@ -38,12 +26,6 @@ export default {
     Footer,
     SnackbarPresenter,
   },
-
-  data: () => ({
-    //
-  }),
-
-
 };
 </script>
 <style>

@@ -18,7 +18,7 @@
 
 <script>
 import loginView from "../views/loginView.vue";
-import { createUser, login} from "../firebaseModel";
+import { createUser, login } from "../firebaseModel";
 import { mapActions } from "vuex";
 
 export default {
@@ -46,23 +46,23 @@ export default {
   },
 
   methods: {
-       ...mapActions(["initData", "clearData","setShowLogInPopUp"]),
-       emailChangedACB: function (text) {
-                this.emailText = text;
-            },
-       pswChangedACB: function (text) {
-                this.password = text;
-       },
-       quitACB: function () {
-           this.$router.go(-1);
-       },
-       createACB: function () {//move to firebaseModel, import-----------------
-           createUser(this.emailText, this.password);
-            },
-       loginACB: function () {
-           login(this.emailText, this.password);
-            },
-
+    ...mapActions(["initData", "clearData", "setShowLogInPopUp"]),
+    emailChangedACB: function (text) {
+      this.emailText = text;
+    },
+    pswChangedACB: function (text) {
+      this.password = text;
+    },
+    createACB: function () {
+      createUser(this.emailText, this.password).catch((error) =>
+        this.setDisplayError(error.message)
+      );
+    },
+    loginACB: function () {
+      login(this.emailText, this.password).catch((error) =>
+        this.setDisplayError(error.message)
+      );
+    },
     setDisplayError(text) {
       this.errorText = text;
     },
