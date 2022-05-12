@@ -101,7 +101,19 @@ export default new Vuex.Store({
       commit("setUID", "");
       commit("setFav", []);
       commit("setLoggedIn", false);
-    },
+      commit("setSnackbarValue", true);
+      commit("setSnackbarText", "You are logged out!");
+      },
+
+    // initialize lcoal user data after log in
+      initData({ commit }, user) {
+        commit("setUID", user.uid);
+        commit("setLoggedIn", true);
+        commit("setUserEmail", user.email);
+        commit("setSnackbarValue", true);
+        commit("setSnackbarText", "You are logged in!");
+        commit("setShowLogInPopUp", false);
+      },
 
     addToFav(state, id) {
       if (!state.getters.getFavourites.includes(parseInt(id))) {

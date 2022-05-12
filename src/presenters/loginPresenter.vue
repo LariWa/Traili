@@ -18,12 +18,7 @@
 
 <script>
 import loginView from "../views/loginView.vue";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-//import { updateModelFromFirebase } from "../firebaseModel";
+import { createUser, login} from "../firebaseModel";
 import { mapActions } from "vuex";
 
 export default {
@@ -31,7 +26,6 @@ export default {
   data() {
     return {
       emailText: "",
-      pswText: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -52,57 +46,22 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      "setUID",
-      "setLoggedIn",
-      "clearData",
-      "setUserEmail",
-      "setShowLogInPopUp",
-    ]),
-    emailChangedACB: function (text) {
-      this.emailText = text;
-    },
-    pswChangedACB: function (text) {
-      this.pswlText = text;
-    },
-    createACB: function () {
-      const auth = getAuth();
-      //create new
-      createUserWithEmailAndPassword(auth, this.emailText, this.pswlText)
-        .then(() => {
-          // Signed in
-          //const user = userCredential.user;
-          this.textStatus = "User created";
-          //console.log(user);
-          this.loginACB();
-        })
-        .catch((error) => {
-          //const errorCode = error.code;
-          const errorMessage = error.message;
-          this.setDisplayError("login error: " + error.code + errorMessage);
-          //console.error("create error: " + errorMessage);
-          // ..
-        });
-    },
-    loginACB: function () {
-      const auth = getAuth();
-      //sign in
-      signInWithEmailAndPassword(auth, this.emailText, this.pswlText)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          this.textStatus = "User logged in";
-          this.setUserEmail(this.emailText);
-          this.setUID(user.uid);
-          this.setLoggedIn(true);
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          this.textStatus = errorMessage;
-          this.setDisplayError("login error: " + error.code + errorMessage);
-          //console.error("login error: " + errorCode + errorMessage);
-        });
-    },
+       ...mapActions(["initData", "clearData","setShowLogInPopUp"]),
+       emailChangedACB: function (text) {
+                this.emailText = text;
+            },
+       pswChangedACB: function (text) {
+                this.password = text;
+       },
+       quitACB: function () {
+           this.$router.go(-1);
+       },
+       createACB: function () {//move to firebaseModel, import-----------------
+           createUser(this.emailText, this.password);
+            },
+       loginACB: function () {
+           login(this.emailText, this.password);
+            },
 
     setDisplayError(text) {
       this.errorText = text;

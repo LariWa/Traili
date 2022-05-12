@@ -2,7 +2,6 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\authen",
     "\\src\\components",
     "\\src\\presenters",
     "\\src\\router",
@@ -10,6 +9,6 @@
     "\\src\\views",
     "\\tests"
   ],
-  "SelectedNode": "\\src\\views\\TrailDetailsView.vue",
+  "SelectedNode": "\\src\\App.vue",
   "PreviewInSolutionExplorer": false
 }
