@@ -101,10 +101,15 @@
       <v-row class="ml-auto mr-auto col-10" wrap>
         <v-col cols="12" md="9">
           <v-card>
-            <v-card-text v-if="trailInfo.longText">
+            <v-card-text v-if="trailInfo.longText || trailInfo.shortText">
               <h2>The Route Details</h2>
               <br />
-              <div>{{ removeHTML(trailInfo.longText) }}</div>
+              <div v-if="trailInfo.longText">
+                {{ removeHTML(trailInfo.longText) }}
+              </div>
+              <div v-if="trailInfo.shortText">
+                {{ removeHTML(trailInfo.shortText) }}
+              </div>
             </v-card-text>
             <v-card-text v-else>
               <div>No description available</div>
