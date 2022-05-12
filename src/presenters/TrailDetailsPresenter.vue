@@ -45,7 +45,13 @@ export default {
       if (this.$store.getters.getLoggedIn) {
         this.addToFav(id);
         this.setSnackbarSettings(true, "Trail added to favourites");
-      } else this.$router.push("/Login");
+      } else {
+        this.setSnackbarSettings(
+          true,
+          "Please log in to add trails to your favourites!"
+        );
+        this.$store.dispatch("setShowLogInPopUp", true);
+      }
     },
     onReturn: function () {
       this.$router.go(-1);
