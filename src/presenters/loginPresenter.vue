@@ -18,8 +18,7 @@
 
 <script>
 import loginView from "../views/loginView.vue";
-//import {getAuth,signOut,} from "firebase/auth";
-import { createUser, login, signout } from "../firebaseModel";
+import { createUser, login} from "../firebaseModel";
 import { mapActions } from "vuex";
 
 export default {
@@ -27,7 +26,6 @@ export default {
   data() {
     return {
       emailText: "",
-      pswText: "",
       emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -48,33 +46,23 @@ export default {
   },
 
   methods: {
-       ...mapActions(["initData", "clearData"]),
+       ...mapActions(["initData", "clearData","setShowLogInPopUp"]),
        emailChangedACB: function (text) {
                 this.emailText = text;
             },
        pswChangedACB: function (text) {
-                this.pswlText = text;
+                this.password = text;
        },
        quitACB: function () {
            this.$router.go(-1);
        },
        createACB: function () {//move to firebaseModel, import-----------------
-           createUser(this.store,this.emailText, this.pswText);
+           createUser(this.emailText, this.password);
             },
        loginACB: function () {
-           const user = login(this.emailText, this.pswText);
-           this.initData(user);
-           this.$router.go(-1);
+           login(this.emailText, this.password);
             },
 
-
-      logOutACB() {
-          signout();
-          this.clearData();
-          //this.textStatus = "sign out!";
-          //console.log("sign out");
-          this.$router.go(-1);
-      },
     setDisplayError(text) {
       this.errorText = text;
     },

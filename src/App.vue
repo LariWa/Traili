@@ -14,17 +14,21 @@
 </template>
 
 <script>
-import {
-  updateModelFromFirebase,
-  updateFirebaseFromModel,
-} from "./firebaseModel";
+
 import NavBar from "./presenters/navBarPresenter.vue";
 import Footer from "./components/Footer.vue";
-import store from "./store/index.js";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import SnackbarPresenter from "./presenters/SnackbarPresenter.vue";
 
+/*
+import {
+        updateModelFromFirebase,
+        updateFirebaseFromModel,
+    } from "./firebaseModel";
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import store from "./store/index.js";
 var unsubscribe;
+*/
 
 export default {
   name: "App",
@@ -39,41 +43,7 @@ export default {
     //
   }),
 
-  mounted() {
-    //persistence
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {//
-      if (user) {
-        //save user info
-        //@Yawen maybe create one action in the store login, which does all the methods
-        this.$store.dispatch("setUID", user.uid);
-        this.$store.dispatch("setLoggedIn", true);
-        this.$store.dispatch("setUserEmail", user.email);
-        this.$store.dispatch("setSnackbar", "You are logged in!");
-        this.$store.dispatch("setShowLogInPopUp", false);
-      } else {
-        if (unsubscribe) {
-          this.$store.dispatch("setSnackbar", "You are logged out!");
-        }
-        console.log("no user in on auth state change");
-      }
-    });
 
-    unsubscribe = store.subscribe((mutation) => {
-      //console.log("subscribe: ");
-      //console.log(state);
-      //console.log("mutation: ");
-      //console.log(mutation);
-      if (mutation.type === "setUID") updateModelFromFirebase(store);
-      if (mutation.type === "addToFav" || mutation.type === "removeFromFav")
-        updateFirebaseFromModel(store);
-    });
-    this.$router.push("/Explore").catch(() => {});
-  },
-
-  beforeDestroyed() {
-    unsubscribe();
-  },
 };
 </script>
 <style>

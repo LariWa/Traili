@@ -12,7 +12,7 @@
 <script>
 import emailToName from "email-to-name";
 import logOutView from "@/views/logOutView.vue";
-import { getAuth, signOut } from "firebase/auth";
+import { signout } from "../firebaseModel";
 import { mapActions } from "vuex";
 export default {
   components: {
@@ -40,20 +40,7 @@ export default {
   methods: {
     ...mapActions(["clearData"]),
     logOutACB() {
-      const auth = getAuth();
-      signOut(auth)
-        .then(() => {
-          this.clearData();
-          this.textStatus = "sign out!";
-          console.log("sign out");
-          this.showLoggedInView = false;
-          // this.setSnackbarSettings(true, "You are now logged out!");
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          this.textStatus = errorMessage;
-          console.error("log out error: " + errorMessage);
-        });
+        signout();
     },
     setShowUserInfo: function (value) {
       this.showUserInfo = value;
