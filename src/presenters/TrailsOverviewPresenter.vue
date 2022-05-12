@@ -26,7 +26,7 @@ export default {
       page: 1,
       pageSize: 21,
       sortAsc: true,
-      sortCategories: ["most relevant", "title", "length", "ranking"],
+      sortCategories: ["most relevant", "title", "length"],
       sortByCateg: "most relevant",
       sortingIcon: "mdi-sort-ascending",
     };
