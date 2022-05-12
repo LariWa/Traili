@@ -14,7 +14,7 @@ https://user-images.githubusercontent.com/40071882/167830437-dff3bb5d-0fee-4962-
     - loginPresenter.vue: presents the login popup 
     - logoutPresenter.vue: presents the logout dropdown
     - navbarPresenter.vue: presents the navigation bar
-    - pageNotFoundPresenter.vue: presents the page not found information 
+    - pageNotFoundPresenter.vue: presents the page not found information if the route is not defined
     - SearchPresenter.vue: presents the search form and the results, provides general search data and search results fetched from API
     - SnackbarPresenter.vue: presents a snackbar which displays notifications (e.g. succesful login)
     - TrailDetailsPresenter.vue: presents the details about a trail 
