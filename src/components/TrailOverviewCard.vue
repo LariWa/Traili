@@ -3,7 +3,7 @@
     <v-img
       :src="
         details.primaryImage
-          ? 'http://img.oastatic.com/img/' + details.primaryImage.id + '/.jpg'
+          ? 'https://img.oastatic.com/img/' + details.primaryImage.id + '/.jpg'
           : 'https://picsum.photos/id/600/1000/300?grayscale'
       "
       lazy-src="https://picsum.photos/id/11/100/60"

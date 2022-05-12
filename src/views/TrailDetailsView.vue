@@ -12,7 +12,7 @@
             max-width="100%"
             :src="
               trailInfo.primaryImage
-                ? 'http://img.oastatic.com/img/' +
+                ? 'https://img.oastatic.com/img/' +
                   trailInfo.primaryImage.id +
                   '/.jpg'
                 : 'https://picsum.photos/id/600/1000/300?grayscale'
@@ -199,7 +199,7 @@
                 transition="fade-transition"
               >
                 <v-img
-                  :src="'http://img.oastatic.com/img/' + item.id + '/.jpg'"
+                  :src="'https://img.oastatic.com/img/' + item.id + '/.jpg'"
                   lazy-src="https://picsum.photos/id/11/100/60"
                 >
                   <template v-slot:placeholder>
